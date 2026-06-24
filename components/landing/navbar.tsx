@@ -19,15 +19,15 @@ import { MobileSidebar } from "./mobile-sidebar";
 const navLinks = [
   {
     label: "Tools",
-    href: "#tools",
+    href: "/tools",
   },
   {
     label: "Features",
-    href: "#features",
+    href: "/features",
   },
   {
     label: "Pricing",
-    href: "#pricing",
+    href: "/pricing",
   },
 ];
 
@@ -35,7 +35,7 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-200/50 bg-white/80 backdrop-blur-xl dark:border-zinc-800/50 dark:bg-black/80">
       <Container>
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-20 items-center justify-between">
           {/* Logo */}
           <Link href="/">
             <h1 className="text-xl font-bold">
