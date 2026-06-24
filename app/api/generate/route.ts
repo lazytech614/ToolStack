@@ -4,6 +4,25 @@ import { GenerateCommitSchema } from "@/lib/validation";
 import { ratelimit } from "@/lib/rateLimit";
 import { getIp } from "@/lib/get-ip";
 
+const styleInstructions = {
+  conventional: `
+Generate a conventional commit.
+Use feat:, fix:, docs:, refactor:, chore:, test:
+`,
+  simple: `
+Generate a short human readable commit.
+`,
+  detailed: `
+Generate a detailed commit with bullet points.
+`,
+  enterprise: `
+Generate a professional enterprise commit message.
+`,
+  funny: `
+Generate a funny but understandable commit.
+`,
+};
+
 export async function POST(req: Request) {
   try {
     const ip = await getIp();
@@ -44,7 +63,7 @@ You are a senior software engineer.
 
 Analyze the git diff.
 
-Generate a ${style} git commit message.
+${styleInstructions[style]}.
 
 Rules:
 - Return only commit message

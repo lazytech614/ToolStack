@@ -1,6 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Check, Copy } from "lucide-react";
 
 interface CommitOutputProps {
   commit: string;
@@ -16,9 +20,7 @@ export default function CommitOutput({
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(commit);
-
       setCopied(true);
-
       setTimeout(() => {
         setCopied(false);
       }, 2000);
@@ -30,30 +32,62 @@ export default function CommitOutput({
   if (!commit) return null;
 
   return (
-    <div className="mt-6 rounded-xl border bg-white p-6 shadow-sm">
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-xl font-semibold">
+    <Card className="border-slate-700 bg-slate-900/50 backdrop-blur-sm animate-in fade-in duration-300">
+      <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+        <CardTitle className="text-xl sm:text-2xl">
           Generated Commit
-        </h2>
-
-        <button
+        </CardTitle>
+        <Button
           onClick={handleCopy}
-          className="rounded-lg border px-4 py-2 text-sm font-medium transition hover:bg-gray-100"
+          variant={copied ? "default" : "outline"}
+          size="sm"
+          className={`w-full sm:w-auto gap-2 ${
+            copied
+              ? "bg-green-600 hover:bg-green-700 text-white"
+              : "border-slate-600 text-slate-50 hover:bg-slate-800"
+          }`}
         >
-          {copied ? "Copied!" : "Copy"}
-        </button>
-      </div>
+          {copied ? (
+            <>
+              <Check className="h-4 w-4" />
+              Copied!
+            </>
+          ) : (
+            <>
+              <Copy className="h-4 w-4" />
+              Copy
+            </>
+          )}
+        </Button>
+      </CardHeader>
 
-      <pre className="overflow-x-auto whitespace-pre-wrap rounded-lg bg-gray-100 p-4 text-sm">
-        {commit}
-      </pre>
+      <CardContent className="space-y-4">
+        {/* Code Block */}
+        <div className="overflow-x-auto rounded-lg bg-slate-950 border border-slate-700 p-4">
+          <pre className="text-sm sm:text-base text-slate-50 font-mono whitespace-pre-wrap wrap-break-word">
+            {commit}
+          </pre>
+        </div>
 
-      {remaining !== undefined &&
-        remaining !== null && (
-          <p className="mt-4 text-sm text-gray-500">
-            Remaining Requests: {remaining}
-          </p>
+        {/* Stats Footer */}
+        {remaining !== undefined && remaining !== null && (
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-slate-700">
+            <div className="flex items-center gap-2">
+              <span className="text-xs sm:text-sm text-slate-400">
+                Requests Remaining:
+              </span>
+              <Badge className="bg-slate-800 border border-slate-600 text-slate-200">
+                {remaining}
+              </Badge>
+            </div>
+            {remaining < 5 && (
+              <span className="text-xs text-yellow-400">
+                Getting low on requests
+              </span>
+            )}
+          </div>
         )}
-    </div>
+      </CardContent>
+    </Card>
   );
 }
