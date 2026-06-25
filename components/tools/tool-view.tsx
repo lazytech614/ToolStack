@@ -1,4 +1,5 @@
 import { Base64UrlTool } from "./dev-tools/base64-url"
+import { BinaryConverter } from "./dev-tools/binary-converter"
 import { CommitGenerator } from "./dev-tools/commit-generator"
 import { DiffCheckerTool } from "./dev-tools/diff-checker"
 import { HashGenerator } from "./dev-tools/hash-generator"
@@ -33,6 +34,8 @@ export function ToolView({ toolId }: ToolViewProps) {
       return <HashGenerator />
     case "uuid-generator":
       return <UuidGenerator />
+    case "binary-converter":
+      return <BinaryConverter />
     // Add new tools here as you build them out
     default:
       return <PlaceholderTool toolId={toolId} />

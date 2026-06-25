@@ -286,3 +286,5 @@ Made with ❤️ by [GithubHelper](https://githubhelper.dev)
 `;
 
 export const SAMPLE_TEXT = "Hello World!"
+
+export const SAMPLE_BINARY = "01001000 01100101 01101100 01101100 01101111"
