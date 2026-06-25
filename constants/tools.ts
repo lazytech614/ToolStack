@@ -56,6 +56,7 @@ export const ALL_TOOLS: Tool[] = [
     icon: GitCommitIcon,
     category: "Github",
     href: "/tools/commit-generator",
+    status: "BETA"
   },
   {
     id: "diff-checker",
@@ -65,6 +66,7 @@ export const ALL_TOOLS: Tool[] = [
     icon: GitCommitIcon,
     category: "Comparison",
     href: "/tools/diff-checker",
+    status: "ACTIVE"
   },
   {
     id: "base64-url",
@@ -74,6 +76,7 @@ export const ALL_TOOLS: Tool[] = [
     icon: Link2,
     category: "Encoding",
     href: "/tools/base64-url",
+    status: "ACTIVE"
   },
   {
     id: "html-preview",
@@ -212,6 +215,7 @@ export const ALL_TOOLS: Tool[] = [
     icon: Shield,
     category: "Utilities",
     href: "/tools/jwt-debugger",
+    status: "BETA"
   },
   {
     id: "uuid-generator",
@@ -248,6 +252,7 @@ export const ALL_TOOLS: Tool[] = [
     icon: Regex,
     category: "Utilities",
     href: "/tools/regex-tester",
+    status: "ACTIVE"
   },
   {
     id: "ip-lookup",

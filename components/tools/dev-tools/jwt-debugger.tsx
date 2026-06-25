@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react"
 import { AlertCircle, Check, Copy, ShieldCheck, ShieldX } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { toast } from "sonner"
 
 // ── helpers ────────────────────────────────────────────────────────────────
 
@@ -73,6 +74,7 @@ function JsonPanel({
   function handleCopy() {
     navigator.clipboard.writeText(value)
     setCopied(true)
+    toast.success("Copied successfully to clipboard")
     setTimeout(() => setCopied(false), 1500)
   }
 
@@ -128,7 +130,7 @@ export function JwtDebuggerTool() {
       {/* Token input */}
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <label className="text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-500">
+          <label className="text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-500">
             JSON Web Token
           </label>
           <button
@@ -237,7 +239,7 @@ export function JwtDebuggerTool() {
 
           {/* Signature input */}
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-500">
+            <label className="text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-500">
               Signature
             </label>
             <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-4 font-mono text-xs text-zinc-500 dark:text-zinc-500 break-all">

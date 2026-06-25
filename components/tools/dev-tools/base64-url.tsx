@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Copy, Check } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { toast } from "sonner"
 
 type Mode = "base64-encode" | "base64-decode" | "url-encode" | "url-decode"
 
@@ -41,6 +42,7 @@ export function Base64UrlTool() {
     if (!output) return
     navigator.clipboard.writeText(output)
     setCopied(true)
+    toast.success("URL copied successfully")
     setTimeout(() => setCopied(false), 1500)
   }
 
@@ -66,7 +68,7 @@ export function Base64UrlTool() {
 
       {/* Input */}
       <div className="flex flex-col gap-2">
-        <label className="text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-500">
+        <label className="text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-500">
           Input
         </label>
         <textarea
@@ -81,7 +83,7 @@ export function Base64UrlTool() {
       {/* Output */}
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <label className="text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-500">
+          <label className="text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-500">
             Output
           </label>
           <button

@@ -109,7 +109,7 @@ export function DiffCheckerTool() {
           { label: "Modified", value: modified, onChange: setModified },
         ].map(({ label, value, onChange }) => (
           <div key={label} className="flex flex-col gap-2">
-            <label className="text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-500">
+            <label className="text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-500">
               {label}
             </label>
             <textarea
@@ -126,7 +126,7 @@ export function DiffCheckerTool() {
       {/* Output */}
       {hasDiff && (
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-500">
+          <label className="text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-500">
             Result
           </label>
 

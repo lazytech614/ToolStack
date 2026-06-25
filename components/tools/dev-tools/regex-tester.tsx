@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react"
 import { AlertCircle, Copy, Check, RotateCw, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { toast } from "sonner"
 
 // ── types ──────────────────────────────────────────────────────────────────
 
@@ -47,12 +48,12 @@ const REGEX_TEMPLATES: RegexTemplate[] = [
   },
   {
     id: "phone",
-    name: "Phone Number (US)",
-    description: "Matches US phone numbers in various formats",
-    pattern: "\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})",
+    name: "Phone Number (India)",
+    description: "Matches Indian phone numbers with optional +91 or 0 prefix",
+    pattern: "(?:\\+91|0)?[\\s-]?[6-9][0-9]{9}",
     flags: ["g"],
     category: "Validation",
-    example: "Call (555) 123-4567 or 555.123.4567 or 555-123-4567",
+    example: "Call +91 98765 43210 or 09876543210 or 6789012345",
   },
   {
     id: "ipv4",
@@ -331,6 +332,7 @@ export function RegexTesterTool() {
   function copyToClipboard(text: string, index: number) {
     navigator.clipboard.writeText(text)
     setCopiedIndex(index)
+    toast.success("Copied succcessfully to clipboard")
     setTimeout(() => setCopiedIndex(null), 2000)
   }
 
@@ -339,12 +341,12 @@ export function RegexTesterTool() {
       {/* Pattern Input */}
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <label className="text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-500">
+          <label className="text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-500">
             Pattern
           </label>
           <button
             onClick={resetForm}
-            className="text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1"
+            className="text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1 cursor-pointer"
           >
             <RotateCw className="w-3 h-3" />
             Reset
@@ -405,7 +407,7 @@ export function RegexTesterTool() {
             </h3>
             <button
               onClick={() => setShowTemplates(false)}
-              className="text-xs text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+              className="text-xs text-zinc-500 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 cursor-pointer"
             >
               Hide
             </button>
@@ -416,7 +418,7 @@ export function RegexTesterTool() {
             placeholder="Search templates..."
             value={searchTemplate}
             onChange={(e) => setSearchTemplate(e.target.value)}
-            className="w-full mb-4 px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/40"
+            className="w-full mb-4 px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/40 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600"
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-96 overflow-y-auto">
@@ -456,7 +458,7 @@ export function RegexTesterTool() {
       {!showTemplates && (
         <button
           onClick={() => setShowTemplates(true)}
-          className="text-xs font-medium text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors flex items-center gap-1"
+          className="text-xs font-medium text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors flex items-center gap-1 cursor-pointer"
         >
           <ChevronDown className="w-3 h-3" />
           Show templates
@@ -465,7 +467,7 @@ export function RegexTesterTool() {
 
       {/* Test String */}
       <div className="flex flex-col gap-2">
-        <label className="text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-500">
+        <label className="text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-500">
           Test String
         </label>
         <textarea
@@ -482,7 +484,7 @@ export function RegexTesterTool() {
       {hasPattern && hasInput && !error && (
         <button
           onClick={() => setShowReplace(!showReplace)}
-          className="text-xs font-medium text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors flex items-center gap-2"
+          className="text-xs font-medium text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors flex items-center gap-2 cursor-pointer"
         >
           <ChevronDown className={cn("w-4 h-4 transition-transform", showReplace && "rotate-180")} />
           Replace (Test Replacement)
@@ -500,7 +502,7 @@ export function RegexTesterTool() {
             value={replaceText}
             onChange={(e) => setReplaceText(e.target.value)}
             placeholder="Use $1, $2, etc. for capture groups"
-            className="w-full px-3 py-2 rounded-lg border border-emerald-300 dark:border-emerald-600 bg-white dark:bg-zinc-900 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
+            className="w-full px-3 py-2 rounded-lg border border-emerald-300 dark:border-emerald-600 bg-white dark:bg-zinc-900 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500/40 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600"
           />
 
           {replacedText && (

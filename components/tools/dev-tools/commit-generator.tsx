@@ -4,6 +4,7 @@ import { useState } from "react"
 import { AlertCircle, Check, Copy, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SAMPLE_DIFF } from "@/constants/examples"
+import { toast } from "sonner"
 
 const STYLES = [
   { value: "conventional", label: "Conventional" },
@@ -56,6 +57,7 @@ export function CommitGenerator() {
     try {
       await navigator.clipboard.writeText(commit)
       setCopied(true)
+      toast.success("Message copied successfully")
       setTimeout(() => setCopied(false), 2000)
     } catch (err) {
       console.error(err)
