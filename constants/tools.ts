@@ -97,13 +97,13 @@ export const ALL_TOOLS: Tool[] = [
     href: "/tools/clipboard-manager",
   },
   {
-    id: "json-formatter",
-    name: "JSON Formatter",
+    id: "json-formatter-validator",
+    name: "JSON Formatter And Validator",
     description:
       "Prettify, minify, and validate JSON with syntax highlighting and collapsible nodes.",
     icon: Braces,
     category: "Formatting",
-    href: "/tools/json-formatter",
+    href: "/tools/json-formatter-validator",
     isNew: false,
   },
   {

@@ -214,3 +214,15 @@ export const REGEX_TEMPLATES: RegexTemplate[] = [
     example: 'John,Doe,"New York, NY",john@example.com',
   },
 ]
+
+export const SAMPLE_JSON = `{
+  "tool": "JSON Formatter",
+  "version": "1.0.0",
+  "features": ["format", "minify", "validate", "tree view"],
+  "author": {
+    "name": "GithubHelper",
+    "url": "https://githubhelper.dev"
+  },
+  "active": true,
+  "count": 42
+}`;

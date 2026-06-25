@@ -1,7 +1,7 @@
 import { Base64UrlTool } from "./dev-tools/base64-url"
 import { CommitGenerator } from "./dev-tools/commit-generator"
 import { DiffCheckerTool } from "./dev-tools/diff-checker"
-import { JsonFormatterTool } from "./dev-tools/json-formatter"
+import { JsonFormatterValidator } from "./dev-tools/json-formatter-validator"
 import { JwtDebuggerTool } from "./dev-tools/jwt-debugger"
 import { PlaceholderTool } from "./dev-tools/placeholder-tool"
 import { RegexTesterTool } from "./dev-tools/regex-tester"
@@ -16,8 +16,8 @@ export function ToolView({ toolId }: ToolViewProps) {
       return <DiffCheckerTool />
     case "base64-url":
       return <Base64UrlTool />
-    case "json-formatter":
-      return <JsonFormatterTool />
+    case "json-formatter-validator":
+      return <JsonFormatterValidator />
     case "commit-generator":
       return <CommitGenerator />
     case "jwt-debugger":
