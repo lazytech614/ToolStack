@@ -4,6 +4,7 @@ import { ColorConverter } from "./dev-tools/color-converter"
 import { CommitGenerator } from "./dev-tools/commit-generator"
 import { DiffCheckerTool } from "./dev-tools/diff-checker"
 import { HashGenerator } from "./dev-tools/hash-generator"
+import { ImageConverter } from "./dev-tools/image-converter"
 import { JsonFormatterValidator } from "./dev-tools/json-formatter-validator"
 import { JsonToSchema } from "./dev-tools/json-to-schema"
 import { JwtDebuggerTool } from "./dev-tools/jwt-debugger"
@@ -57,6 +58,8 @@ export function ToolView({ toolId }: ToolViewProps) {
       return <UnixTimestampConverter />
     case "number-base-converter":
       return <NumberBaseConverter />
+    case "image-converter":
+      return <ImageConverter />
     // Add new tools here as you build them out
     default:
       return <PlaceholderTool toolId={toolId} />
