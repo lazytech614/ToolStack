@@ -11,8 +11,8 @@ export function StatusBar({ tools }: StatusBarProps) {
   return (
     <div className="md:text-right">
       <p className="text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-white">
-        Utility status: {tools.length} active{" "}
-        {tools.length === 1 ? "utility" : "utilities"}
+        Tool status: {tools.length} active{" "}
+        {tools.length === 1 ? "tool" : "tools"}
       </p>
       <p className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-500 leading-relaxed max-w-xs ml-auto">
         {names.join(" · ")}

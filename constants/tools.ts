@@ -34,7 +34,6 @@ export type ToolCategory =
   | "Converter"
   | "Preview"
   | "Utilities"
-  | "Github"
 
 export interface Tool {
   id: string
@@ -58,7 +57,7 @@ export const ALL_TOOLS: Tool[] = [
     name: "Commit Generator",
     description: "Generate different commit messages from your git diff.",
     icon: GitCommitIcon,
-    category: "Github",
+    category: "Generator",
     href: "/tools/commit-generator",
     status: "BETA",
     seo: {
@@ -594,5 +593,4 @@ export const CATEGORIES: ToolCategory[] = [
   "Converter",
   "Preview",
   "Utilities",
-  "Github",
 ]

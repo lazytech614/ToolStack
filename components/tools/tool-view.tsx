@@ -1,5 +1,6 @@
 import { Base64UrlTool } from "./dev-tools/base64-url"
 import { BinaryConverter } from "./dev-tools/binary-converter"
+import ClipboardManager from "./dev-tools/clipboard-manager"
 import { ColorConverter } from "./dev-tools/color-converter"
 import { CommitGenerator } from "./dev-tools/commit-generator"
 import { DiffCheckerTool } from "./dev-tools/diff-checker"
@@ -60,6 +61,8 @@ export function ToolView({ toolId }: ToolViewProps) {
       return <NumberBaseConverter />
     case "image-converter":
       return <ImageConverter />
+    case "clipboard-manager":
+      return <ClipboardManager />
     // Add new tools here as you build them out
     default:
       return <PlaceholderTool toolId={toolId} />
