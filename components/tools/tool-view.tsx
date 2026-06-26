@@ -5,6 +5,7 @@ import { DiffCheckerTool } from "./dev-tools/diff-checker"
 import { HashGenerator } from "./dev-tools/hash-generator"
 import { JsonFormatterValidator } from "./dev-tools/json-formatter-validator"
 import { JwtDebuggerTool } from "./dev-tools/jwt-debugger"
+import { LoremIpsum } from "./dev-tools/loremipsum"
 import { MarkdownPreview } from "./dev-tools/markdown-preview"
 import { MarkdownTable } from "./dev-tools/markdown-table"
 import { PlaceholderTool } from "./dev-tools/placeholder-tool"
@@ -42,6 +43,8 @@ export function ToolView({ toolId }: ToolViewProps) {
       return <SqlFormatter />
     case "markdown-table":
       return <MarkdownTable />
+    case "lorem-ipsum":
+      return <LoremIpsum />
     // Add new tools here as you build them out
     default:
       return <PlaceholderTool toolId={toolId} />
