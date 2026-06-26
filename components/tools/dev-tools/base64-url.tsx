@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 import { EXAMPLE_URL } from "@/constants/examples"
 import { Mode } from "@/types/dev-tools/base64-url"
+import { transform } from "@/lib/dev-utils/base64-url"
 
 const MODES: { value: Mode; label: string }[] = [
   { value: "base64-encode", label: "Base64 Encode" },
@@ -14,34 +15,12 @@ const MODES: { value: Mode; label: string }[] = [
   { value: "url-decode", label: "URL Decode" },
 ]
 
-function transform(input: string, mode: Mode): { output: string; error?: string } {
-  try {
-    switch (mode) {
-      case "base64-encode":
-        return { output: btoa(unescape(encodeURIComponent(input))) }
-      case "base64-decode":
-        return { output: decodeURIComponent(escape(atob(input))) }
-      case "url-encode":
-        return { output: encodeURIComponent(input) }
-      case "url-decode":
-        return { output: decodeURIComponent(input) }
-    }
-  } catch {
-    return { output: "", error: "Invalid input for this operation." }
-  }
-}
-
 export function Base64UrlTool() {
   const [mode, setMode] = useState<Mode>("base64-encode")
   const [input, setInput] = useState(EXAMPLE_URL)
   const [copied, setCopied] = useState(false)
 
   const { output, error } = transform(input, mode)
-
-  const loadExample = () => {
-    setMode("base64-encode");
-    setInput(EXAMPLE_URL);
-  };
 
   const resetInput = () => {
     setInput(EXAMPLE_URL)

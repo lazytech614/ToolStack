@@ -1,44 +1,31 @@
 "use client"
 
-import { useState, useCallback, useMemo } from "react"
+import { useState, useMemo } from "react"
 import {
   Copy,
   Check,
   RotateCw,
   Eye,
   Palette,
-  Info,
   ChevronDown,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   hexToRGB,
   rgbToHex,
-  rgbToHSL,
-  hslToRGB,
-  rgbToHSV,
-  hsvToRGB,
   getColorInfo,
   getComplementary,
   getAnalogous,
   getTriadic,
-  lighten,
-  darken,
   generatePalette,
-  calculateLuminance,
   calculateContrastRatio,
   checkWCAGCompliance,
-  isValidHex,
-  isValidRGB,
-  isValidHSL,
-  isValidHSV,
   getColorBlindnessSimulations,
 } from "@/lib/dev-utils/color-converter-utils"
 import { toast } from "sonner"
+import { ColorBlindnessType } from "@/types/dev-tools/color-converter"
 
 // ── types ──────────────────────────────────────────────────────────────────
-
-type ColorBlindnessType = "normal" | "protanopia" | "deuteranopia" | "tritanopia"
 
 const COLOR_BLINDNESS_LABELS: Record<ColorBlindnessType, string> = {
   normal: "Normal",

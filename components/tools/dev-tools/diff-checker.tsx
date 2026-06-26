@@ -5,42 +5,7 @@ import { cn } from "@/lib/utils"
 import { EXAMPLE_MODIFIED, EXAMPLE_ORIGINAL } from "@/constants/examples";
 import { RefreshCw } from "lucide-react";
 import { DiffLine } from "@/types/dev-tools/diff-checker";
-
-function computeDiff(original: string, modified: string): DiffLine[] {
-  const a = original.split("\n")
-  const b = modified.split("\n")
-  const result: DiffLine[] = []
-
-  // Simple LCS-based line diff
-  const m = a.length
-  const n = b.length
-  const dp: number[][] = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0))
-
-  for (let i = m - 1; i >= 0; i--)
-    for (let j = n - 1; j >= 0; j--)
-      dp[i][j] =
-        a[i] === b[j]
-          ? dp[i + 1][j + 1] + 1
-          : Math.max(dp[i + 1][j], dp[i][j + 1])
-
-  let i = 0
-  let j = 0
-  while (i < m || j < n) {
-    if (i < m && j < n && a[i] === b[j]) {
-      result.push({ type: "unchanged", text: a[i] })
-      i++
-      j++
-    } else if (j < n && (i >= m || dp[i][j + 1] >= dp[i + 1][j])) {
-      result.push({ type: "added", text: b[j] })
-      j++
-    } else {
-      result.push({ type: "removed", text: a[i] })
-      i++
-    }
-  }
-
-  return result
-}
+import { computeDiff } from "@/lib/dev-utils/diff-checker";
 
 const LINE_STYLES: Record<DiffLine["type"], string> = {
   added: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-l-2 border-emerald-500",
