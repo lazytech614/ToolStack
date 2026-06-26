@@ -50,12 +50,6 @@ const CATEGORY_COLORS: Record<
     iconBg: "bg-zinc-100 dark:bg-zinc-800",
     iconColor: "text-zinc-600 dark:text-zinc-400",
   },
-  Github: {
-    badge:
-      "bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-400",
-    iconBg: "bg-purple-100 dark:bg-purple-500/10",
-    iconColor: "text-purple-600 dark:text-purple-400",
-  },
 }
 
 interface ToolCardProps {
