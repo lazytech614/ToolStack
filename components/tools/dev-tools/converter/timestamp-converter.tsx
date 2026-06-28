@@ -36,7 +36,6 @@ import {
   exportToText,
 } from "@/lib/dev-utils/timestamp-converter-utils"
 import { TimestampUnit } from "@/types/dev-tools/timestamp-converter"
-import { toast } from "sonner"
 
 // ── Component ───────────────────────────────────────────────────────────────
 
@@ -89,7 +88,6 @@ export function UnixTimestampConverter() {
   const copyToClipboard = (text: string, id: string) => {
     navigator.clipboard.writeText(text)
     setCopiedId(id)
-    toast.success("Copied successfully to clipboard")
     setTimeout(() => setCopiedId(null), 2000)
   }
 

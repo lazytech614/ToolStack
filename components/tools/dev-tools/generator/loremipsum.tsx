@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo, useCallback } from "react"
+import { useState, useMemo } from "react"
 import { cn } from "@/lib/utils"
 import { 
     Copy, 
@@ -16,6 +16,7 @@ import {
     SentenceLength 
 } from "@/types/dev-tools/loremipsum"
 import { computeStats, downloadText, generate, PRESET_OPTIONS } from "@/lib/dev-utils/loremipsum"
+import { useCopy } from "@/hooks/useCopy"
 
 // ---------------------------------------------------------------------------
 // Sub-components
@@ -44,8 +45,9 @@ export function LoremIpsum() {
   const [capMode, setCapMode] = useState<CapMode>("sentence")
   const [preset, setPreset] = useState<Preset>("lorem")
   const [downloadFormat, setDownloadFormat] = useState<DownloadFormat>("txt")
-  const [copied, setCopied] = useState(false)
   const [refreshKey, setRefreshKey] = useState(0)
+
+  const { copied, copy } = useCopy();
 
   const MODE_MAX: Record<GenerateMode, number> = { paragraphs: 20, sentences: 50, words: 500 }
 
@@ -56,13 +58,6 @@ export function LoremIpsum() {
   )
 
   const stats = useMemo(() => computeStats(text), [text])
-
-  const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(text).then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    })
-  }, [text])
 
   const handleModeChange = (m: GenerateMode) => {
     setMode(m)
@@ -219,7 +214,7 @@ export function LoremIpsum() {
         </button>
 
         <button
-          onClick={handleCopy}
+          onClick={() => copy(text)}
           className="flex items-center gap-1.5 rounded-md border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors"
         >
           {copied ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}

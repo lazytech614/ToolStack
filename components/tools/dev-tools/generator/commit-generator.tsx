@@ -5,6 +5,7 @@ import { AlertCircle, Check, Copy, Loader2, RefreshCw } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SAMPLE_DIFF } from "@/constants/configs/examples"
 import { toast } from "sonner"
+import { useCopy } from "@/hooks/useCopy"
 
 const STYLES = [
   { value: "conventional", label: "Conventional" },
@@ -26,12 +27,13 @@ export function CommitGenerator() {
   const [loading, setLoading]     = useState(false)
   const [remaining, setRemaining] = useState<number | null>(null)
   const [error, setError]         = useState("")
-  const [copied, setCopied]       = useState(false)
 
   const charCount      = diff.length
   const isOverLimit    = charCount > MAX_CHARS
   const isUnderMinimum = charCount < MIN_CHARS
   const isDisabled     = loading || isOverLimit || isUnderMinimum
+
+  const { copied, copy } = useCopy();
 
   async function handleGenerate() {
     try {
@@ -50,17 +52,6 @@ export function CommitGenerator() {
       setError(err instanceof Error ? err.message : "Unexpected error")
     } finally {
       setLoading(false)
-    }
-  }
-
-  async function handleCopy() {
-    try {
-      await navigator.clipboard.writeText(commit)
-      setCopied(true)
-      toast.success("Message copied successfully")
-      setTimeout(() => setCopied(false), 2000)
-    } catch (err) {
-      console.error(err)
     }
   }
 
@@ -172,7 +163,7 @@ export function CommitGenerator() {
               Generated Commit
             </label>
             <button
-              onClick={handleCopy}
+              onClick={() => copy(commit)}
               className={cn(
                 "flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors",
                 copied

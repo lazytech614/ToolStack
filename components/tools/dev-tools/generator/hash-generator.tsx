@@ -7,21 +7,14 @@ import { toast } from "sonner"
 import { SAMPLE_TEXT } from "@/constants/configs/examples"
 import { Algorithm, TabMode } from "@/types/dev-tools/hash-generator"
 import { hashBuffer, hashText } from "@/lib/dev-utils/hash-generator"
+import { useCopy } from "@/hooks/useCopy"
 
 const ALGORITHMS: Algorithm[] = ["MD5", "SHA-1", "SHA-256", "SHA-512"]
 
 // ── HashRow ────────────────────────────────────────────────────────────────
 
 function HashRow({ algo, value }: { algo: Algorithm; value: string | undefined }) {
-  const [copied, setCopied] = useState(false)
-
-  function handleCopy() {
-    if (!value) return
-    navigator.clipboard.writeText(value)
-    setCopied(true)
-    toast.success("Copied to clipboard")
-    setTimeout(() => setCopied(false), 1500)
-  }
+  const { copied, copy } = useCopy();
 
   const accentMap: Record<Algorithm, string> = {
     "MD5":     "text-orange-600 dark:text-orange-400",
@@ -37,7 +30,7 @@ function HashRow({ algo, value }: { algo: Algorithm; value: string | undefined }
           {algo}
         </span>
         <button
-          onClick={handleCopy}
+          onClick={() => copy(value || "")}
           disabled={!value}
           className={cn(
             "flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors",

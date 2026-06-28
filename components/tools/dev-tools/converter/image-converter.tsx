@@ -34,7 +34,6 @@ import {
     loadImageElement, 
     OutputFormat 
 } from "@/lib/dev-utils/image-converter";
-import { toast } from "sonner";
 
 // ---------------------------------------------------------------------------
 // Sub-components
@@ -206,10 +205,8 @@ export function ImageConverter() {
       const blob = await res.blob()
       await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })])
       setCopiedUrl(true)
-      toast.success("Image copied successfully")
       setTimeout(() => setCopiedUrl(false), 2000)
     } catch(err) {
-      toast.success("Image copied successfully")
       setCopiedUrl(true)
       setTimeout(() => setCopiedUrl(false), 2000)
     }
@@ -220,7 +217,6 @@ export function ImageConverter() {
     if (!result) return
     navigator.clipboard.writeText(result.dataUrl).then(() => {
       setCopiedB64(true)
-      toast.success("Base64 copied successfully")
       setTimeout(() => setCopiedB64(false), 2000)
     })
   }, [result])

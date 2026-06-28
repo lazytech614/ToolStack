@@ -17,8 +17,8 @@ import {
 } from "lucide-react"
 import { ActiveTab, Alignment, ExportFormat } from "@/types/dev-tools/markdown-table"
 import { SAMPLE_MARKDOWN_TABLE } from "@/constants/configs/examples"
-import { toast } from "sonner"
 import { exportAs, generateMarkdown, makeEmptyTable, parseMarkdown, renderTableHTML } from "@/lib/dev-utils/markdown-table"
+import { useCopy } from "@/hooks/useCopy"
 
 // ---------------------------------------------------------------------------
 // Types
@@ -64,12 +64,13 @@ export function MarkdownTable() {
   const [table, setTable] = useState<TableState>(makeEmptyTable(DEFAULT_COLS, DEFAULT_ROWS))
   const [padding, setPadding] = useState(true)
   const [pretty, setPretty] = useState(true)
-  const [copied, setCopied] = useState(false)
   const [activeTab, setActiveTab] = useState<ActiveTab>("editor")
   const [exportFormat, setExportFormat] = useState<ExportFormat>("markdown")
   const [markdownInput, setMarkdownInput] = useState("")
   const [importError, setImportError] = useState("")
   const cellRefs = useRef<(HTMLInputElement | null)[][]>([])
+
+  const { copied, copy } = useCopy();
 
   const markdown = useMemo(
     () => generateMarkdown(table, padding, pretty),
@@ -274,16 +275,6 @@ export function MarkdownTable() {
     setActiveTab("editor")
   }
 
-  // ── Copy ──
-  const handleCopy = () => {
-    const text = exportAs(table, exportFormat, padding, pretty)
-    navigator.clipboard.writeText(text).then(() => {
-      setCopied(true)
-      toast.success("Copied successfully to clipboard")
-      setTimeout(() => setCopied(false), 2000)
-    })
-  }
-
   // ── Download ──
   const handleDownload = () => {
     const ext = exportFormat === "markdown" ? "md" : exportFormat
@@ -357,7 +348,10 @@ export function MarkdownTable() {
             className="flex items-center gap-1 text-xs font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors cursor-pointer">
             <RefreshCw className="w-3 h-3" /> Clear
           </button>
-          <button onClick={handleCopy}
+          <button onClick={() => {
+            const text = exportAs(table, exportFormat, padding, pretty)
+            copy(text)
+          }}
             className="flex items-center gap-1.5 rounded-md border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors">
             {copied ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
             {copied ? "Copied!" : "Copy"}

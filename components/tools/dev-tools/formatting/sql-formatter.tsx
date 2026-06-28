@@ -10,7 +10,6 @@ import {
   ChevronDown,
 } from "lucide-react"
 import { DIALECTS, EXAMPLE_SQL, SQL_KEYWORDS } from "@/constants/configs/examples"
-import { toast } from "sonner"
 import { 
   CommaStyle, 
   Dialect, 
@@ -234,7 +233,6 @@ export function SqlFormatter() {
     if (!output) return
     navigator.clipboard.writeText(output).then(() => {
       setCopied(true)
-      toast.success("Copied successfully to clipboard")
       setTimeout(() => setCopied(false), 2000)
     })
   }, [output])

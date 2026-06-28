@@ -4,7 +4,6 @@ import { useMemo, useState } from "react"
 import { Copy, Check, RotateCw, Info, RefreshCcw } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SAMPLE_BINARY, SAMPLE_TEXT } from "@/constants/configs/examples"
-import { toast } from "sonner"
 import { ConversionMode } from "@/types/dev-tools/binary-converter"
 import { binaryToText, textToBinary } from "@/lib/dev-utils/binary-converter"
 
@@ -25,7 +24,6 @@ export function BinaryConverter() {
   const copyToClipboard = (text: string, index: number) => {
     navigator.clipboard.writeText(text)
     setCopiedIndex(index)
-    toast.success("Copied succcessfully to clipboard")
     setTimeout(() => setCopiedIndex(null), 2000)
   }
 

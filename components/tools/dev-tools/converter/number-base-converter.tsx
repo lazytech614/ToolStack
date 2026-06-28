@@ -40,7 +40,6 @@ import {
   buildExportJSON, 
   buildExportCSV,
 } from "@/lib/dev-utils/number-base-converter"
-import { toast } from "sonner"
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -93,7 +92,6 @@ function CopyButton({ text }: { text: string }) {
     if (!text) return
     navigator.clipboard.writeText(text).then(() => {
       setCopied(true)
-      toast.success("Copied successfully to clipboard")
       setTimeout(() => setCopied(false), 1500)
     })
   }

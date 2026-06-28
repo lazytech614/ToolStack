@@ -17,7 +17,6 @@ import {
   FileJson,
 } from "lucide-react";
 import { SAMPLE_JSON } from "@/constants/configs/examples";
-import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ValidationState, ViewMode } from "@/types/dev-tools/json-formatter-validator";
 import { highlight, parseJsonError } from "@/lib/dev-utils/json-formatter-validator";
@@ -204,7 +203,6 @@ export function JsonFormatterValidator() {
     const text = output || input;
     await navigator.clipboard.writeText(text);
     setCopied(true);
-    toast.success("Copied successfully to clipboard")
     setTimeout(() => setCopied(false), 2000);
   };
 

@@ -7,6 +7,7 @@ import { toast } from "sonner"
 import { EXAMPLE_JSON } from "@/constants/configs/examples"
 import { SchemaDraft } from "@/types/dev-tools/json-to-schema"
 import { collectStats, highlightJSON, inferSchema, validateJSON, wrapWithDraft } from "@/lib/dev-utils/json-to-schema"
+import { useCopy } from "@/hooks/useCopy"
 
 // ---------------------------------------------------------------------------
 // Types
@@ -49,9 +50,10 @@ export function JsonToSchema() {
     draft: "draft-07",
   })
   const [minify, setMinify] = useState(false)
-  const [copied, setCopied] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
   const [dragOver, setDragOver] = useState(false)
+
+  const { copied, copy } = useCopy();
 
   const set = <K extends keyof InferOptions>(k: K, v: InferOptions[K]) =>
     setOpts((prev) => ({ ...prev, [k]: v }))
@@ -83,15 +85,6 @@ export function JsonToSchema() {
     if (!schema) return null
     return collectStats(schema, opts.draft)
   }, [schema, opts.draft])
-
-  const handleCopy = useCallback(() => {
-    if (!schemaString) return
-    navigator.clipboard.writeText(schemaString).then(() => {
-      setCopied(true)
-      toast.success("Copied successfully to clipboard")
-      setTimeout(() => setCopied(false), 2000)
-    })
-  }, [schemaString])
 
   const handleDownload = useCallback(() => {
     if (!schemaString) return
@@ -218,7 +211,7 @@ export function JsonToSchema() {
         {schemaString && (
           <div className="sm:ml-auto flex items-center gap-2">
             <button
-              onClick={handleCopy}
+              onClick={() => copy(schemaString)}
               className="flex items-center gap-1.5 rounded-md border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors"
             >
               {copied ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}

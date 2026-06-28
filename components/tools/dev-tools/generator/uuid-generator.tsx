@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 import { BulkCount, FormatOption, UuidVersion } from "@/types/dev-tools/uuid-generator"
 import { applyFormat, generateV1, generateV4, generateV5 } from "@/lib/dev-utils/uuid-generator"
+import { useCopy } from "@/hooks/useCopy"
 
 // DNS namespace UUID (standard)
 export const DNS_NAMESPACE = "6ba7b810-9dad-11d1-80b4-00c04fd430c8"
@@ -13,13 +14,7 @@ export const DNS_NAMESPACE = "6ba7b810-9dad-11d1-80b4-00c04fd430c8"
 // ── UuidRow ────────────────────────────────────────────────────────────────
 
 function UuidRow({ value, index }: { value: string; index: number }) {
-  const [copied, setCopied] = useState(false)
-
-  function handleCopy() {
-    navigator.clipboard.writeText(value)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+  const { copied, copy } = useCopy();
 
   return (
     <div className="group flex items-center gap-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-4 py-2.5 transition-colors hover:border-zinc-300 dark:hover:border-zinc-700">
@@ -30,7 +25,7 @@ function UuidRow({ value, index }: { value: string; index: number }) {
         {value}
       </span>
       <button
-        onClick={handleCopy}
+        onClick={() => copy(value)}
         className={cn(
           "flex shrink-0 items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors cursor-pointer",
           copied
@@ -53,6 +48,8 @@ export function UuidGenerator() {
   const [uuids, setUuids]       = useState<string[]>([])
   const [v5Name, setV5Name]     = useState("")
   const [generating, setGenerating] = useState(false)
+
+  const { copied, copy } = useCopy();
 
   const toggleFormat = (f: FormatOption) => {
     setFormats(prev => {
@@ -89,11 +86,6 @@ export function UuidGenerator() {
     setUuids(results)
     setGenerating(false)
   }, [version, count, formats, v5Name])
-
-  function copyAll() {
-    navigator.clipboard.writeText(uuids.join("\n"))
-    toast.success(`Copied ${uuids.length} UUIDs to clipboard`)
-  }
 
   const versions: { id: UuidVersion; label: string; description: string }[] = [
     { id: "v1", label: "v1", description: "Time-based" },
@@ -237,11 +229,11 @@ export function UuidGenerator() {
 
         {uuids.length > 0 && (
           <button
-            onClick={copyAll}
+            onClick={() => copy(uuids.join("\n"))}
             className="flex items-center gap-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-5 py-2.5 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors cursor-pointer"
           >
-            <ClipboardList className="h-3.5 w-3.5" />
-            Copy all
+            {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+            {copied ? "Copied!" : "Copy all"}
           </button>
         )}
       </div>

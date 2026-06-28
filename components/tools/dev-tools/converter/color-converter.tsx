@@ -22,7 +22,6 @@ import {
   checkWCAGCompliance,
   getColorBlindnessSimulations,
 } from "@/lib/dev-utils/color-converter-utils"
-import { toast } from "sonner"
 import { ColorBlindnessType } from "@/types/dev-tools/color-converter"
 
 // ── types ──────────────────────────────────────────────────────────────────
@@ -120,7 +119,6 @@ export function ColorConverter() {
     if (!colorInfo) return
     const text = `HEX: ${colorInfo.hex}\nRGB: ${colorInfo.rgbString}\nHSL: ${colorInfo.hslString}\nHSV: ${colorInfo.hsvString}`
     copyToClipboard(text, "all-formats")
-    toast.success("Copied all formats to clipboard")
   }
 
   if (!colorInfo) {
@@ -210,7 +208,6 @@ export function ColorConverter() {
                   copied={copiedId === "hex"}
                   onCopy={() => {
                     copyToClipboard(colorInfo.hex, "hex")
-                    toast.success("Copied HEX to clipboard")
                   }}
                 />
 
@@ -221,7 +218,6 @@ export function ColorConverter() {
                   copied={copiedId === "rgb"}
                   onCopy={() => {
                     copyToClipboard(colorInfo.rgbString, "rgb")
-                    toast.success("Copied RGB to clipboard")
                   }}
                 />
 
@@ -232,7 +228,6 @@ export function ColorConverter() {
                   copied={copiedId === "hsl"}
                   onCopy={() => {
                     copyToClipboard(colorInfo.hslString, "hsl")
-                    toast.success("Copied HSL to clipboard")
                   }}
                 />
 
@@ -243,7 +238,6 @@ export function ColorConverter() {
                   copied={copiedId === "hsv"}
                   onCopy={() => {
                     copyToClipboard(colorInfo.hsvString, "hsv")
-                    toast.success("Copied HSV to clipboard")
                   }}
                 />
 
@@ -254,7 +248,6 @@ export function ColorConverter() {
                   copied={copiedId === "rgba"}
                   onCopy={() => {
                     copyToClipboard(colorInfo.rgbaString, "rgba")
-                    toast.success("Copied RGBA to clipboard")
                   }}
                 />
 
@@ -265,7 +258,6 @@ export function ColorConverter() {
                   copied={copiedId === "hex-alpha"}
                   onCopy={() => {
                     copyToClipboard(colorInfo.hexAlpha, "hex-alpha")
-                    toast.success("Copied HEX + Alpha to clipboard")
                   }}
                 />
               </div>
