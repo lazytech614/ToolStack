@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { snippets, type Language } from "@/constants/snippets";
+import { snippets, type Language } from "@/constants/learnings/snippets";
 import { Container } from "@/components/shared/container";
 import { LanguageFilter } from "@/components/snippets/language-filter";
 import { SnippetCard } from "@/components/snippets/snippet-card";

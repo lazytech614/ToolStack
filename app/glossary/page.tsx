@@ -7,7 +7,7 @@ import {
   alphabet,
   type Category,
   type GlossaryTerm,
-} from "@/constants/glossary";
+} from "@/constants/learnings/glossary";
 import { Container } from "@/components/shared/container";
 import { Search } from "lucide-react";
 import { PageHeading } from "@/components/shared/page-heading";

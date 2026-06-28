@@ -1,10 +1,10 @@
 import { Pin, PinOff } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
-import { Tool, ToolCategory } from "@/constants/tools";
+import { Tool, ToolCategory } from "@/constants/configs/tools";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 
-const CATEGORY_COLORS: Record<
+export const CATEGORY_COLORS: Record<
   ToolCategory,
   { badge: string; iconBg: string; iconColor: string }
 > = {

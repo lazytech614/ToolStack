@@ -1,4 +1,4 @@
-import { ALL_TOOLS } from "@/constants/tools"
+import { ALL_TOOLS } from "@/constants/configs/tools"
 import { Wrench } from "lucide-react"
 
 interface PlaceholderToolProps {

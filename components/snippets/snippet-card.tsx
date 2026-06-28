@@ -1,4 +1,4 @@
-import { Snippet } from "@/constants/snippets";
+import { Snippet } from "@/constants/learnings/snippets";
 import { LanguageBadge } from "./language-badge";
 import { CodeBlock } from "../cheatsheets/code-block";
 

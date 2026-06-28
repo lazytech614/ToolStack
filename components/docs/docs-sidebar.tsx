@@ -7,7 +7,7 @@ import {
   docCategories,
   categoryLabels,
   getDocsByCategory,
-} from "@/constants/docs";
+} from "@/constants/learnings/docs";
 import { BookOpen, Layers, Code2 } from "lucide-react";
 
 const categoryIcons = {

@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react"
 import { Copy, Check, Upload, RefreshCw, ShieldCheck, ShieldX, AlertCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
-import { SAMPLE_TEXT } from "@/constants/examples"
+import { SAMPLE_TEXT } from "@/constants/configs/examples"
 import { Algorithm, TabMode } from "@/types/dev-tools/hash-generator"
 import { hashBuffer, hashText } from "@/lib/dev-utils/hash-generator"
 

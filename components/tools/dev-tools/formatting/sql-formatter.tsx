@@ -9,7 +9,7 @@ import {
   Check,
   ChevronDown,
 } from "lucide-react"
-import { DIALECTS, EXAMPLE_SQL, SQL_KEYWORDS } from "@/constants/examples"
+import { DIALECTS, EXAMPLE_SQL, SQL_KEYWORDS } from "@/constants/configs/examples"
 import { toast } from "sonner"
 import { 
   CommaStyle, 

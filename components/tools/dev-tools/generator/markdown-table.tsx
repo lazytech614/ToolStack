@@ -16,7 +16,7 @@ import {
   ChevronLeft, ChevronRight, MoreHorizontal,
 } from "lucide-react"
 import { ActiveTab, Alignment, ExportFormat } from "@/types/dev-tools/markdown-table"
-import { SAMPLE_MARKDOWN_TABLE } from "@/constants/examples"
+import { SAMPLE_MARKDOWN_TABLE } from "@/constants/configs/examples"
 import { toast } from "sonner"
 import { exportAs, generateMarkdown, makeEmptyTable, parseMarkdown, renderTableHTML } from "@/lib/dev-utils/markdown-table"
 

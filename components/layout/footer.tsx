@@ -1,4 +1,4 @@
-import { LEGAL } from "@/constants/configs";
+import { LEGAL } from "@/constants/configs/configs";
 
 export function Footer() {
   return (

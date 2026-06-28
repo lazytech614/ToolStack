@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback, useRef } from "react"
 import { cn } from "@/lib/utils"
 import { Copy, Check, Download, RefreshCw, Upload, ChevronDown } from "lucide-react"
 import { toast } from "sonner"
-import { EXAMPLE_JSON } from "@/constants/examples"
+import { EXAMPLE_JSON } from "@/constants/configs/examples"
 import { SchemaDraft } from "@/types/dev-tools/json-to-schema"
 import { collectStats, highlightJSON, inferSchema, validateJSON, wrapWithDraft } from "@/lib/dev-utils/json-to-schema"
 

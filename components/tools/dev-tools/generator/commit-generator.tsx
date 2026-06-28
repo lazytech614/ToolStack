@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { AlertCircle, Check, Copy, Loader2, RefreshCw } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { SAMPLE_DIFF } from "@/constants/examples"
+import { SAMPLE_DIFF } from "@/constants/configs/examples"
 import { toast } from "sonner"
 
 const STYLES = [

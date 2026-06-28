@@ -1,4 +1,4 @@
-import { Tag, tags } from "@/constants/cheatsheets";
+import { Tag, tags } from "@/constants/learnings/cheatsheets";
 import { cn } from "@/lib/utils";
 
 export function TagFilter({

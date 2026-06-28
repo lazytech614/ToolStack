@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Container } from "@/components/shared/container";
 import { PageHeading } from "@/components/shared/page-heading";
-import { ALL_TOOLS } from "@/constants/tools";
+import { ALL_TOOLS } from "@/constants/configs/tools";
 import { ToolView } from "@/components/tools/tool-view";
 import { Metadata } from "next";
 

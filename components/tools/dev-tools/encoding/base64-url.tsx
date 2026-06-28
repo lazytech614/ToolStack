@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Copy, Check, RefreshCw } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
-import { EXAMPLE_URL } from "@/constants/examples"
+import { EXAMPLE_URL } from "@/constants/configs/examples"
 import { Mode } from "@/types/dev-tools/base64-url"
 import { transform } from "@/lib/dev-utils/base64-url"
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { type Section } from "@/constants/cheatsheets";
+import { type Section } from "@/constants/learnings/cheatsheets";
 
 export function CheatsheetSidebar({ sections }: { sections: Section[] }) {
   const [activeId, setActiveId] = useState<string>("");

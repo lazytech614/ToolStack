@@ -5,7 +5,7 @@ import {
   Copy, CheckCheck, Download, Eye, Code2, Columns2,
   RefreshCw, WrapText, Hash,
 } from "lucide-react";
-import { SAMPLE_MARKDOWN } from "@/constants/examples";
+import { SAMPLE_MARKDOWN } from "@/constants/configs/examples";
 import { useTheme } from "next-themes";
 import { ViewMode } from "@/types/dev-tools/markdown-preview";
 import { counts, parseMarkdown, T } from "@/lib/dev-utils/markdown-preview";

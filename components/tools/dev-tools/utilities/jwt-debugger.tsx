@@ -4,7 +4,7 @@ import { useMemo, useState } from "react"
 import { AlertCircle, Check, Copy, RefreshCw, ShieldCheck, ShieldX } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
-import { SAMPLE_JWT } from "@/constants/examples"
+import { SAMPLE_JWT } from "@/constants/configs/examples"
 import { formatJson, getExpiry, parseJwt } from "@/lib/dev-utils/jwt-debugger"
 
 // ── sub-components ─────────────────────────────────────────────────────────

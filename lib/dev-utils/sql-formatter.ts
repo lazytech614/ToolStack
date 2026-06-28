@@ -1,5 +1,5 @@
 import { FormatOptions } from "@/components/tools/dev-tools/formatting/sql-formatter"
-import { SQL_KEYWORDS } from "@/constants/examples"
+import { SQL_KEYWORDS } from "@/constants/configs/examples"
 import { IdentifierCase, IndentStyle, KeywordCase } from "@/types/dev-tools/sql-formatter"
 
 const KEYWORD_SET = new Set(SQL_KEYWORDS.map((k) => k.toUpperCase()))

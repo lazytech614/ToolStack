@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react"
 import { Container } from "@/components/shared/container"
 import { PageHeading } from "@/components/shared/page-heading"
-import { ALL_TOOLS, CATEGORIES, ToolCategory } from "@/constants/tools"
+import { ALL_TOOLS, CATEGORIES, ToolCategory } from "@/constants/configs/tools"
 import { StatusBar } from "@/components/shared/satus-bar"
 import { SearchBar } from "@/components/shared/search-bar"
 import { CategoryFilter } from "@/components/shared/category-filter"

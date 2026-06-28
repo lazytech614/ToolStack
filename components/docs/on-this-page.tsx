@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { type HeadingBlock } from "@/constants/docs";
+import { type HeadingBlock } from "@/constants/learnings/docs";
 
 export function OnThisPage({ headings }: { headings: HeadingBlock[] }) {
   const [activeId, setActiveId] = useState("");

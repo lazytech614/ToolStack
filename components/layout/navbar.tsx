@@ -10,8 +10,9 @@ import { ModeToggle } from "../providers/mode-toggle";
 
 import { MobileSidebar } from "./mobile-sidebar";
 import { usePathname } from "next/navigation";
-import { navLinks } from "@/constants/configs";
-import { LearningMegaMenu } from "./mega-menu";
+import { navLinks } from "@/constants/configs/configs";
+import { MegaMenu } from "../shared/mega-menu/mega-menu";
+import { learningSections } from "@/constants/navigation/learning-menu";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -59,7 +60,12 @@ export function Navbar() {
                   </Link>
                 );
               })}
-              <LearningMegaMenu />
+              
+              <MegaMenu
+                label="Learn"
+                sections={learningSections}
+                align="left"
+              />
             </nav>
           </div>
 

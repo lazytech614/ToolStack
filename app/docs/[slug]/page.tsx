@@ -6,7 +6,7 @@ import {
   getDocsByCategory,
   getHeadings,
   categoryLabels,
-} from "@/constants/docs";
+} from "@/constants/learnings/docs";
 import { Container } from "@/components/shared/container";
 import { DocsSidebar } from "@/components/docs/docs-sidebar";
 import { DocRenderer } from "@/components/docs/doc-renderer";

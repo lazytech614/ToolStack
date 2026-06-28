@@ -4,7 +4,7 @@ import { useMemo, useState } from "react"
 import { AlertCircle, Copy, Check, RefreshCw, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
-import { REGEX_TEMPLATES } from "@/constants/examples"
+import { REGEX_TEMPLATES } from "@/constants/configs/examples"
 import { Flag } from "@/types/dev-tools/regex-tester"
 import { buildRegex, getMatches, getSegments } from "@/lib/dev-utils/regex-tester"
 

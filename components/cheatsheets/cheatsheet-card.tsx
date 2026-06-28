@@ -1,4 +1,4 @@
-import { Cheatsheet } from "@/constants/cheatsheets";
+import { Cheatsheet } from "@/constants/learnings/cheatsheets";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 

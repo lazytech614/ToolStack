@@ -1,4 +1,4 @@
-import { type Section } from "@/constants/cheatsheets";
+import { type Section } from "@/constants/learnings/cheatsheets";
 import { CodeBlock } from "./code-block";
 
 export function SectionBlock({ section }: { section: Section }) {

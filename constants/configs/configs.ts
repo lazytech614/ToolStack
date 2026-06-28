@@ -1,4 +1,11 @@
-import { BookMarked, BookOpen, Code2, FileText, GraduationCap, Layers, Search } from "lucide-react";
+import { 
+  BookMarked, 
+  Code2, 
+  FileText, 
+  GraduationCap, 
+  Layers, 
+  Search 
+} from "lucide-react";
 
 export const navLinks = [
   { label: "Home", href: "/" },

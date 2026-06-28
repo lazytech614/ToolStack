@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react"
 import { cn } from "@/lib/utils"
-import { EXAMPLE_MODIFIED, EXAMPLE_ORIGINAL } from "@/constants/examples";
+import { EXAMPLE_MODIFIED, EXAMPLE_ORIGINAL } from "@/constants/configs/examples";
 import { RefreshCw } from "lucide-react";
 import { DiffLine } from "@/types/dev-tools/diff-checker";
 import { computeDiff } from "@/lib/dev-utils/diff-checker";

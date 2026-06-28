@@ -1,13 +1,15 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { cheatsheets, type Tag } from "@/constants/cheatsheets";
+import { cheatsheets, type Tag } from "@/constants/learnings/cheatsheets";
 import { Container } from "@/components/shared/container";
 import { TagFilter } from "@/components/cheatsheets/tag-filter";
 import { CheatsheetCard } from "@/components/cheatsheets/cheatsheet-card";
 import { PageHeading } from "@/components/shared/page-heading";
 import { StatusBar } from "@/components/shared/satus-bar";
 import { SearchBar } from "@/components/shared/search-bar";
+import { ResourceCard } from "@/components/shared/resource-card";
+import { cheatsheetToResourceCard } from "@/lib/cheatsheet-to-resource";
 
 export default function CheatsheetsPage() {
   const [activeTag, setActiveTag] = useState<Tag>("all");
@@ -59,7 +61,10 @@ export default function CheatsheetsPage() {
         {filtered.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
             {filtered.map((sheet) => (
-              <CheatsheetCard key={sheet.slug} sheet={sheet} />
+              <ResourceCard
+                key={sheet.slug}
+                item={cheatsheetToResourceCard(sheet)}
+              />
             ))}
           </div>
         ) : (

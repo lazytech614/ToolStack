@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 import { DiCodeigniter } from "react-icons/di";
 import { FaGithub } from "react-icons/fa";
-import { navLinks, LEARNING } from "@/constants/configs";
+import { navLinks, LEARNING } from "@/constants/configs/configs";
 
 const CATEGORIES: {
   key: "reference" | "guides";

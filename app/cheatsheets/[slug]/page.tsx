@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { cheatsheets } from "@/constants/cheatsheets";
+import { cheatsheets } from "@/constants/learnings/cheatsheets";
 import { Container } from "@/components/shared/container";
 import { CheatsheetSidebar } from "@/components/cheatsheets/cheatsheet-sidebar";
 import { SectionBlock } from "@/components/cheatsheets/section-block";

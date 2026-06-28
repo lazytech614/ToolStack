@@ -1,4 +1,4 @@
-import { Language, languages } from "@/constants/snippets";
+import { Language, languages } from "@/constants/learnings/snippets";
 
 export function LanguageFilter({
   active,
