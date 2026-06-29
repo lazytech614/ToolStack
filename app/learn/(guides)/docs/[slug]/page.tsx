@@ -23,8 +23,28 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const doc = getDocBySlug(slug);
   if (!doc) return {};
   return {
-    title: `${doc.title} — ToolStack Docs`,
+    title: `${doc.title} | Documentation | Tool Stack`,
     description: doc.description,
+
+    keywords: [
+      doc.title,
+      `${doc.title} documentation`,
+      `${doc.title} guide`,
+      "developer documentation",
+      "programming guide",
+      "Tool Stack",
+    ],
+
+    alternates: {
+      canonical: `https://tool-stack-kappa.vercel.app/docs/${doc.slug}`,
+    },
+
+    openGraph: {
+      title: doc.title,
+      description: doc.description,
+      url: `https://tool-stack-kappa.vercel.app/docs/${doc.slug}`,
+      type: "article",
+    },
   };
 }
 

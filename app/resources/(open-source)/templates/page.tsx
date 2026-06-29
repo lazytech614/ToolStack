@@ -1,11 +1,6 @@
 import { TemplatesFilter } from "@/components/resources/templates/templates-filter";
 import { TemplatesGrid } from "@/components/resources/templates/templates-grid";
-import { RESOURCES_TEMPLATES } from "@/constants/configs/resources";
-
-export const metadata = {
-  title: 'Templates | Tool Stack',
-  description: 'Production-ready project templates for popular frameworks',
-};
+import { RESOURCES_TEMPLATES } from "@/constants/resources/templates";
 
 export default function TemplatesPage() {
   return (

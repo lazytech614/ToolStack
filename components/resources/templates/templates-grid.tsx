@@ -1,4 +1,4 @@
-import { Template } from '@/constants/configs/resources';
+import { Template } from '@/constants/resources/templates';
 import { TemplateCard } from './template-card';
 
 export function TemplatesGrid({ templates }: { templates: Template[] }) {

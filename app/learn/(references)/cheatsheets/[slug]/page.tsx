@@ -5,6 +5,7 @@ import { PageHeading } from "@/components/shared/page-heading";
 import { StatusBar } from "@/components/shared/satus-bar";
 import { CheatsheetSidebar } from "@/components/learn/cheatsheets/cheatsheet-sidebar";
 import { SectionBlock } from "@/components/learn/cheatsheets/section-block";
+import { Metadata } from "next";
 
 // ─── Static Params ────────────────────────────────────────────────────────────
 
@@ -12,13 +13,42 @@ export function generateStaticParams() {
   return cheatsheets.map((s) => ({ slug: s.slug }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const {slug} = await params;
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+
   const sheet = cheatsheets.find((s) => s.slug === slug);
-  if (!sheet) return {};
+
+  if (!sheet) {
+    return {};
+  }
+
   return {
-    title: `${sheet.title} Cheatsheet`,
+    title: `${sheet.title} Cheatsheet | Tool Stack`,
     description: sheet.description,
+
+    keywords: [
+      sheet.title,
+      `${sheet.title} cheatsheet`,
+      `${sheet.title} reference`,
+      `${sheet.title} syntax`,
+      "developer cheatsheet",
+      "Tool Stack",
+    ],
+
+    alternates: {
+      canonical: `https://tool-stack-kappa.vercel.app/cheatsheets/${sheet.slug}`,
+    },
+
+    openGraph: {
+      title: `${sheet.title} Cheatsheet`,
+      description: sheet.description,
+      url: `https://tool-stack-kappa.vercel.app/cheatsheets/${sheet.slug}`,
+      type: "article",
+    },
   };
 }
 

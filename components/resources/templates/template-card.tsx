@@ -1,4 +1,4 @@
-import { Template } from '@/constants/configs/resources';
+import { Template } from '@/constants/resources/templates';
 import { Star, ExternalLink } from 'lucide-react';
 
 export function TemplateCard({ template }: { template: Template }) {
