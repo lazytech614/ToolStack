@@ -1,6 +1,7 @@
 import { Tool } from "@/constants/configs/tools"
-import { ResourceCard } from "../shared/resource-card"
-import { toolToResourceCard } from "@/lib/tool-to-resource"
+import { ContentCard } from "../shared/content-card"
+import { toolToContentCard } from "@/lib/tool-to-content"
+import { ContentGrid } from "../shared/content-grid"
 
 interface ToolsGridProps {
   tools: Tool[]
@@ -15,26 +16,20 @@ export function ToolsGrid({
   onTogglePin,
   emptyMessage = "No tools found.",
 }: ToolsGridProps) {
-  if (tools.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center py-16 text-center">
-        <p className="text-sm text-zinc-500 dark:text-zinc-500">{emptyMessage}</p>
-      </div>
-    )
-  }
-
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-      {tools.map((tool) => (
-        <ResourceCard
+    <ContentGrid
+      items={tools}
+      emptyMessage={emptyMessage}
+      renderItem={(tool) => (
+        <ContentCard
           key={tool.id}
-          item={toolToResourceCard(tool)}
+          item={toolToContentCard(tool)}
           pin={{
             pinned: pinnedIds.includes(tool.id),
             onToggle: () => onTogglePin(tool.id),
           }}
         />
-      ))}
-    </div>
-  )
+      )}
+    />
+  );
 }

@@ -1,19 +1,25 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
+
 import {
   glossaryTerms,
   categories,
   type Category,
   type GlossaryTerm,
 } from "@/constants/learnings/glossary";
+
 import { Container } from "@/components/shared/container";
 import { PageHeading } from "@/components/shared/page-heading";
 import { StatusBar } from "@/components/shared/satus-bar";
 import { SearchBar } from "@/components/shared/search-bar";
-import { cn } from "@/lib/utils";
+import { CategoryFilter } from "@/components/shared/category-filter";
+import { useContentFilter } from "@/hooks/useContentFilters";
 
-// ─── Category colors ──────────────────────────────────────────────────────────
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Category colors
+// ─────────────────────────────────────────────────────────────────────────────
 
 const categoryColors: Record<string, string> = {
   networking:
@@ -28,56 +34,28 @@ const categoryColors: Record<string, string> = {
     "bg-purple-50 text-purple-600 dark:bg-purple-950/40 dark:text-purple-400",
 };
 
-// ─── Category Filter ──────────────────────────────────────────────────────────
-
-function CategoryFilter({
-  active,
-  onChange,
-}: {
-  active: Category;
-  onChange: (c: Category) => void;
-}) {
-  return (
-    <div className="flex flex-wrap gap-2 shrink-0">
-      {categories.map((cat) => (
-        <button
-          key={cat}
-          onClick={() => onChange(cat)}
-          className={cn(
-                      "rounded-full border px-3.5 py-1.5 text-xs font-medium transition-all duration-150",
-                      active === cat
-                        ? "border-transparent bg-linear-to-r from-purple-600 to-violet-600 text-white shadow-sm"
-                        : "border-zinc-200 bg-transparent text-zinc-600 hover:border-purple-300 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:border-purple-500/40 dark:hover:text-white"
-                    )}
-        >
-          {cat}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-// ─── A–Z Jump Bar ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// A–Z Jump Bar
+// ─────────────────────────────────────────────────────────────────────────────
 
 function AlphabetBar({ available }: { available: string[] }) {
   return (
     <div className="flex flex-wrap gap-1">
       {"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((letter) => {
         const active = available.includes(letter);
+
         return active ? (
           <a
             key={letter}
             href={`#letter-${letter}`}
-            className="flex h-7 w-7 items-center justify-center rounded-md text-xs font-semibold
-              text-purple-600 dark:text-purple-400
-              hover:bg-purple-50 dark:hover:bg-purple-950/40 transition-colors"
+            className="flex h-7 w-7 items-center justify-center rounded-md text-xs font-semibold text-purple-600 transition-colors hover:bg-purple-50 dark:text-purple-400 dark:hover:bg-purple-950/40"
           >
             {letter}
           </a>
         ) : (
           <span
             key={letter}
-            className="flex h-7 w-7 items-center justify-center rounded-md text-xs font-medium text-zinc-300 dark:text-zinc-700 cursor-default"
+            className="flex h-7 w-7 cursor-default items-center justify-center rounded-md text-xs font-medium text-zinc-300 dark:text-zinc-700"
           >
             {letter}
           </span>
@@ -87,21 +65,27 @@ function AlphabetBar({ available }: { available: string[] }) {
   );
 }
 
-// ─── Term Card ────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// Term Card
+// ─────────────────────────────────────────────────────────────────────────────
 
 function TermCard({ term }: { term: GlossaryTerm }) {
   return (
-    <div className="rounded-2xl border p-5 transition-all duration-200
-      bg-white border-zinc-200 hover:border-purple-300 hover:shadow-sm hover:shadow-purple-100/40
-      dark:bg-zinc-900/40 dark:border-zinc-800 dark:hover:border-purple-500/40"
+    <div
+      className="
+      rounded-2xl border border-zinc-200 bg-white p-5
+      transition-all duration-200
+      hover:border-purple-300 hover:shadow-sm hover:shadow-purple-100/40
+      dark:border-zinc-800 dark:bg-zinc-900/40 dark:hover:border-purple-500/40
+    "
     >
-      {/* Header */}
-      <div className="flex items-start justify-between gap-3 mb-2">
+      <div className="mb-2 flex items-start justify-between gap-3">
         <h3 className="text-sm font-bold text-zinc-900 dark:text-white">
           {term.term}
         </h3>
+
         <span
-          className={`shrink-0 inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold capitalize ${
+          className={`inline-flex shrink-0 items-center rounded-md px-2 py-0.5 text-[11px] font-semibold capitalize ${
             categoryColors[term.category]
           }`}
         >
@@ -109,21 +93,20 @@ function TermCard({ term }: { term: GlossaryTerm }) {
         </span>
       </div>
 
-      {/* Definition */}
-      <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+      <p className="text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
         {term.definition}
       </p>
 
-      {/* Related terms */}
       {term.related && term.related.length > 0 && (
         <div className="mt-3 flex flex-wrap items-center gap-1.5">
-          <span className="text-[11px] text-zinc-400 dark:text-zinc-500 font-medium">
+          <span className="text-[11px] font-medium text-zinc-400 dark:text-zinc-500">
             Related:
           </span>
+
           {term.related.map((r) => (
             <span
               key={r}
-              className="rounded-md bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 text-[11px] font-medium text-zinc-500 dark:text-zinc-400"
+              className="rounded-md bg-zinc-100 px-2 py-0.5 text-[11px] font-medium text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
             >
               {r}
             </span>
@@ -134,7 +117,9 @@ function TermCard({ term }: { term: GlossaryTerm }) {
   );
 }
 
-// ─── Letter Group ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// Letter Group
+// ─────────────────────────────────────────────────────────────────────────────
 
 function LetterGroup({
   letter,
@@ -144,17 +129,16 @@ function LetterGroup({
   terms: GlossaryTerm[];
 }) {
   return (
-    <div id={`letter-${letter}`} className="scroll-mt-24 mt-10">
-      {/* Letter heading */}
-      <div className="flex items-center gap-3 mb-4">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-50 dark:bg-purple-950/40 text-sm font-extrabold text-purple-600 dark:text-purple-400">
+    <div id={`letter-${letter}`} className="mt-10 scroll-mt-24">
+      <div className="mb-4 flex items-center gap-3">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-50 text-sm font-extrabold text-purple-600 dark:bg-purple-950/40 dark:text-purple-400">
           {letter}
         </span>
-        <div className="flex-1 h-px bg-zinc-100 dark:bg-zinc-800" />
+
+        <div className="h-px flex-1 bg-zinc-100 dark:bg-zinc-800" />
       </div>
 
-      {/* Terms */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-10">
+      <div className="mb-10 grid grid-cols-1 gap-3 md:grid-cols-2">
         {terms.map((term) => (
           <TermCard key={term.id} term={term} />
         ))}
@@ -163,27 +147,28 @@ function LetterGroup({
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// Page
+// ─────────────────────────────────────────────────────────────────────────────
 
 export default function GlossaryPage() {
-  const [query, setQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState<Category>("all");
+  const {
+    search,
+    setSearch,
+    filter: category,
+    setFilter: setCategory,
+    filtered,
+  } = useContentFilter({
+    items: glossaryTerms,
+    enablePinning: false,
+    getFilter: (term) => term.category,
+    matchesSearch: (term, q) =>
+      term.term.toLowerCase().includes(q) ||
+      term.definition.toLowerCase().includes(q) ||
+      term.related?.some((r) => r.toLowerCase().includes(q)) ||
+      false,
+  });
 
-  const filtered = useMemo(() => {
-    return glossaryTerms.filter((t) => {
-      const matchesCat =
-        activeCategory === "all" || t.category === activeCategory;
-      const q = query.toLowerCase();
-      const matchesQuery =
-        !q ||
-        t.term.toLowerCase().includes(q) ||
-        t.definition.toLowerCase().includes(q) ||
-        t.related?.some((r) => r.toLowerCase().includes(q));
-      return matchesCat && matchesQuery;
-    });
-  }, [query, activeCategory]);
-
-  // Group filtered terms by first letter
   const grouped = useMemo(() => {
     return filtered.reduce((acc, term) => {
       const letter = term.term[0].toUpperCase();
@@ -195,15 +180,15 @@ export default function GlossaryPage() {
   const availableLetters = Object.keys(grouped).sort();
 
   return (
-    <main className="min-h-screen bg-white dark:bg-black py-10">
+    <main className="min-h-screen bg-white py-10 dark:bg-black">
       <Container>
-        {/* Top row: heading + status */}
-        <div className="flex flex-col gap-4 md:flex-row items-start md:justify-between">
+        <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between">
           <PageHeading
             title="Glossary"
             description="Plain-English definitions for developer terminology. Search a term or browse by category."
           />
-          <div className="text-left md:text-right md:shrink-0">
+
+          <div className="text-left md:shrink-0 md:text-right">
             <StatusBar
               items={glossaryTerms}
               getName={(term) => term.term}
@@ -212,25 +197,27 @@ export default function GlossaryPage() {
           </div>
         </div>
 
-        {/* Controls */}
         <div className="mt-8 flex flex-col gap-3 lg:flex-row lg:items-start lg:gap-4">
           <SearchBar
-            value={query}
-            onChange={setQuery}
+            value={search}
+            onChange={setSearch}
             placeholder="Search glossary..."
             className="w-full"
           />
-          <CategoryFilter active={activeCategory} onChange={setActiveCategory} />
+
+          <CategoryFilter
+            categories={categories.filter((c) => c !== "all")}
+            selected={category}
+            onChange={(value) => setCategory(value as Category | "All")}
+          />
         </div>
 
-        {/* A–Z jump bar — only shown when not searching */}
-        {!query && activeCategory === "all" && (
+        {!search && category === "All" && (
           <div className="mt-4">
             <AlphabetBar available={availableLetters} />
           </div>
         )}
 
-        {/* Terms */}
         {availableLetters.length > 0 ? (
           availableLetters.map((letter) => (
             <LetterGroup
@@ -244,15 +231,17 @@ export default function GlossaryPage() {
             <p className="text-sm font-medium text-zinc-900 dark:text-white">
               No terms found
             </p>
+
             <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-500">
               Try a different search or category.
             </p>
+
             <button
               onClick={() => {
-                setQuery("");
-                setActiveCategory("all");
+                setSearch("");
+                setCategory("All");
               }}
-              className="mt-4 text-xs font-medium text-purple-600 dark:text-purple-400 hover:underline"
+              className="mt-4 text-xs font-medium text-purple-600 hover:underline dark:text-purple-400"
             >
               Clear filters
             </button>

@@ -1,4 +1,4 @@
-import { CardColor } from "@/types/resource-card.types";
+import { CardColor } from "@/types/content-card.types";
 
 export const CARD_COLORS: Record<
   CardColor,

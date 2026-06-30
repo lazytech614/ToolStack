@@ -1,78 +1,67 @@
-"use client"
+"use client";
 
-import { useState, useMemo } from "react"
-import { Container } from "@/components/shared/container"
-import { PageHeading } from "@/components/shared/page-heading"
-import { ALL_TOOLS, CATEGORIES, ToolCategory } from "@/constants/configs/tools"
-import { StatusBar } from "@/components/shared/satus-bar"
-import { SearchBar } from "@/components/shared/search-bar"
-import { CategoryFilter } from "@/components/shared/category-filter"
-import { SecondaryHeading } from "@/components/shared/secondary-heading"
-import { ToolsGrid } from "@/components/tools/tools-grid"
+import { useMemo } from "react";
 
-const PINNED_STORAGE_KEY = "dev-tools:pinned"
+import { Container } from "@/components/shared/container";
+import { PageHeading } from "@/components/shared/page-heading";
+import { SearchBar } from "@/components/shared/search-bar";
+import { CategoryFilter } from "@/components/shared/category-filter";
+import { SecondaryHeading } from "@/components/shared/secondary-heading";
+import { StatusBar } from "@/components/shared/satus-bar";
+import { ContentCard } from "@/components/shared/content-card";
+import { ContentGrid } from "@/components/shared/content-grid";
 
-function loadPinned(): string[] {
-  if (typeof window === "undefined") return []
-  try {
-    return JSON.parse(localStorage.getItem(PINNED_STORAGE_KEY) ?? "[]")
-  } catch {
-    return []
-  }
-}
+import { ALL_TOOLS, CATEGORIES } from "@/constants/configs/tools";
 
-function savePinned(ids: string[]) {
-  if (typeof window === "undefined") return
-  localStorage.setItem(PINNED_STORAGE_KEY, JSON.stringify(ids))
-}
+import { toolToContentCard } from "@/lib/tool-to-content";
+import { useContentFilter } from "@/hooks/useContentFilters";
 
-const ToolsPage = () => {
-  const [search, setSearch] = useState("")
-  const [category, setCategory] = useState<ToolCategory | "All">("All")
-  const [pinnedIds, setPinnedIds] = useState<string[]>(() => loadPinned())
+export default function ToolsPage() {
+  const {
+    search,
+    setSearch,
+    filter: category,
+    setFilter: setCategory,
+    pinnedSet,
+    filtered,
+    pinned,
+    unpinned,
+    togglePin,
+    isFiltering,
+  } = useContentFilter({
+    items: ALL_TOOLS,
+    storageKey: "toolstack:dev-tools:pinned",
+    getId: (tool) => tool.id,
+    getFilter: (tool) => tool.category,
+    matchesSearch: (tool, q) =>
+      tool.name.toLowerCase().includes(q) ||
+      tool.description.toLowerCase().includes(q) ||
+      tool.category.toLowerCase().includes(q),
+  });
 
-  const handleTogglePin = (id: string) => {
-    setPinnedIds((prev) => {
-      const next = prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
-      savePinned(next)
-      return next
-    })
-  }
-
-  const filteredTools = useMemo(() => {
-    const q = search.toLowerCase().trim()
-    return ALL_TOOLS.filter((tool) => {
-      const matchesSearch =
-        !q ||
-        tool.name.toLowerCase().includes(q) ||
-        tool.description.toLowerCase().includes(q) ||
-        tool.category.toLowerCase().includes(q)
-      const matchesCategory = category === "All" || tool.category === category
-      return matchesSearch && matchesCategory
-    })
-  }, [search, category])
-
-  const pinnedTools = useMemo(
-    () => filteredTools.filter((t) => pinnedIds.includes(t.id)),
-    [filteredTools, pinnedIds]
-  )
-
-  const unpinnedTools = useMemo(
-    () => filteredTools.filter((t) => !pinnedIds.includes(t.id)),
-    [filteredTools, pinnedIds]
-  )
-
-  const isFiltering = search.trim() !== "" || category !== "All"
+  const renderTool = useMemo(
+    () => (tool: (typeof ALL_TOOLS)[number]) => (
+      <ContentCard
+        key={tool.id}
+        item={toolToContentCard(tool)}
+        pin={{
+          pinned: pinnedSet.has(tool.id),
+          onToggle: () => togglePin(tool.id),
+        }}
+      />
+    ),
+    [pinnedSet, togglePin]
+  );
 
   return (
     <main className="min-h-screen bg-white dark:bg-black py-10">
       <Container>
-        {/* Top row: heading + status */}
         <div className="flex flex-col gap-4 md:flex-row items-start md:justify-between">
           <PageHeading
             title="Developer Tools"
             description="Essential developer tools and offline code converters."
           />
+
           <div className="text-left md:text-right md:shrink-0">
             <StatusBar
               items={ALL_TOOLS}
@@ -82,7 +71,6 @@ const ToolsPage = () => {
           </div>
         </div>
 
-        {/* Controls */}
         <div className="mt-8 flex flex-col gap-3 lg:flex-row lg:items-start lg:gap-4">
           <SearchBar
             value={search}
@@ -90,6 +78,7 @@ const ToolsPage = () => {
             placeholder="Search tools..."
             className="w-full lg:max-w-xs"
           />
+
           <CategoryFilter
             categories={CATEGORIES}
             selected={category}
@@ -97,63 +86,66 @@ const ToolsPage = () => {
           />
         </div>
 
-        {/* When filtering, show a flat merged list */}
         {isFiltering ? (
           <section className="mt-10">
             <SecondaryHeading
               title="Results"
               description={
-                filteredTools.length === 0
+                filtered.length === 0
                   ? "No tools match your search."
                   : undefined
               }
-              count={filteredTools.length}
+              count={filtered.length}
             />
+
             <div className="mt-5">
-              <ToolsGrid
-                tools={filteredTools}
-                pinnedIds={pinnedIds}
-                onTogglePin={handleTogglePin}
-                emptyMessage="Try a different search term or category."
+              <ContentGrid
+                items={filtered}
+                emptyMessage="Try another search or category."
+                renderItem={renderTool}
               />
             </div>
           </section>
         ) : (
           <>
-            {/* Pinned tools */}
-            {pinnedIds.length > 0 && (
+            {pinned.length > 0 && (
               <section className="mt-10">
                 <SecondaryHeading
                   title="Pinned Tools"
                   description="Your saved tools appear here first."
-                  count={pinnedTools.length}
+                  count={pinned.length}
                 />
+
                 <div className="mt-5">
-                  <ToolsGrid
-                    tools={pinnedTools}
-                    pinnedIds={pinnedIds}
-                    onTogglePin={handleTogglePin}
+                  <ContentGrid
+                    items={pinned}
+                    emptyMessage="No pinned tools."
+                    renderItem={renderTool}
                   />
                 </div>
               </section>
             )}
 
-            {/* All other tools */}
-            <section className={pinnedIds.length > 0 ? "mt-12" : "mt-10"}>
+            <section className={pinned.length > 0 ? "mt-12" : "mt-10"}>
               <SecondaryHeading
-                title={pinnedIds.length > 0 ? "All Other Tools" : "All Tools"}
+                title={
+                  pinned.length > 0
+                    ? "All Other Tools"
+                    : "All Tools"
+                }
                 description={
-                  pinnedIds.length > 0
+                  pinned.length > 0
                     ? "The full utility list lives below your pinned tools."
                     : "Hover a card and click the pin icon to save a tool."
                 }
-                count={unpinnedTools.length}
+                count={unpinned.length}
               />
+
               <div className="mt-5">
-                <ToolsGrid
-                  tools={unpinnedTools}
-                  pinnedIds={pinnedIds}
-                  onTogglePin={handleTogglePin}
+                <ContentGrid
+                  items={unpinned}
+                  emptyMessage="No tools found."
+                  renderItem={renderTool}
                 />
               </div>
             </section>
@@ -161,7 +153,5 @@ const ToolsPage = () => {
         )}
       </Container>
     </main>
-  )
+  );
 }
-
-export default ToolsPage

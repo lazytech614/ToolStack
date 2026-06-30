@@ -5,14 +5,14 @@ import { Pin, PinOff } from "lucide-react";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 
 import { cn } from "@/lib/utils";
-import { ResourceCardProps } from "@/types/resource-card.types";
+import { ContentCardProps } from "@/types/content-card.types";
 import { CARD_COLORS } from "@/constants/configs/resource-card-colors";
 
-export function ResourceCard({
+export function ContentCard({
   item,
   pin,
-}: ResourceCardProps) {
-  const Icon = item.icon;
+}: ContentCardProps) {
+  const Icon = item.icon || MdKeyboardDoubleArrowRight;
 
   const primaryColor =
     CARD_COLORS[item.badges[0]?.color ?? "gray"];
@@ -31,8 +31,6 @@ export function ResourceCard({
         "dark:hover:shadow-purple-500/10"
       )}
     >
-      {/* Pin */}
-
       {pin && (
         <button
           onClick={pin.onToggle}
@@ -56,7 +54,7 @@ export function ResourceCard({
         href={item.href}
         className="flex flex-1 flex-col gap-4"
       >
-        {/* Icon + Badges */}
+        {/* Header */}
 
         <div className="flex items-start gap-3">
           <div
@@ -87,7 +85,7 @@ export function ResourceCard({
             })}
 
             {item.isNew && (
-              <span className="inline-flex items-center rounded-md bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700 dark:bg-purple-500/20 dark:text-purple-400">
+              <span className="rounded-md bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700 dark:bg-purple-500/20 dark:text-purple-400">
                 New
               </span>
             )}
@@ -95,7 +93,7 @@ export function ResourceCard({
             {item.status && (
               <span
                 className={cn(
-                  "inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium",
+                  "rounded-md px-2 py-0.5 text-xs font-medium",
                   CARD_COLORS[item.status.color].badge
                 )}
               >
@@ -105,7 +103,7 @@ export function ResourceCard({
           </div>
         </div>
 
-        {/* Title */}
+        {/* Main */}
 
         <div className="space-y-2">
           <h3 className="text-lg font-extrabold uppercase leading-tight text-zinc-900 dark:text-white sm:text-xl">
@@ -116,6 +114,24 @@ export function ResourceCard({
             {item.description}
           </p>
         </div>
+
+        {/* Page specific content */}
+
+        {item.content && (
+          <div className="mt-2">
+            {item.content}
+          </div>
+        )}
+
+        <div className="flex-1" />
+
+        {/* Optional actions */}
+
+        {item.actions && (
+          <div className="mt-3">
+            {item.actions}
+          </div>
+        )}
       </Link>
 
       {/* Footer */}

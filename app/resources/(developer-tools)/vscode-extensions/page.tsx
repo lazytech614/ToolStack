@@ -1,24 +1,165 @@
-import VSCodeFilter from "@/components/resources/vs-code-extensions/vs-code-filter";
-import { VSCodeGrid } from "@/components/resources/vs-code-extensions/vs-code-grid";
-import { vscodeExtensions } from "@/constants/resources/vs-code-extensions";
+"use client";
 
-export const metadata = {
-  title: 'VS Code Extensions',
-  description: 'Essential extensions to boost your development workflow',
-};
+import { Container } from "@/components/shared/container";
+import { PageHeading } from "@/components/shared/page-heading";
+import { StatusBar } from "@/components/shared/satus-bar";
+import { SearchBar } from "@/components/shared/search-bar";
+import { CategoryFilter } from "@/components/shared/category-filter";
+import { SecondaryHeading } from "@/components/shared/secondary-heading";
+import { ContentGrid } from "@/components/shared/content-grid";
+import { ContentCard } from "@/components/shared/content-card";
+
+import { vscodeExtensions, VSCodeExtension } from "@/constants/resources/vs-code-extensions";
+import { useContentFilter } from "@/hooks/useContentFilters";
+import { vscodeExtensionToContentCard } from "@/lib/vs-code-extension-to-content";
 
 export default function VSCodeExtensionsPage() {
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">VS Code Extensions</h1>
-        <p className="text-muted-foreground mt-2">
-          Essential extensions to boost your development workflow
-        </p>
-      </div>
+  const {
+    search,
+    setSearch,
+    filter: category,
+    setFilter: setCategory,
+    filtered,
+    pinned,
+    unpinned,
+    pinnedSet,
+    togglePin,
+    isFiltering,
+  } = useContentFilter({
+    items: vscodeExtensions,
+    storageKey: "toolstack:resources:vscode-extensions:pinned",
+    getId: (extension) => extension.id,
+    getFilter: (extension) => extension.category[0],
+    matchesSearch: (extension, q) =>
+      extension.name.toLowerCase().includes(q) ||
+      extension.description.toLowerCase().includes(q) ||
+      extension.publisher.toLowerCase().includes(q) ||
+      extension.category.some((category) =>
+        category.toLowerCase().includes(q)
+      ) ||
+      extension.tags.some((tag) =>
+        tag.toLowerCase().includes(q)
+      ),
+  });
 
-      <VSCodeFilter />
-      <VSCodeGrid extensions={vscodeExtensions} />
-    </div>
+  const renderExtension = (extension: VSCodeExtension) => (
+    <ContentCard
+      key={extension.id}
+      item={vscodeExtensionToContentCard(extension)}
+      pin={{
+        pinned: pinnedSet.has(extension.id),
+        onToggle: () => togglePin(extension.id),
+      }}
+    />
+  );
+
+  return (
+    <main className="min-h-screen bg-white dark:bg-black py-10">
+      <Container>
+        {/* Header */}
+        <div className="flex flex-col gap-4 md:flex-row items-start md:justify-between">
+          <PageHeading
+            title="VS Code Extensions"
+            description="Essential extensions to boost your development workflow."
+          />
+
+          <div className="text-left md:text-right md:shrink-0">
+            <StatusBar
+              items={vscodeExtensions}
+              getName={(extension) => extension.name}
+              itemLabel="extension"
+            />
+          </div>
+        </div>
+
+        {/* Controls */}
+        <div className="mt-8 flex flex-col gap-3 lg:flex-row lg:items-start lg:gap-4">
+          <SearchBar
+            value={search}
+            onChange={setSearch}
+            placeholder="Search VS Code extensions..."
+            className="w-full lg:max-w-xs"
+          />
+
+          <CategoryFilter
+            categories={[
+              ...new Set(
+                vscodeExtensions.flatMap(
+                  (extension) => extension.category
+                )
+              ),
+            ]}
+            selected={category}
+            onChange={setCategory}
+          />
+        </div>
+
+        {isFiltering ? (
+          <section className="mt-10">
+            <SecondaryHeading
+              title="Results"
+              count={filtered.length}
+              description={
+                filtered.length === 0
+                  ? "No VS Code extensions match your search."
+                  : undefined
+              }
+            />
+
+            <div className="mt-5">
+              <ContentGrid
+                items={filtered}
+                emptyMessage="No VS Code extensions found."
+                renderItem={renderExtension}
+              />
+            </div>
+          </section>
+        ) : (
+          <>
+            {pinned.length > 0 && (
+              <section className="mt-10">
+                <SecondaryHeading
+                  title="Pinned Extensions"
+                  description="Your saved VS Code extensions appear here first."
+                  count={pinned.length}
+                />
+
+                <div className="mt-5">
+                  <ContentGrid
+                    items={pinned}
+                    emptyMessage="No pinned extensions."
+                    renderItem={renderExtension}
+                  />
+                </div>
+              </section>
+            )}
+
+            <section className={pinned.length > 0 ? "mt-12" : "mt-10"}>
+              <SecondaryHeading
+                title={
+                  pinned.length
+                    ? "All Other Extensions"
+                    : "All Extensions"
+                }
+                description={
+                  pinned.length
+                    ? "Browse the remaining VS Code extensions below."
+                    : "Hover a card and click the pin icon to save an extension."
+                }
+                count={unpinned.length}
+              />
+
+              <div className="mt-5">
+                <ContentGrid
+                  items={unpinned}
+                  emptyMessage="No VS Code extensions found."
+                  renderItem={renderExtension}
+                />
+              </div>
+            </section>
+          </>
+        )}
+      </Container>
+    </main>
   );
 }

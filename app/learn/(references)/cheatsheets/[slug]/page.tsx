@@ -58,10 +58,9 @@ export default async function CheatsheetDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const {slug} = await params;
+  
   const sheet = cheatsheets.find((s) => s.slug === slug);
   if (!sheet) notFound();
-
-  console.log("Sheet: ", sheet);
 
   const totalSnippets = sheet.sections.reduce(
     (acc, s) => acc + s.snippets.length,

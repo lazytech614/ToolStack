@@ -1,4 +1,5 @@
 import { LucideIcon } from "lucide-react";
+import { ReactNode } from "react";
 
 export type CardColor =
   | "blue"
@@ -19,20 +20,35 @@ export interface CardStatus {
   color: CardColor;
 }
 
-export interface ResourceCardItem {
+export interface CardModel {
   id: string;
   title: string;
   description: string;
   href: string;
-  icon: LucideIcon;
+  icon?: LucideIcon;
   badges: CardBadge[];
   footerLabel?: string;
   isNew?: boolean;
   status?: CardStatus;
+
+  /**
+   * Custom section rendered below description.
+   */
+  content?: ReactNode;
+
+  /**
+   * Optional custom actions.
+   * Example:
+   * - View Demo
+   * - GitHub
+   * - Docs
+   */
+  actions?: ReactNode;
 }
 
-export interface ResourceCardProps {
-  item: ResourceCardItem;
+export interface ContentCardProps {
+  item: CardModel;
+
   pin?: {
     pinned: boolean;
     onToggle: () => void;

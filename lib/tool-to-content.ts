@@ -1,5 +1,5 @@
 import { Tool, ToolCategory } from "@/constants/configs/tools";
-import { CardColor, ResourceCardItem } from "@/types/resource-card.types";
+import { CardColor, CardModel } from "@/types/content-card.types";
 
 const TOOL_CATEGORY_COLORS: Record<ToolCategory, CardColor> = {
   Encoding: "blue",
@@ -11,7 +11,7 @@ const TOOL_CATEGORY_COLORS: Record<ToolCategory, CardColor> = {
   Utilities: "gray",
 };
 
-export function toolToResourceCard(tool: Tool): ResourceCardItem {
+export function toolToContentCard(tool: Tool): CardModel {
   return {
     id: tool.id,
     title: tool.name,

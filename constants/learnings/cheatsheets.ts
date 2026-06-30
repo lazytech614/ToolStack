@@ -253,5 +253,5 @@ export const cheatsheets: Cheatsheet[] = [
   },
 ];
 
-export const tags = ["all", "language", "tool", "framework", "styling"] as const;
+export const tags = ["All", "language", "tool", "framework", "styling"] as const;
 export type Tag = (typeof tags)[number];

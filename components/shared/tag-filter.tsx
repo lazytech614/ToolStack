@@ -5,8 +5,8 @@ export function TagFilter({
   active,
   onChange,
 }: {
-  active: Tag;
-  onChange: (t: Tag) => void;
+  active: string;
+  onChange: (t: string) => void;
 }) {
   return (
     <div className="flex flex-wrap gap-2 shrink-0">
