@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef, FC, ReactNode } from "react";
+import { useState, useEffect, useRef, FC, ReactNode } from "react";
 import {
   DEFAULT_CATEGORIES,
   createSnippet,
   updateSnippet,
   searchSnippets,
-  copyToClipboard,
   parseTags,
   loadSnippets,
   saveSnippets,
@@ -17,6 +16,7 @@ import {
   type SnippetUpdate,
   type Category,
 } from "@/lib/dev-utils/clipboard-manager";
+import { useCopy } from "@/hooks/useCopy";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
 
@@ -282,106 +282,112 @@ const DeleteDialog: FC<DeleteDialogProps> = ({ snippet, onConfirm, onCancel }) =
 
 interface SnippetCardProps {
   snippet: Snippet;
-  onCopy: (snippet: Snippet) => void;
   onPin: (id: string) => void;
   onEdit: (snippet: Snippet) => void;
   onDelete: (snippet: Snippet) => void;
-  copied: boolean;
 }
 
 const SnippetCard: FC<SnippetCardProps> = ({
   snippet,
-  onCopy,
   onPin,
   onEdit,
   onDelete,
-  copied,
-}) => (
-  <div
-    className={`group flex flex-col rounded-xl border bg-white dark:bg-zinc-950 p-4 transition-all ${
-      snippet.pinned
-        ? "border-purple-300 dark:border-purple-500/40"
-        : "border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700"
-    }`}
-  >
-    {/* Card header */}
-    <div className="flex items-start justify-between gap-3 mb-3">
-      <div className="flex items-center gap-2 min-w-0">
-        {snippet.pinned && (
-          <span className="shrink-0 text-xs font-medium px-2 py-0.5 rounded-full bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-500/20">
-            Pinned
-          </span>
-        )}
-        <h3 className="font-semibold text-sm truncate text-zinc-900 dark:text-white">
-          {snippet.title}
-        </h3>
-      </div>
+}) => {
+  const { copied, copy } = useCopy(1500);
 
-      {/* Hover actions */}
-      <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-        <ActionBtn
-          title={snippet.pinned ? "Unpin" : "Pin"}
-          onClick={() => onPin(snippet.id)}
-        >
-          <Icon
-            d={ICONS.pin}
-            size={13}
-            className={
-              snippet.pinned ? "text-purple-500 dark:text-purple-400" : ""
-            }
-          />
-        </ActionBtn>
-        <ActionBtn title="Edit" onClick={() => onEdit(snippet)}>
-          <Icon d={ICONS.edit} size={13} />
-        </ActionBtn>
-        <ActionBtn title="Delete" onClick={() => onDelete(snippet)} danger>
-          <Icon d={ICONS.trash} size={13} />
-        </ActionBtn>
-      </div>
-    </div>
+  useEffect(() => {
+    if (copied) {
+      toast.success("Copied successfully to clipboard");
+    }
+  }, [copied]);
 
-    {/* Content preview */}
-    <pre className="flex-1 text-xs font-mono rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-3 mb-3 overflow-x-auto whitespace-pre-wrap break-all max-h-28 overflow-y-auto text-zinc-700 dark:text-zinc-300">
-      {snippet.content}
-    </pre>
+  return (
+    <div
+      className={`group flex flex-col rounded-xl border bg-white dark:bg-zinc-950 p-4 transition-all ${
+        snippet.pinned
+          ? "border-purple-300 dark:border-purple-500/40"
+          : "border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700"
+      }`}
+    >
+      {/* Card header */}
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <div className="flex items-center gap-2 min-w-0">
+          {snippet.pinned && (
+            <span className="shrink-0 text-xs font-medium px-2 py-0.5 rounded-full bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-500/20">
+              Pinned
+            </span>
+          )}
+          <h3 className="font-semibold text-sm truncate text-zinc-900 dark:text-white">
+            {snippet.title}
+          </h3>
+        </div>
 
-    {/* Card footer */}
-    <div className="flex items-center justify-between gap-2 flex-wrap">
-      {/* Category + tags */}
-      <div className="flex items-center gap-1.5 flex-wrap">
-        <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-500/20">
-          {snippet.category}
-        </span>
-        {snippet.tags.slice(0, 2).map((t) => (
-          <span
-            key={t}
-            className="text-xs px-2 py-0.5 rounded-full border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400"
+        {/* Hover actions */}
+        <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+          <ActionBtn
+            title={snippet.pinned ? "Unpin" : "Pin"}
+            onClick={() => onPin(snippet.id)}
           >
-            {t}
-          </span>
-        ))}
-        {snippet.tags.length > 2 && (
-          <span className="text-xs text-zinc-400 dark:text-zinc-500">
-            +{snippet.tags.length - 2}
-          </span>
-        )}
+            <Icon
+              d={ICONS.pin}
+              size={13}
+              className={
+                snippet.pinned ? "text-purple-500 dark:text-purple-400" : ""
+              }
+            />
+          </ActionBtn>
+          <ActionBtn title="Edit" onClick={() => onEdit(snippet)}>
+            <Icon d={ICONS.edit} size={13} />
+          </ActionBtn>
+          <ActionBtn title="Delete" onClick={() => onDelete(snippet)} danger>
+            <Icon d={ICONS.trash} size={13} />
+          </ActionBtn>
+        </div>
       </div>
 
-      {/* Copy button */}
-      <button
-        onClick={() => onCopy(snippet)}
-        className={`flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
-          copied
-            ? "text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10"
-            : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800"
-        }`}
-      >
-        <Copy className="w-3 h-3" />
-        {copied ? "Copied" : "Copy"}
-      </button>
+      {/* Content preview */}
+      <pre className="flex-1 text-xs font-mono rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-3 mb-3 overflow-x-auto whitespace-pre-wrap break-all max-h-28 overflow-y-auto text-zinc-700 dark:text-zinc-300">
+        {snippet.content}
+      </pre>
+
+      {/* Card footer */}
+      <div className="flex items-center justify-between gap-2 flex-wrap">
+        {/* Category + tags */}
+        <div className="flex items-center gap-1.5 flex-wrap">
+          <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-500/20">
+            {snippet.category}
+          </span>
+          {snippet.tags.slice(0, 2).map((t) => (
+            <span
+              key={t}
+              className="text-xs px-2 py-0.5 rounded-full border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400"
+            >
+              {t}
+            </span>
+          ))}
+          {snippet.tags.length > 2 && (
+            <span className="text-xs text-zinc-400 dark:text-zinc-500">
+              +{snippet.tags.length - 2}
+            </span>
+          )}
+        </div>
+
+        {/* Copy button */}
+        <button
+          onClick={() => copy(snippet.content)}
+          className={`flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
+            copied
+              ? "text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10"
+              : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800"
+          }`}
+        >
+          <Copy className="w-3 h-3" />
+          {copied ? "Copied" : "Copy"}
+        </button>
+      </div>
     </div>
-  </div>
-);
+  )
+};
 
 // ─── ClipboardManager ─────────────────────────────────────────────────────────
 
@@ -395,7 +401,6 @@ const ClipboardManager: FC = () => {
   const [showForm, setShowForm] = useState<boolean>(false);
   const [editTarget, setEditTarget] = useState<Snippet | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Snippet | null>(null);
-  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const allCategories: Category[] = [
     "All",
@@ -442,15 +447,6 @@ const ClipboardManager: FC = () => {
       setShowForm(false);
     }
   }
-
-  const handleCopy = useCallback(async (snippet: Snippet): Promise<void> => {
-    try {
-      await copyToClipboard(snippet.content);
-      setCopiedId(snippet.id);
-      toast.success("Copied successfully to clipboard");
-      setTimeout(() => setCopiedId(null), 1500);
-    } catch { /* noop */ }
-  }, []);
 
   function handlePin(id: string): void {
     setSnippets((prev) =>
@@ -550,8 +546,6 @@ const ClipboardManager: FC = () => {
             <SnippetCard
               key={s.id}
               snippet={s}
-              copied={copiedId === s.id}
-              onCopy={handleCopy}
               onPin={handlePin}
               onEdit={(snippet) => { setShowForm(false); setEditTarget(snippet); }}
               onDelete={setDeleteTarget}

@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useCopy } from '@/hooks/useCopy';
 import { Star, Copy, Check, ExternalLink, BookOpen } from 'lucide-react';
 import { CLITool, InstallMethod } from '@/constants/resources/cli-tools';
 
@@ -27,12 +28,10 @@ const METHOD_LABELS: Record<InstallMethod, string> = {
 };
 
 function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false);
+  const { copied, copy } = useCopy();
 
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopy = () => {
+    copy(text);
   };
 
   return (

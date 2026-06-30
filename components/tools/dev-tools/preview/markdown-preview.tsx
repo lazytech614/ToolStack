@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useCopy } from "@/hooks/useCopy";
 import {
   Copy, CheckCheck, Download, Eye, Code2, Columns2,
   RefreshCw, WrapText, Hash,
@@ -14,7 +15,7 @@ export function MarkdownPreview() {
   const [value, setValue] = useState(SAMPLE_MARKDOWN);
   const [mode, setMode] = useState<ViewMode>("split");
   const [html, setHtml] = useState("");
-  const [copied, setCopied] = useState(false);
+  const { copied, copy } = useCopy();
   const [wordWrap, setWordWrap] = useState(true);
   const [lineNumbers, setLineNumbers] = useState(true);
   const previewRef = useRef<HTMLDivElement>(null);
@@ -71,10 +72,8 @@ export function MarkdownPreview() {
     return () => previewRef.current?.removeEventListener("click", handler);
   }, [html]);
 
-  const copyRaw = async () => {
-    await navigator.clipboard.writeText(value);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const copyRaw = () => {
+    copy(value);
   };
 
   const download = () => {

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useMemo } from "react"
+import { useCopy } from "@/hooks/useCopy"
 import {
   Copy,
   Check,
@@ -40,7 +41,7 @@ const EXAMPLE_COLORS = ["#9333ea", "#06b6d4", "#ec4899", "#f59e0b", "#10b981"]
 export function ColorConverter() {
   const [color, setColor] = useState("#9333ea")
   const [opacity, setOpacity] = useState(100)
-  const [copiedId, setCopiedId] = useState<string | null>(null)
+  const { copied: copiedAll, copy: copyAll } = useCopy()
   const [blindnessType, setBlindnessType] = useState<ColorBlindnessType>("normal")
   const [showPalette, setShowPalette] = useState(false)
   const [showRelatedColors, setShowRelatedColors] = useState(false)
@@ -98,12 +99,6 @@ export function ColorConverter() {
     }
   }, [colorInfo])
 
-  const copyToClipboard = (text: string, id: string) => {
-    navigator.clipboard.writeText(text)
-    setCopiedId(id)
-    setTimeout(() => setCopiedId(null), 2000)
-  }
-
   const loadExample = () => {
     const example = EXAMPLE_COLORS[Math.floor(Math.random() * EXAMPLE_COLORS.length)]
     setColor(example)
@@ -118,7 +113,7 @@ export function ColorConverter() {
   const copyAllFormats = () => {
     if (!colorInfo) return
     const text = `HEX: ${colorInfo.hex}\nRGB: ${colorInfo.rgbString}\nHSL: ${colorInfo.hslString}\nHSV: ${colorInfo.hsvString}`
-    copyToClipboard(text, "all-formats")
+    copyAll(text)
   }
 
   if (!colorInfo) {
@@ -196,7 +191,7 @@ export function ColorConverter() {
                   onClick={copyAllFormats}
                   className="text-xs font-semibold bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-3 py-1 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors"
                 >
-                  {copiedId === "all-formats" ? "✓ Copied" : "Copy All"}
+                  {copiedAll ? "✓ Copied" : "Copy All"}
                 </button>
               </div>
 
@@ -204,61 +199,31 @@ export function ColorConverter() {
                 <ColorFormatInput
                   label="HEX"
                   value={colorInfo.hex}
-                  id="hex"
-                  copied={copiedId === "hex"}
-                  onCopy={() => {
-                    copyToClipboard(colorInfo.hex, "hex")
-                  }}
                 />
 
                 <ColorFormatInput
                   label="RGB"
                   value={colorInfo.rgbString}
-                  id="rgb"
-                  copied={copiedId === "rgb"}
-                  onCopy={() => {
-                    copyToClipboard(colorInfo.rgbString, "rgb")
-                  }}
                 />
 
                 <ColorFormatInput
                   label="HSL"
                   value={colorInfo.hslString}
-                  id="hsl"
-                  copied={copiedId === "hsl"}
-                  onCopy={() => {
-                    copyToClipboard(colorInfo.hslString, "hsl")
-                  }}
                 />
 
                 <ColorFormatInput
                   label="HSV"
                   value={colorInfo.hsvString}
-                  id="hsv"
-                  copied={copiedId === "hsv"}
-                  onCopy={() => {
-                    copyToClipboard(colorInfo.hsvString, "hsv")
-                  }}
                 />
 
                 <ColorFormatInput
                   label="RGBA"
                   value={colorInfo.rgbaString}
-                  id="rgba"
-                  copied={copiedId === "rgba"}
-                  onCopy={() => {
-                    copyToClipboard(colorInfo.rgbaString, "rgba")
-                  }}
                 />
 
                 <ColorFormatInput
                   label="HEX + Alpha"
                   value={colorInfo.hexAlpha}
-                  id="hex-alpha"
-                  copied={copiedId === "hex-alpha"}
-                  onCopy={() => {
-                    copyToClipboard(colorInfo.hexAlpha, "hex-alpha")
-                  }}
                 />
               </div>
             </div>
@@ -520,21 +485,14 @@ export function ColorConverter() {
 
 // ── Helper Components ──────────────────────────────────────────────────────
 
-interface ColorFormatInputProps {
-  label: string
-  value: string
-  id: string
-  copied: boolean
-  onCopy: () => void
-}
-
 function ColorFormatInput({
   label,
   value,
-  id,
-  copied,
-  onCopy,
-}: ColorFormatInputProps) {
+}: {
+  label: string
+  value: string
+}) {
+  const { copied, copy } = useCopy()
   return (
     <div className="flex flex-col gap-1 p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg border border-zinc-200 dark:border-zinc-700">
       <div className="flex items-center justify-between">
@@ -542,7 +500,7 @@ function ColorFormatInput({
           {label}
         </label>
         <button
-          onClick={onCopy}
+          onClick={() => copy(value)}
           className="text-xs font-semibold text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors flex items-center gap-1"
         >
           {copied ? (

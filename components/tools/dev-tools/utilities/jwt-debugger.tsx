@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import { useCopy } from "@/hooks/useCopy"
 import { AlertCircle, Check, Copy, RefreshCw, ShieldCheck, ShieldX } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
@@ -18,13 +19,11 @@ function JsonPanel({
   value: string
   accent: string
 }) {
-  const [copied, setCopied] = useState(false)
+  const { copied, copy } = useCopy(1500)
 
   function handleCopy() {
-    navigator.clipboard.writeText(value)
-    setCopied(true)
+    copy(value)
     toast.success("Copied successfully to clipboard")
-    setTimeout(() => setCopied(false), 1500)
   }
 
   return (
