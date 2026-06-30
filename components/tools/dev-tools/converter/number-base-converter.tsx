@@ -6,6 +6,7 @@ import {
     useCallback, 
     useEffect 
 } from "react"
+import { useCopy } from "@/hooks/useCopy"
 import { cn } from "@/lib/utils"
 import { 
     Copy, 
@@ -87,13 +88,10 @@ function StatItem({ label, value }: { label: string; value: string | number }) {
 }
 
 function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false)
+  const { copied, copy } = useCopy(1500)
   const handle = () => {
     if (!text) return
-    navigator.clipboard.writeText(text).then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1500)
-    })
+    copy(text)
   }
   return (
     <button

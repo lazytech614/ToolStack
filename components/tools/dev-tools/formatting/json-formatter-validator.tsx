@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import { useCopy } from "@/hooks/useCopy";
 import {
   Copy,
   Download,
@@ -127,7 +128,7 @@ export function JsonFormatterValidator() {
   const [error, setError] = useState<ParseError | null>(null);
   const [parsedJson, setParsedJson] = useState<unknown>(null);
   const [showLineNumbers, setShowLineNumbers] = useState(true);
-  const [copied, setCopied] = useState(false);
+  const { copied, copy: performCopy } = useCopy();
   const [indent, setIndent] = useState(2);
   const [errorLineHighlight, setErrorLineHighlight] = useState<number | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -199,11 +200,9 @@ export function JsonFormatterValidator() {
     setErrorLineHighlight(null);
   };
 
-  const copy = async () => {
+  const handleCopy = () => {
     const text = output || input;
-    await navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    performCopy(text);
   };
 
   const download = () => {
@@ -344,7 +343,7 @@ export function JsonFormatterValidator() {
             {output && (
                 <>
                     <button
-                        onClick={copy}
+                        onClick={handleCopy}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
                     >
                         {copied ? <CheckCheck className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}

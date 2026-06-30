@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useCopy } from "@/hooks/useCopy"
 import { Copy, Check, RefreshCw } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { EXAMPLE_URL } from "@/constants/configs/examples"
@@ -17,7 +18,7 @@ const MODES: { value: Mode; label: string }[] = [
 export function Base64UrlTool() {
   const [mode, setMode] = useState<Mode>("base64-encode")
   const [input, setInput] = useState(EXAMPLE_URL)
-  const [copied, setCopied] = useState(false)
+  const { copied, copy } = useCopy(1500)
 
   const { output, error } = transform(input, mode)
 
@@ -27,9 +28,7 @@ export function Base64UrlTool() {
 
   const handleCopy = () => {
     if (!output) return
-    navigator.clipboard.writeText(output)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
+    copy(output)
   }
 
   return (

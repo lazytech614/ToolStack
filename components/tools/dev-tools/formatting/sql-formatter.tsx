@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useMemo, useCallback, useEffect } from "react"
+import { useCopy } from "@/hooks/useCopy"
 import { cn } from "@/lib/utils"
 import {
   Copy,
@@ -185,7 +186,7 @@ function QueryStats({ sql }: { sql: string }) {
 
 export function SqlFormatter() {
   const [input, setInput] = useState(EXAMPLE_SQL)
-  const [copied, setCopied] = useState(false)
+  const { copied, copy } = useCopy()
   const [opts, setOpts] = useState<FormatOptions>({
     dialect: "sql",
     indentStyle: "2",
@@ -231,11 +232,8 @@ export function SqlFormatter() {
 
   const handleCopy = useCallback(() => {
     if (!output) return
-    navigator.clipboard.writeText(output).then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    })
-  }, [output])
+    copy(output)
+  }, [output, copy])
 
   const handleDownload = useCallback(() => {
     if (!output) return

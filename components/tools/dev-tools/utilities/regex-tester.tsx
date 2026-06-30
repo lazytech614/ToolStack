@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import { useCopy } from "@/hooks/useCopy"
 import { AlertCircle, Copy, Check, RefreshCw, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
@@ -20,6 +21,64 @@ export interface RegexTemplate {
   example: string
 }
 
+// ── MatchItem ──────────────────────────────────────────────────────────────
+
+interface MatchItemProps {
+  match: { value: string; index: number; groups: (string | undefined)[] }
+  i: number
+}
+
+function MatchItem({ match, i }: MatchItemProps) {
+  const { copied, copy } = useCopy(2000)
+
+  const handleCopy = () => {
+    copy(match.value)
+    toast.success("Copied successfully to clipboard")
+  }
+
+  return (
+    <div className="flex flex-col gap-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 px-4 py-3 hover:border-purple-300 dark:hover:border-purple-700 transition-colors">
+      <div className="flex items-center gap-3 flex-wrap">
+        <span className="text-xs font-semibold text-zinc-400 dark:text-zinc-600 tabular-nums w-6">
+          #{i + 1}
+        </span>
+        <code className="text-xs font-mono text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 rounded px-2 py-0.5 break-all">
+          {match.value || <em className="text-zinc-400">empty</em>}
+        </code>
+        <span className="text-xs text-zinc-400 dark:text-zinc-600 tabular-nums ml-auto">
+          index {match.index}
+        </span>
+        <button
+          onClick={handleCopy}
+          className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors"
+          title="Copy match"
+        >
+          {copied ? (
+            <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+          ) : (
+            <Copy className="w-4 h-4 text-zinc-400 dark:text-zinc-600 hover:text-zinc-600 dark:hover:text-zinc-400" />
+          )}
+        </button>
+      </div>
+
+      {match.groups.length > 0 && (
+        <div className="flex flex-wrap gap-2 pl-9">
+          {match.groups.map((g, gi) => (
+            <span key={gi} className="text-xs text-zinc-600 dark:text-zinc-400 flex items-center gap-1.5 bg-zinc-50 dark:bg-zinc-800/50 px-2 py-1 rounded">
+              <span className="font-medium text-purple-600 dark:text-purple-400">
+                ${gi + 1}
+              </span>
+              <code className="font-mono text-zinc-900 dark:text-zinc-100">
+                {g ?? <em className="text-zinc-400">undefined</em>}
+              </code>
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ── component ───────────────────────────────────────────────────────────────
 
 export function RegexTesterTool() {
@@ -30,7 +89,6 @@ export function RegexTesterTool() {
   const [showReplace, setShowReplace] = useState(false)
   const [showTemplates, setShowTemplates] = useState(true)
   const [searchTemplate, setSearchTemplate] = useState("")
-  const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
 
   function toggleFlag(flag: Flag) {
     setFlags((prev) => {
@@ -99,13 +157,6 @@ export function RegexTesterTool() {
 
   const hasPattern = pattern.trim().length > 0
   const hasInput = input.trim().length > 0
-
-  function copyToClipboard(text: string, index: number) {
-    navigator.clipboard.writeText(text)
-    setCopiedIndex(index)
-    toast.success("Copied succcessfully to clipboard")
-    setTimeout(() => setCopiedIndex(null), 2000)
-  }
 
   return (
     <div className="flex flex-col gap-8 w-full">
@@ -343,48 +394,7 @@ export function RegexTesterTool() {
             <div className="flex flex-col gap-2 mt-2">
               <div className="grid gap-2">
                 {matches.map((m, i) => (
-                  <div
-                    key={i}
-                    className="flex flex-col gap-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 px-4 py-3 hover:border-purple-300 dark:hover:border-purple-700 transition-colors"
-                  >
-                    <div className="flex items-center gap-3 flex-wrap">
-                      <span className="text-xs font-semibold text-zinc-400 dark:text-zinc-600 tabular-nums w-6">
-                        #{i + 1}
-                      </span>
-                      <code className="text-xs font-mono text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 rounded px-2 py-0.5 break-all">
-                        {m.value || <em className="text-zinc-400">empty</em>}
-                      </code>
-                      <span className="text-xs text-zinc-400 dark:text-zinc-600 tabular-nums ml-auto">
-                        index {m.index}
-                      </span>
-                      <button
-                        onClick={() => copyToClipboard(m.value, i)}
-                        className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors"
-                        title="Copy match"
-                      >
-                        {copiedIndex === i ? (
-                          <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                        ) : (
-                          <Copy className="w-4 h-4 text-zinc-400 dark:text-zinc-600 hover:text-zinc-600 dark:hover:text-zinc-400" />
-                        )}
-                      </button>
-                    </div>
-
-                    {m.groups.length > 0 && (
-                      <div className="flex flex-wrap gap-2 pl-9">
-                        {m.groups.map((g, gi) => (
-                          <span key={gi} className="text-xs text-zinc-600 dark:text-zinc-400 flex items-center gap-1.5 bg-zinc-50 dark:bg-zinc-800/50 px-2 py-1 rounded">
-                            <span className="font-medium text-purple-600 dark:text-purple-400">
-                              ${gi + 1}
-                            </span>
-                            <code className="font-mono text-zinc-900 dark:text-zinc-100">
-                              {g ?? <em className="text-zinc-400">undefined</em>}
-                            </code>
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  <MatchItem key={i} match={m} i={i} />
                 ))}
               </div>
             </div>

@@ -8,6 +8,7 @@ import {
   useMemo, 
   DragEvent,
 } from "react"
+import { useCopy } from "@/hooks/useCopy"
 import { cn } from "@/lib/utils"
 import {
   Upload, 
@@ -76,7 +77,7 @@ export function ImageConverter() {
   const [result, setResult]                   = useState<ConvertedResult | null>(null)
   const [dragOver, setDragOver]               = useState(false)
   const [copiedUrl, setCopiedUrl]             = useState(false)
-  const [copiedB64, setCopiedB64]             = useState(false)
+  const { copied: copiedB64, copy: copyB64 } = useCopy()
   const [error, setError]                     = useState<string | null>(null)
   const fileInputRef                          = useRef<HTMLInputElement>(null)
 
@@ -227,11 +228,8 @@ export function ImageConverter() {
   // ── Copy base64 ──
   const handleCopyB64 = useCallback(() => {
     if (!result) return
-    navigator.clipboard.writeText(result.dataUrl).then(() => {
-      setCopiedB64(true)
-      setTimeout(() => setCopiedB64(false), 2000)
-    })
-  }, [result])
+    copyB64(result.dataUrl)
+  }, [result, copyB64])
 
   // ── Savings ──
   const savings = useMemo(() => {

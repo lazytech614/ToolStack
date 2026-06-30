@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import { useCopy } from "@/hooks/useCopy"
 import { Copy, Check, RotateCw, Info, RefreshCcw } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SAMPLE_BINARY, SAMPLE_TEXT } from "@/constants/configs/examples"
@@ -10,7 +11,7 @@ import { binaryToText, textToBinary } from "@/lib/dev-utils/binary-converter"
 export function BinaryConverter() {
   const [mode, setMode] = useState<ConversionMode>("encode")
   const [input, setInput] = useState(SAMPLE_TEXT)
-  const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
+  const { copied, copy } = useCopy()
 
   // Convert based on mode
   const result = useMemo(() => {
@@ -21,15 +22,8 @@ export function BinaryConverter() {
     }
   }, [input, mode])
 
-  const copyToClipboard = (text: string, index: number) => {
-    navigator.clipboard.writeText(text)
-    setCopiedIndex(index)
-    setTimeout(() => setCopiedIndex(null), 2000)
-  }
-
   const resetForm = () => {
     setInput(mode === "decode" ? SAMPLE_BINARY : SAMPLE_TEXT)
-    setCopiedIndex(null)
   }
 
   const hasInput = input.trim().length > 0
@@ -53,7 +47,6 @@ export function BinaryConverter() {
           onClick={() => {
             setMode("encode")
             setInput(SAMPLE_TEXT)
-            setCopiedIndex(null)
           }}
           className={cn(
             "px-4 py-2 rounded-lg font-medium text-sm transition-colors",
@@ -68,7 +61,6 @@ export function BinaryConverter() {
           onClick={() => {
             setMode("decode")
             setInput(SAMPLE_BINARY)
-            setCopiedIndex(null)
           }}
           className={cn(
             "px-4 py-2 rounded-lg font-medium text-sm transition-colors",
@@ -161,10 +153,10 @@ export function BinaryConverter() {
               {mode === "encode" ? "Binary Output" : "Text Output"}
             </label>
             <button
-              onClick={() => copyToClipboard(result.output, 0)}
+              onClick={() => copy(result.output)}
               className="text-xs font-medium flex items-center gap-1 cursor-pointer"
             >
-              {copiedIndex === 0 ? (
+              {copied ? (
                 <>
                   <Check className="w-3 h-3" /> Copied!
                 </>

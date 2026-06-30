@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useMemo, useCallback } from "react"
+import { useCopy } from "@/hooks/useCopy"
 import {
   Copy,
   Check,
@@ -43,7 +44,7 @@ export function UnixTimestampConverter() {
   const [inputValue, setInputValue] = useState("")
   const [selectedTimezone, setSelectedTimezone] = useState("UTC")
   const [unit, setUnit] = useState<TimestampUnit>("seconds")
-  const [copiedId, setCopiedId] = useState<string | null>(null)
+  const { copied: currentCopied, copy: currentCopy } = useCopy()
   const [currentTime, setCurrentTime] = useState(getCurrentTimestamp())
   const [dateInput, setDateInput] = useState("")
   const [timeInput, setTimeInput] = useState("00:00:00")
@@ -83,13 +84,6 @@ export function UnixTimestampConverter() {
     if (parsedTimestamp === null) return null
     return getRelativeTime(parsedTimestamp)
   }, [parsedTimestamp])
-
-  // Handle copy
-  const copyToClipboard = (text: string, id: string) => {
-    navigator.clipboard.writeText(text)
-    setCopiedId(id)
-    setTimeout(() => setCopiedId(null), 2000)
-  }
 
   // Load current time
   const useCurrentTime = useCallback(() => {
@@ -221,15 +215,15 @@ export function UnixTimestampConverter() {
               </p>
             </div>
             <button
-              onClick={() => copyToClipboard(String(currentTime.seconds), "current")}
+              onClick={() => currentCopy(String(currentTime.seconds))}
               className={cn(
                 "px-4 py-2 rounded-lg font-semibold text-sm transition-all",
-                copiedId === "current"
+                currentCopied
                   ? "text-green-500"
                   : "text-white/80 hover:text-white"
               )}
             >
-              {copiedId === "current" ? (
+              {currentCopied ? (
                 <>
                   <Check className="w-4 h-4 inline mr-2" />
                   Copied
@@ -411,56 +405,31 @@ export function UnixTimestampConverter() {
                 <FormatBox
                   label="Unix Seconds"
                   value={String(formats.unix.seconds)}
-                  id="unix-seconds"
-                  copied={copiedId === "unix-seconds"}
-                  onCopy={() =>
-                    copyToClipboard(String(formats.unix.seconds), "unix-seconds")
-                  }
                 />
 
                 <FormatBox
                   label="Unix Milliseconds"
                   value={String(formats.unix.milliseconds)}
-                  id="unix-ms"
-                  copied={copiedId === "unix-ms"}
-                  onCopy={() =>
-                    copyToClipboard(
-                      String(formats.unix.milliseconds),
-                      "unix-ms"
-                    )
-                  }
                 />
 
                 <FormatBox
                   label="ISO 8601"
                   value={formats.iso}
-                  id="iso"
-                  copied={copiedId === "iso"}
-                  onCopy={() => copyToClipboard(formats.iso, "iso")}
                 />
 
                 <FormatBox
                   label="RFC 2822"
                   value={formats.rfc2822}
-                  id="rfc2822"
-                  copied={copiedId === "rfc2822"}
-                  onCopy={() => copyToClipboard(formats.rfc2822, "rfc2822")}
                 />
 
                 <FormatBox
                   label="UTC"
                   value={formats.utc}
-                  id="utc"
-                  copied={copiedId === "utc"}
-                  onCopy={() => copyToClipboard(formats.utc, "utc")}
                 />
 
                 <FormatBox
                   label="Locale"
                   value={formats.locale}
-                  id="locale"
-                  copied={copiedId === "locale"}
-                  onCopy={() => copyToClipboard(formats.locale, "locale")}
                 />
               </div>
 
@@ -665,15 +634,8 @@ export function UnixTimestampConverter() {
 
 // ── Helper Components ──────────────────────────────────────────────────────
 
-interface FormatBoxProps {
-  label: string
-  value: string
-  id: string
-  copied: boolean
-  onCopy: () => void
-}
-
-function FormatBox({ label, value, id, copied, onCopy }: FormatBoxProps) {
+function FormatBox({ label, value }: { label: string; value: string }) {
+  const { copied, copy } = useCopy()
   return (
     <div className="flex flex-col gap-2 p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg border border-zinc-200 dark:border-zinc-700">
       <div className="flex items-center justify-between">
@@ -681,7 +643,7 @@ function FormatBox({ label, value, id, copied, onCopy }: FormatBoxProps) {
           {label}
         </label>
         <button
-          onClick={onCopy}
+          onClick={() => copy(value)}
           className="text-xs font-semibold text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors flex items-center gap-1"
         >
           {copied ? (
