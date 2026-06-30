@@ -201,9 +201,16 @@ Distributed under the MIT License. See [`LICENSE`](./LICENSE) for more informati
 ---
 
 <div align="center">
+  <p>
+    Made with ❤️ by
+    <a href="https://github.com/lazytech614"><strong>lazytech614</strong></a>
+  </p>
 
-Made with ❤️ by <a href="https://github.com/lazytech614"><strong>lazytech614</strong></a>
-⭐ If you find Tool Stack useful, consider starring the repository!
-  <a href="https://tool-stack-kappa.vercel.app/">🌐 tool-stack-kappa.vercel.app</a>
+  <p>
+    ⭐ If you find <strong>Tool Stack</strong> useful, consider starring the repository!
+  </p>
 
+  <p>
+    🌐 <a href="https://tool-stack-kappa.vercel.app/">tool-stack-kappa.vercel.app</a>
+  </p>
 </div>
