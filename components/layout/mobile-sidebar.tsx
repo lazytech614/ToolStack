@@ -19,31 +19,35 @@ import {
   ChevronRight,
   ChevronDown,
   Zap,
-  BookOpen,
-  GraduationCap,
 } from "lucide-react";
 import { DiCodeigniter } from "react-icons/di";
 import { FaGithub } from "react-icons/fa";
-import { navLinks, LEARNING } from "@/constants/configs/configs";
-
-const CATEGORIES: {
-  key: "reference" | "guides";
-  label: string;
-  icon: React.ElementType;
-}[] = [
-  { key: "reference", label: "Reference", icon: BookOpen },
-  { key: "guides", label: "Guides", icon: GraduationCap },
-];
+import {
+  navLinks,
+  LEARNING,
+  LEARNING_CATEGORIES,
+  RESOURCES,
+  RESOURCE_CATEGORIES,
+} from "@/constants/configs/configs";
 
 export function MobileSidebar() {
   const [learningOpen, setLearningOpen] = useState(false);
+  const [resourcesOpen, setResourcesOpen] = useState(false);
 
-  const grouped = LEARNING.reduce(
+  const groupedLearning = LEARNING.reduce(
     (acc, link) => {
-      (acc[link.category as "reference" | "guides"] ??= []).push(link);
+      (acc[link.category as keyof typeof acc] ??= []).push(link);
       return acc;
     },
-    {} as Record<"reference" | "guides", typeof LEARNING>
+    {} as Record<string, typeof LEARNING>
+  );
+
+  const groupedResources = RESOURCES.reduce(
+    (acc, link) => {
+      (acc[link.category as keyof typeof acc] ??= []).push(link);
+      return acc;
+    },
+    {} as Record<string, typeof RESOURCES>
   );
 
   return (
@@ -94,15 +98,12 @@ export function MobileSidebar() {
 
               {/* Learning accordion */}
               <div
-                className={`rounded-2xl border transition-all overflow-hidden
-                  ${
-                    learningOpen
-                      ? "border-purple-300 bg-zinc-50 dark:border-purple-500/30 dark:bg-zinc-900"
-                      : "bg-white border-zinc-200 dark:bg-zinc-900/40 dark:border-zinc-800"
-                  }
-                `}
+                className={`rounded-2xl border transition-all overflow-hidden ${
+                  learningOpen
+                    ? "border-purple-300 bg-zinc-50 dark:border-purple-500/30 dark:bg-zinc-900"
+                    : "bg-white border-zinc-200 dark:bg-zinc-900/40 dark:border-zinc-800"
+                }`}
               >
-                {/* Accordion trigger */}
                 <button
                   onClick={() => setLearningOpen((v) => !v)}
                   className="w-full flex items-center justify-between p-4"
@@ -110,30 +111,31 @@ export function MobileSidebar() {
                   <p className="font-medium text-zinc-900 dark:text-white">
                     Learn
                   </p>
+
                   <ChevronDown
-                    className={`h-5 w-5 text-zinc-400 dark:text-zinc-500 transition-transform duration-200 ${
-                      learningOpen ? "rotate-180 text-purple-500 dark:text-purple-400" : ""
+                    className={`h-5 w-5 transition-transform ${
+                      learningOpen
+                        ? "rotate-180 text-purple-500"
+                        : "text-zinc-400 dark:text-zinc-500"
                     }`}
                   />
                 </button>
 
-                {/* Accordion content */}
                 {learningOpen && (
                   <div className="px-3 pb-3 space-y-4">
-                    {CATEGORIES.map(({ key, label, icon: CatIcon }) => (
+                    {LEARNING_CATEGORIES.map(({ key, title, icon: CatIcon }) => (
                       <div key={key}>
-                        {/* Category label */}
                         <div className="flex items-center gap-1.5 px-2 mb-1.5">
                           <CatIcon className="h-3.5 w-3.5 text-purple-500" />
                           <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-                            {label}
+                            {title}
                           </span>
                         </div>
 
-                        {/* Links */}
                         <div className="space-y-1">
-                          {grouped[key]?.map((link) => {
+                          {groupedLearning[key]?.map((link) => {
                             const Icon = link.icon;
+
                             return (
                               <Link
                                 key={link.href}
@@ -141,13 +143,84 @@ export function MobileSidebar() {
                                 className="group/item flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all hover:bg-white dark:hover:bg-zinc-800/60"
                               >
                                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800 group-hover/item:bg-purple-100 dark:group-hover/item:bg-purple-900/40 transition-colors">
-                                  <Icon className="h-4 w-4 text-zinc-500 dark:text-zinc-400 group-hover/item:text-purple-600 dark:group-hover/item:text-purple-400 transition-colors" />
+                                  <Icon className="h-4 w-4 text-zinc-500 dark:text-zinc-400 group-hover/item:text-purple-600 dark:group-hover/item:text-purple-400" />
                                 </span>
+
                                 <span className="flex flex-col">
                                   <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
                                     {link.label}
                                   </span>
-                                  <span className="text-xs text-zinc-400 dark:text-zinc-500 leading-snug">
+
+                                  <span className="text-xs text-zinc-400 dark:text-zinc-500">
+                                    {link.description}
+                                  </span>
+                                </span>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Resources accordion */}
+              <div
+                className={`rounded-2xl border transition-all overflow-hidden ${
+                  resourcesOpen
+                    ? "border-purple-300 bg-zinc-50 dark:border-purple-500/30 dark:bg-zinc-900"
+                    : "bg-white border-zinc-200 dark:bg-zinc-900/40 dark:border-zinc-800"
+                }`}
+              >
+                <button
+                  onClick={() => setResourcesOpen((v) => !v)}
+                  className="w-full flex items-center justify-between p-4"
+                >
+                  <p className="font-medium text-zinc-900 dark:text-white">
+                    Resources
+                  </p>
+
+                  <ChevronDown
+                    className={`h-5 w-5 transition-transform ${
+                      resourcesOpen
+                        ? "rotate-180 text-purple-500"
+                        : "text-zinc-400 dark:text-zinc-500"
+                    }`}
+                  />
+                </button>
+
+                {resourcesOpen && (
+                  <div className="px-3 pb-3 space-y-4">
+                    {RESOURCE_CATEGORIES.map(({ key, title, icon: CatIcon }) => (
+                      <div key={key}>
+                        <div className="flex items-center gap-1.5 px-2 mb-1.5">
+                          <CatIcon className="h-3.5 w-3.5 text-purple-500" />
+                          <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+                            {title}
+                          </span>
+                        </div>
+
+                        <div className="space-y-1">
+                          {groupedResources[key]?.map((link) => {
+                            const Icon = link.icon;
+
+                            return (
+                              <Link
+                                key={link.href}
+                                href={link.href}
+                                className="group/item flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all hover:bg-white dark:hover:bg-zinc-800/60"
+                              >
+                                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800 group-hover/item:bg-purple-100 dark:group-hover/item:bg-purple-900/40 transition-colors">
+                                  <Icon className="h-4 w-4 text-zinc-500 dark:text-zinc-400 group-hover/item:text-purple-600 dark:group-hover/item:text-purple-400" />
+                                </span>
+
+                                <span className="flex flex-col">
+                                  <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
+                                    {link.label}
+                                  </span>
+
+                                  <span className="text-xs text-zinc-400 dark:text-zinc-500">
                                     {link.description}
                                   </span>
                                 </span>
