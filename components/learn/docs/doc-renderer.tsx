@@ -52,7 +52,7 @@ export function DocRenderer({ blocks }: { blocks: ContentBlock[] }) {
                 <h2
                   key={i}
                   id={id}
-                  className="scroll-mt-24 text-lg font-bold text-zinc-900 dark:text-white pt-4 border-t border-zinc-100 dark:border-zinc-800"
+                  className="scroll-mt-24 border-t border-zinc-100 pt-4 text-lg font-bold text-zinc-900 dark:border-zinc-800 dark:text-white"
                 >
                   {block.text}
                 </h2>
@@ -72,10 +72,7 @@ export function DocRenderer({ blocks }: { blocks: ContentBlock[] }) {
           // Paragraph
           case "paragraph":
             return (
-              <p
-                key={i}
-                className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed"
-              >
+              <p key={i} className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
                 {block.text}
               </p>
             );
@@ -85,11 +82,11 @@ export function DocRenderer({ blocks }: { blocks: ContentBlock[] }) {
             return (
               <div key={i} className="space-y-1">
                 {block.filename && (
-                  <p className="text-[11px] font-medium text-zinc-400 dark:text-zinc-500 font-mono">
+                  <p className="font-mono text-[11px] font-medium text-zinc-400 dark:text-zinc-500">
                     {block.filename}
                   </p>
                 )}
-                <CodeBlock code={block.code} />
+                <CodeBlock code={block.code} language={block.language} />
               </div>
             );
 
@@ -98,18 +95,13 @@ export function DocRenderer({ blocks }: { blocks: ContentBlock[] }) {
             const style = calloutStyles[block.variant];
             const Icon = style.icon;
             return (
-              <div
-                key={i}
-                className={`flex gap-3 rounded-xl border p-4 ${style.wrapper}`}
-              >
-                <Icon className={`h-4 w-4 mt-0.5 shrink-0 ${style.iconClass}`} />
+              <div key={i} className={`flex gap-3 rounded-xl border p-4 ${style.wrapper}`}>
+                <Icon className={`mt-0.5 h-4 w-4 shrink-0 ${style.iconClass}`} />
                 <div>
-                  <p className={`text-xs font-semibold mb-0.5 ${style.titleClass}`}>
+                  <p className={`mb-0.5 text-xs font-semibold ${style.titleClass}`}>
                     {block.title}
                   </p>
-                  <p className={`text-xs leading-relaxed ${style.textClass}`}>
-                    {block.text}
-                  </p>
+                  <p className={`text-xs leading-relaxed ${style.textClass}`}>{block.text}</p>
                 </div>
               </div>
             );
@@ -118,17 +110,17 @@ export function DocRenderer({ blocks }: { blocks: ContentBlock[] }) {
           // List
           case "list":
             return block.ordered ? (
-              <ol key={i} className="space-y-1.5 pl-5 list-decimal">
+              <ol key={i} className="list-decimal space-y-1.5 pl-5">
                 {block.items.map((item, j) => (
-                  <li key={j} className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                  <li key={j} className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
                     {item}
                   </li>
                 ))}
               </ol>
             ) : (
-              <ul key={i} className="space-y-1.5 pl-5 list-disc">
+              <ul key={i} className="list-disc space-y-1.5 pl-5">
                 {block.items.map((item, j) => (
-                  <li key={j} className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                  <li key={j} className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
                     {item}
                   </li>
                 ))}
@@ -138,10 +130,13 @@ export function DocRenderer({ blocks }: { blocks: ContentBlock[] }) {
           // Table
           case "table":
             return (
-              <div key={i} className="overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800">
+              <div
+                key={i}
+                className="overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800"
+              >
                 <table className="w-full text-xs">
                   <thead>
-                    <tr className="border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900">
+                    <tr className="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900">
                       {block.headers.map((h, j) => (
                         <th
                           key={j}
@@ -156,12 +151,12 @@ export function DocRenderer({ blocks }: { blocks: ContentBlock[] }) {
                     {block.rows.map((row, j) => (
                       <tr
                         key={j}
-                        className="border-b border-zinc-100 dark:border-zinc-800/60 last:border-0 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/40"
+                        className="border-b border-zinc-100 last:border-0 hover:bg-zinc-50/50 dark:border-zinc-800/60 dark:hover:bg-zinc-900/40"
                       >
                         {row.map((cell, k) => (
                           <td
                             key={k}
-                            className="px-4 py-2.5 text-zinc-600 dark:text-zinc-400 font-mono"
+                            className="px-4 py-2.5 font-mono text-zinc-600 dark:text-zinc-400"
                           >
                             {cell}
                           </td>
@@ -175,12 +170,7 @@ export function DocRenderer({ blocks }: { blocks: ContentBlock[] }) {
 
           // Divider
           case "divider":
-            return (
-              <hr
-                key={i}
-                className="border-zinc-100 dark:border-zinc-800"
-              />
-            );
+            return <hr key={i} className="border-zinc-100 dark:border-zinc-800" />;
 
           default:
             return null;

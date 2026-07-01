@@ -1,3 +1,5 @@
+import type { BundledLanguage } from "shiki";
+
 // ─── Content Block Types ──────────────────────────────────────────────────────
 
 export type HeadingBlock = {
@@ -13,7 +15,7 @@ export type ParagraphBlock = {
 
 export type CodeBlock = {
   type: "code";
-  language: string;
+  language: BundledLanguage;
   code: string;
   filename?: string;
 };
@@ -42,13 +44,7 @@ export type DividerBlock = {
 };
 
 export type ContentBlock =
-  | HeadingBlock
-  | ParagraphBlock
-  | CodeBlock
-  | CalloutBlock
-  | ListBlock
-  | TableBlock
-  | DividerBlock;
+  HeadingBlock | ParagraphBlock | CodeBlock | CalloutBlock | ListBlock | TableBlock | DividerBlock;
 
 // ─── Doc Type ─────────────────────────────────────────────────────────────────
 
@@ -504,11 +500,7 @@ export async function GET() {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-export const docCategories = [
-  "getting-started",
-  "core-concepts",
-  "api-reference",
-] as const;
+export const docCategories = ["getting-started", "core-concepts", "api-reference"] as const;
 
 export type DocCategory = (typeof docCategories)[number];
 
@@ -523,14 +515,10 @@ export function getDocBySlug(slug: string) {
 }
 
 export function getDocsByCategory(category: DocCategory) {
-  return docs
-    .filter((d) => d.category === category)
-    .sort((a, b) => a.order - b.order);
+  return docs.filter((d) => d.category === category).sort((a, b) => a.order - b.order);
 }
 
 // Headings extracted for the on-this-page TOC
 export function getHeadings(doc: Doc) {
-  return doc.content.filter(
-    (block): block is HeadingBlock => block.type === "heading"
-  );
+  return doc.content.filter((block): block is HeadingBlock => block.type === "heading");
 }
