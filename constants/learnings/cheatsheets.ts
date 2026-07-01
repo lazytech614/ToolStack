@@ -1,3 +1,5 @@
+import { BundledLanguage } from "shiki";
+
 export type Snippet = {
   code: string;
   description?: string;
@@ -5,6 +7,7 @@ export type Snippet = {
 
 export type Section = {
   title: string;
+  language: BundledLanguage;
   snippets: Snippet[];
 };
 
@@ -28,6 +31,7 @@ export const cheatsheets: Cheatsheet[] = [
     sections: [
       {
         title: "Primitive Types",
+        language: "typescript",
         snippets: [
           { code: `let name: string = "Alice";`, description: "String" },
           { code: `let age: number = 30;`, description: "Number" },
@@ -39,15 +43,20 @@ export const cheatsheets: Cheatsheet[] = [
       },
       {
         title: "Arrays & Tuples",
+        language: "typescript",
         snippets: [
           { code: `let nums: number[] = [1, 2, 3];`, description: "Array shorthand" },
           { code: `let strs: Array<string> = ["a", "b"];`, description: "Generic array" },
           { code: `let pair: [string, number] = ["age", 30];`, description: "Tuple" },
-          { code: `let rgb: readonly [number, number, number] = [255, 0, 0];`, description: "Readonly tuple" },
+          {
+            code: `let rgb: readonly [number, number, number] = [255, 0, 0];`,
+            description: "Readonly tuple",
+          },
         ],
       },
       {
         title: "Interfaces & Types",
+        language: "typescript",
         snippets: [
           {
             code: `interface User {\n  id: number;\n  name: string;\n  email?: string;\n}`,
@@ -69,6 +78,7 @@ export const cheatsheets: Cheatsheet[] = [
       },
       {
         title: "Generics",
+        language: "typescript",
         snippets: [
           {
             code: `function identity<T>(arg: T): T {\n  return arg;\n}`,
@@ -86,6 +96,7 @@ export const cheatsheets: Cheatsheet[] = [
       },
       {
         title: "Utility Types",
+        language: "typescript",
         snippets: [
           { code: `Partial<User>`, description: "All fields optional" },
           { code: `Required<User>`, description: "All fields required" },
@@ -99,8 +110,12 @@ export const cheatsheets: Cheatsheet[] = [
       },
       {
         title: "Type Assertions & Guards",
+        language: "typescript",
         snippets: [
-          { code: `const el = document.getElementById("app") as HTMLDivElement;`, description: "Type assertion" },
+          {
+            code: `const el = document.getElementById("app") as HTMLDivElement;`,
+            description: "Type assertion",
+          },
           {
             code: `function isString(val: unknown): val is string {\n  return typeof val === "string";\n}`,
             description: "Type guard",
@@ -121,6 +136,7 @@ export const cheatsheets: Cheatsheet[] = [
     sections: [
       {
         title: "Setup",
+        language: "bash",
         snippets: [
           { code: `git config --global user.name "Your Name"`, description: "Set username" },
           { code: `git config --global user.email "you@example.com"`, description: "Set email" },
@@ -130,6 +146,7 @@ export const cheatsheets: Cheatsheet[] = [
       },
       {
         title: "Staging & Committing",
+        language: "bash",
         snippets: [
           { code: `git status`, description: "Check working tree status" },
           { code: `git add .`, description: "Stage all changes" },
@@ -140,6 +157,7 @@ export const cheatsheets: Cheatsheet[] = [
       },
       {
         title: "Branching",
+        language: "bash",
         snippets: [
           { code: `git branch`, description: "List branches" },
           { code: `git branch <name>`, description: "Create a branch" },
@@ -150,6 +168,7 @@ export const cheatsheets: Cheatsheet[] = [
       },
       {
         title: "Merging & Rebasing",
+        language: "bash",
         snippets: [
           { code: `git merge <branch>`, description: "Merge branch into current" },
           { code: `git rebase <branch>`, description: "Rebase onto branch" },
@@ -159,6 +178,7 @@ export const cheatsheets: Cheatsheet[] = [
       },
       {
         title: "Remote",
+        language: "bash",
         snippets: [
           { code: `git remote -v`, description: "List remotes" },
           { code: `git remote add origin <url>`, description: "Add remote" },
@@ -169,6 +189,7 @@ export const cheatsheets: Cheatsheet[] = [
       },
       {
         title: "Undoing Changes",
+        language: "bash",
         snippets: [
           { code: `git restore <file>`, description: "Discard working dir changes" },
           { code: `git restore --staged <file>`, description: "Unstage a file" },
@@ -179,6 +200,7 @@ export const cheatsheets: Cheatsheet[] = [
       },
       {
         title: "Stash",
+        language: "bash",
         snippets: [
           { code: `git stash`, description: "Stash current changes" },
           { code: `git stash pop`, description: "Apply and remove latest stash" },
@@ -199,17 +221,25 @@ export const cheatsheets: Cheatsheet[] = [
     sections: [
       {
         title: "Flexbox",
+        language: "css",
         snippets: [
           { code: `display: flex;`, description: "Enable flex container" },
           { code: `flex-direction: row | column;`, description: "Main axis direction" },
-          { code: `justify-content: center | space-between | flex-end;`, description: "Align on main axis" },
-          { code: `align-items: center | flex-start | stretch;`, description: "Align on cross axis" },
+          {
+            code: `justify-content: center | space-between | flex-end;`,
+            description: "Align on main axis",
+          },
+          {
+            code: `align-items: center | flex-start | stretch;`,
+            description: "Align on cross axis",
+          },
           { code: `flex: 1;`, description: "Grow to fill space" },
           { code: `gap: 1rem;`, description: "Space between items" },
         ],
       },
       {
         title: "Grid",
+        language: "css",
         snippets: [
           { code: `display: grid;`, description: "Enable grid container" },
           { code: `grid-template-columns: repeat(3, 1fr);`, description: "3 equal columns" },
@@ -221,6 +251,7 @@ export const cheatsheets: Cheatsheet[] = [
       },
       {
         title: "Selectors",
+        language: "css",
         snippets: [
           { code: `.parent > .child {}`, description: "Direct child" },
           { code: `.a + .b {}`, description: "Adjacent sibling" },
@@ -232,6 +263,7 @@ export const cheatsheets: Cheatsheet[] = [
       },
       {
         title: "Custom Properties",
+        language: "css",
         snippets: [
           { code: `:root {\n  --color-primary: #7c3aed;\n}`, description: "Define variable" },
           { code: `color: var(--color-primary);`, description: "Use variable" },
@@ -240,11 +272,15 @@ export const cheatsheets: Cheatsheet[] = [
       },
       {
         title: "Common Patterns",
+        language: "css",
         snippets: [
           { code: `* { box-sizing: border-box; }`, description: "Border box reset" },
           { code: `margin: 0 auto;`, description: "Horizontal centering" },
           { code: `position: sticky; top: 0;`, description: "Sticky header" },
-          { code: `overflow: hidden;\ntext-overflow: ellipsis;\nwhite-space: nowrap;`, description: "Truncate text" },
+          {
+            code: `overflow: hidden;\ntext-overflow: ellipsis;\nwhite-space: nowrap;`,
+            description: "Truncate text",
+          },
           { code: `aspect-ratio: 16 / 9;`, description: "Fixed aspect ratio" },
           { code: `min-height: 100dvh;`, description: "Full viewport height (mobile-safe)" },
         ],

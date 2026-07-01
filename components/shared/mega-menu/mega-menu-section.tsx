@@ -7,9 +7,7 @@ interface Props {
   section: Section;
 }
 
-export function MegaMenuSection({
-  section,
-}: Props) {
+export function MegaMenuSection({ section }: Props) {
   const Icon = section.icon;
 
   return (
@@ -17,7 +15,7 @@ export function MegaMenuSection({
       <div className="mb-2 flex items-center gap-1.5 px-2">
         <Icon className="h-3.5 w-3.5 text-purple-500" />
 
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+        <span className="text-[11px] font-semibold tracking-wider text-zinc-400 uppercase dark:text-zinc-500">
           {section.title}
         </span>
       </div>

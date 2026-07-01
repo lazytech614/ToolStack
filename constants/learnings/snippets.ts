@@ -1,9 +1,11 @@
+import { BundledLanguage } from "shiki";
+
 export type Snippet = {
   id: string;
   title: string;
   description: string;
   code: string;
-  language: "typescript" | "react" | "css";
+  language: BundledLanguage;
   tags: string[];
 };
 
@@ -12,7 +14,8 @@ export const snippets: Snippet[] = [
   {
     id: "ts-debounce",
     title: "debounce",
-    description: "Delays invoking a function until after a wait period has elapsed since the last call.",
+    description:
+      "Delays invoking a function until after a wait period has elapsed since the last call.",
     language: "typescript",
     tags: ["performance", "utils"],
     code: `function debounce<T extends (...args: unknown[]) => void>(
@@ -137,7 +140,7 @@ omit(user, ["password"]);
     id: "react-use-local-storage",
     title: "useLocalStorage",
     description: "Syncs state with localStorage, with SSR safety and JSON serialization.",
-    language: "react",
+    language: "tsx",
     tags: ["hooks", "storage"],
     code: `import { useState, useEffect } from "react";
 
@@ -166,7 +169,7 @@ const [theme, setTheme] = useLocalStorage("theme", "dark");`,
     id: "react-use-debounce",
     title: "useDebounce",
     description: "Returns a debounced version of a value, updated after a delay.",
-    language: "react",
+    language: "tsx",
     tags: ["hooks", "performance"],
     code: `import { useState, useEffect } from "react";
 
@@ -193,7 +196,7 @@ useEffect(() => {
     id: "react-use-click-outside",
     title: "useOnClickOutside",
     description: "Calls a handler when a click occurs outside a referenced element.",
-    language: "react",
+    language: "tsx",
     tags: ["hooks", "events"],
     code: `import { useEffect, type RefObject } from "react";
 
@@ -223,7 +226,7 @@ useOnClickOutside(ref, () => setOpen(false));`,
     id: "react-use-previous",
     title: "usePrevious",
     description: "Returns the previous value of a variable across renders.",
-    language: "react",
+    language: "tsx",
     tags: ["hooks", "state"],
     code: `import { useRef, useEffect } from "react";
 
@@ -244,7 +247,7 @@ const prevCount = usePrevious(count);
     id: "react-use-toggle",
     title: "useToggle",
     description: "Boolean state with a stable toggle function.",
-    language: "react",
+    language: "tsx",
     tags: ["hooks", "state"],
     code: `import { useState, useCallback } from "react";
 
@@ -353,6 +356,4 @@ const [isOpen, toggleOpen] = useToggle();
 export const languages = ["all", "typescript", "react", "css"] as const;
 export type Language = (typeof languages)[number];
 
-export const allTags = [
-  ...new Set(snippets.flatMap((s) => s.tags)),
-].sort();
+export const allTags = [...new Set(snippets.flatMap((s) => s.tags))].sort();

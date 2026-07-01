@@ -66,6 +66,7 @@ export function Navbar() {
               <MegaMenu
                 label="Learn"
                 sections={learningSections}
+                width="600px"
                 align="left"
               />
 

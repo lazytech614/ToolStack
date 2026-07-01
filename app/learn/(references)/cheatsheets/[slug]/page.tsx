@@ -57,27 +57,24 @@ export default async function CheatsheetDetailPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const {slug} = await params;
-  
+  const { slug } = await params;
+
   const sheet = cheatsheets.find((s) => s.slug === slug);
   if (!sheet) notFound();
 
-  const totalSnippets = sheet.sections.reduce(
-    (acc, s) => acc + s.snippets.length,
-    0
-  );
+  const totalSnippets = sheet.sections.reduce((acc, s) => acc + s.snippets.length, 0);
 
   return (
-    <main className="min-h-screen bg-white dark:bg-black py-10">
+    <main className="min-h-screen bg-white py-10 dark:bg-black">
       <Container>
         {/* Top row: heading + status */}
-        <div className="flex flex-col gap-4 md:flex-row items-start md:justify-between">
+        <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between">
           <PageHeading
             title={`${sheet.title} Cheatsheet`}
             description={`${sheet.description}`}
             secondaryDescription={`${totalSnippets} snippets across ${sheet.sections.length} sections`}
           />
-          <div className="text-left md:text-right md:shrink-0">
+          <div className="text-left md:shrink-0 md:text-right">
             <StatusBar
               items={cheatsheets}
               getName={(cheatsheet) => cheatsheet.title}
@@ -87,16 +84,16 @@ export default async function CheatsheetDetailPage({
         </div>
 
         {/* Layout: sidebar + content */}
-        <div className="flex gap-10 items-start mt-10">
+        <div className="mt-10 flex items-start gap-10">
           {/* Sticky sidebar */}
-          <aside className="hidden lg:block w-52 shrink-0 sticky top-24">
+          <aside className="sticky top-24 hidden w-52 shrink-0 lg:block">
             <CheatsheetSidebar sections={sheet.sections} />
           </aside>
 
           {/* Sections */}
-          <div className="flex-1 space-y-10 min-w-0">
+          <div className="min-w-0 flex-1 space-y-10">
             {sheet.sections.map((section) => (
-              <SectionBlock key={section.title} section={section} />
+              <SectionBlock key={section.title} language={section.language} section={section} />
             ))}
           </div>
         </div>

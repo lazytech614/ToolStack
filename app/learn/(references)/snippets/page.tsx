@@ -2,14 +2,20 @@
 
 import { Container } from "@/components/shared/container";
 import { PageHeading } from "@/components/shared/page-heading";
-import { StatusBar } from "@/components/shared/satus-bar";
 import { SearchBar } from "@/components/shared/search-bar";
 import { CategoryFilter } from "@/components/shared/category-filter";
-import { SecondaryHeading } from "@/components/shared/secondary-heading";
+import { StatusBar } from "@/components/shared/satus-bar";
 
-import { snippets, Language, Snippet } from "@/constants/learnings/snippets";
-import { SnippetCard } from "@/components/learn/snippets/snippet-card";
+import { snippets, Language } from "@/constants/learnings/snippets";
+
 import { useContentFilter } from "@/hooks/useContentFilters";
+import { useSelectedContent } from "@/hooks/useSelectedContent";
+
+import { SnippetSidebar } from "@/components/learn/snippets/snippet-sidebar";
+import { SnippetList } from "@/components/learn/snippets/snippet-list";
+import { SnippetListItem } from "@/components/learn/snippets/snippet-list-item";
+import { SnippetDetail } from "@/components/learn/snippets/snippet-detail";
+import { SnippetLayout } from "@/components/learn/snippets/snippets-layout";
 
 export default function SnippetsPage() {
   const {
@@ -22,7 +28,6 @@ export default function SnippetsPage() {
     unpinned,
     pinnedSet,
     togglePin,
-    isFiltering,
   } = useContentFilter({
     items: snippets,
     storageKey: "toolstack:learn:snippets:pinned",
@@ -31,27 +36,42 @@ export default function SnippetsPage() {
     matchesSearch: (snippet, q) =>
       snippet.title.toLowerCase().includes(q) ||
       snippet.description.toLowerCase().includes(q) ||
-      snippet.tags.some((tag) =>
-        tag.toLowerCase().includes(q)
-      ),
+      snippet.tags.some((tag) => tag.toLowerCase().includes(q)),
+  });
+
+  const sections = [];
+
+  if (pinned.length > 0) {
+    sections.push({
+      title: "📌 Pinned",
+      items: pinned,
+      count: pinned.length,
+    });
+  }
+
+  sections.push({
+    title: pinned.length ? "All Snippets" : "Snippets",
+    items: unpinned,
+    count: unpinned.length,
+  });
+
+  const { selected, selectedId, setSelectedId } = useSelectedContent({
+    items: filtered,
+    getId: (snippet) => snippet.id,
   });
 
   return (
-    <main className="min-h-screen bg-white dark:bg-black py-10">
+    <main className="min-h-screen bg-white py-10 dark:bg-black">
       <Container>
         {/* Header */}
-        <div className="flex flex-col gap-4 md:flex-row items-start md:justify-between">
+        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <PageHeading
             title="Snippets"
-            description="Copy-paste code patterns for everyday tasks. Search by name, tag, or description."
+            description="Copy-paste code patterns for everyday tasks."
           />
 
-          <div className="text-left md:text-right md:shrink-0">
-            <StatusBar
-              items={snippets}
-              getName={(snippet) => snippet.title}
-              itemLabel="snippet"
-            />
+          <div className="text-left md:shrink-0 md:text-right">
+            <StatusBar items={snippets} getName={(snippet) => snippet.title} itemLabel="snippet" />
           </div>
         </div>
 
@@ -65,108 +85,44 @@ export default function SnippetsPage() {
           />
 
           <CategoryFilter
-            categories={[
-              ...new Set(snippets.map((snippet) => snippet.language)),
-            ]}
+            categories={[...new Set(snippets.map((snippet) => snippet.language))]}
             selected={language}
-            onChange={(value) =>
-              setLanguage(value as Language | "All")
-            }
+            onChange={(value) => setLanguage(value as Language | "All")}
           />
         </div>
 
-        {isFiltering ? (
-          <section className="mt-10">
-            <SecondaryHeading
-              title="Results"
-              count={filtered.length}
-              description={
-                filtered.length === 0
-                  ? "No snippets match your search."
-                  : undefined
-              }
-            />
-
-            <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 mt-5">
-              {filtered.map((snippet) => (
-                <div
-                  key={snippet.id}
-                  className="mb-4 break-inside-avoid"
-                >
-                  <SnippetCard
-                    snippet={snippet}
-                    pin={{
-                      pinned: pinnedSet.has(snippet.id),
-                      onToggle: () => togglePin(snippet.id),
-                    }}
-                  />
-                </div>
-              ))}
-            </div>
-          </section>
-        ) : (
-          <>
-            {pinned.length > 0 && (
-              <section className="mt-10">
-                <SecondaryHeading
-                  title="Pinned Snippets"
-                  description="Your saved snippets appear here first."
-                  count={pinned.length}
-                />
-
-                <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 mt-5">
-                  {pinned.map((snippet) => (
-                    <div
-                      key={snippet.id}
-                      className="mb-4 break-inside-avoid"
-                    >
-                      <SnippetCard
-                        snippet={snippet}
-                        pin={{
-                          pinned: pinnedSet.has(snippet.id),
-                          onToggle: () => togglePin(snippet.id),
-                        }}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
-
-            <section className={pinned.length > 0 ? "mt-12" : "mt-10"}>
-              <SecondaryHeading
-                title={
-                  pinned.length
-                    ? "All Other Snippets"
-                    : "All Snippets"
-                }
-                description={
-                  pinned.length
-                    ? "Browse the remaining snippets below."
-                    : "Hover a card and click the pin icon to save a snippet."
-                }
-                count={unpinned.length}
-              />
-
-              <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 mt-5">
-                {unpinned.map((snippet) => (
-                  <div
+        <SnippetLayout
+          sidebar={
+            <SnippetSidebar>
+              <SnippetList
+                sections={sections}
+                selectedId={selectedId}
+                getId={(snippet) => snippet.id}
+                renderItem={(snippet, active) => (
+                  <SnippetListItem
                     key={snippet.id}
-                    className="mb-4 break-inside-avoid"
-                  >
-                    <SnippetCard
-                      snippet={snippet}
-                      pin={{
-                        pinned: pinnedSet.has(snippet.id),
-                        onToggle: () => togglePin(snippet.id),
-                      }}
-                    />
-                  </div>
-                ))}
-              </div>
-            </section>
-          </>
-        )}
+                    snippet={snippet}
+                    selected={active}
+                    pinned={pinnedSet.has(snippet.id)}
+                    onSelect={() => setSelectedId(snippet.id)}
+                    onTogglePin={() => togglePin(snippet.id)}
+                  />
+                )}
+              />
+            </SnippetSidebar>
+          }
+          detail={
+            <SnippetDetail
+              snippet={selected}
+              pinned={selected ? pinnedSet.has(selected.id) : false}
+              onTogglePin={() => {
+                if (selected) {
+                  togglePin(selected.id);
+                }
+              }}
+            />
+          }
+        />
       </Container>
     </main>
   );
