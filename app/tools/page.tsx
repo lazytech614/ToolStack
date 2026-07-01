@@ -49,24 +49,20 @@ export default function ToolsPage() {
         }}
       />
     ),
-    [pinnedSet, togglePin]
+    [pinnedSet, togglePin],
   );
 
   return (
-    <main className="min-h-screen bg-white dark:bg-black py-10">
+    <main className="min-h-screen bg-white py-10 dark:bg-black">
       <Container>
-        <div className="flex flex-col gap-4 md:flex-row items-start md:justify-between">
+        <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between">
           <PageHeading
             title="Developer Tools"
             description="Essential developer tools and offline code converters."
           />
 
-          <div className="text-left md:text-right md:shrink-0">
-            <StatusBar
-              items={ALL_TOOLS}
-              getName={(tool) => tool.name}
-              itemLabel="tool"
-            />
+          <div className="text-left md:shrink-0 md:text-right">
+            <StatusBar items={ALL_TOOLS} getName={(tool) => tool.name} itemLabel="tool" />
           </div>
         </div>
 
@@ -75,25 +71,17 @@ export default function ToolsPage() {
             value={search}
             onChange={setSearch}
             placeholder="Search tools..."
-            className="w-full lg:max-w-xs"
+            className="w-full lg:max-w-md"
           />
 
-          <CategoryFilter
-            categories={CATEGORIES}
-            selected={category}
-            onChange={setCategory}
-          />
+          <CategoryFilter categories={CATEGORIES} selected={category} onChange={setCategory} />
         </div>
 
         {isFiltering ? (
           <section className="mt-10">
             <SecondaryHeading
               title="Results"
-              description={
-                filtered.length === 0
-                  ? "No tools match your search."
-                  : undefined
-              }
+              description={filtered.length === 0 ? "No tools match your search." : undefined}
               count={filtered.length}
             />
 
@@ -127,11 +115,7 @@ export default function ToolsPage() {
 
             <section className={pinned.length > 0 ? "mt-12" : "mt-10"}>
               <SecondaryHeading
-                title={
-                  pinned.length > 0
-                    ? "All Other Tools"
-                    : "All Tools"
-                }
+                title={pinned.length > 0 ? "All Other Tools" : "All Tools"}
                 description={
                   pinned.length > 0
                     ? "The full utility list lives below your pinned tools."

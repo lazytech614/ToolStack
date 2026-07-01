@@ -8,9 +8,9 @@ import { SearchBar } from "@/components/shared/search-bar";
 import { CategoryFilter } from "@/components/shared/category-filter";
 import { StatusBar } from "@/components/shared/satus-bar";
 
-import { snippets } from "@/content/learning/snippets";
-import { snippetLanguages } from "@/content/learning/snippets/languages";
-import { getSnippetsByTag } from "@/content/learning/snippets/helpers";
+import { snippets } from "@/content/snippets";
+import { snippetLanguages } from "@/content/snippets/languages";
+import { getSnippetsByTag } from "@/content/snippets/helpers";
 import { useContentFilter } from "@/hooks/useContentFilters";
 import { useSelectedContent } from "@/hooks/useSelectedContent";
 
@@ -91,7 +91,7 @@ export default function SnippetsPage() {
             value={search}
             onChange={setSearch}
             placeholder="Search snippets..."
-            className="w-full lg:max-w-xs"
+            className="w-full lg:max-w-md"
           />
 
           <CategoryFilter

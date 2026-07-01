@@ -1,12 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import {
-  docs,
-  getDocBySlug,
-  getDocsByCategory,
-  getHeadings,
-  categoryLabels,
-} from "@/content/learning/docs";
+import { docs, getDocBySlug, getDocsByCategory, getHeadings, categoryLabels } from "@/content/docs";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { DocsSidebar } from "@/components/learn/docs/docs-sidebar";
 import { DocRenderer } from "@/components/learn/docs/doc-renderer";

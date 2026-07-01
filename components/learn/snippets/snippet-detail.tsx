@@ -1,6 +1,6 @@
 "use client";
 
-import { Snippet } from "@/content/learning/snippets/types";
+import { Snippet } from "@/content/snippets/types";
 
 import { SnippetToolbar } from "./snippet-toolbar";
 import { SnippetCode } from "./snippet-code";

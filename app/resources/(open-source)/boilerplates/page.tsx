@@ -11,7 +11,7 @@ import { ContentCard } from "@/components/shared/content-card";
 
 import { boilerplateToContentCard } from "@/lib/content-mappers/boilerplate-to-content";
 import { useContentFilter } from "@/hooks/useContentFilters";
-import { Boilerplate, boilerplates } from "@/content/resources/boilerplates";
+import { Boilerplate, boilerplates } from "@/content/boilerplates";
 
 export default function BoilerplatesPage() {
   const {

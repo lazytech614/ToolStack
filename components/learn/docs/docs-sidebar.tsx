@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BookOpen, Layers, Code2 } from "lucide-react";
-import { categoryLabels, docCategories, getDocsByCategory } from "@/content/learning/docs";
+import { categoryLabels, docCategories, getDocsByCategory } from "@/content/docs";
 
 const categoryIcons = {
   "getting-started": BookOpen,

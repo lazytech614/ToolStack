@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { getShikiTheme, highlightCode } from "@/lib/shiki";
 import { useTheme } from "next-themes";
-import { Snippet } from "@/content/learning/snippets/types";
+import { Snippet } from "@/content/snippets/types";
 
 interface Props {
   snippet: Snippet;

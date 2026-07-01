@@ -1,4 +1,4 @@
-import { CheatsheetSection } from "@/content/learning/cheatsheets";
+import { CheatsheetSection } from "@/content/cheatsheets";
 import { CodeBlock } from "../../shared/code-block";
 import { BundledLanguage } from "shiki";
 

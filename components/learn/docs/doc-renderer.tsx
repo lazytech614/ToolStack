@@ -2,7 +2,7 @@
 
 import { Info, Lightbulb, AlertTriangle, AlertOctagon } from "lucide-react";
 import { CodeBlock } from "../../shared/code-block";
-import { ContentBlock } from "@/content/learning/docs";
+import { ContentBlock } from "@/content/docs";
 
 // ─── Callout ─────────────────────────────────────────────────────────────────
 

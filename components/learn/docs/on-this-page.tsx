@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { HeadingBlock } from "@/content/learning/docs";
+import { HeadingBlock } from "@/content/docs";
 
 export function OnThisPage({ headings }: { headings: HeadingBlock[] }) {
   const [activeId, setActiveId] = useState("");

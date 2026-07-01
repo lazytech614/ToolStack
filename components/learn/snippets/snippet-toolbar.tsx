@@ -4,7 +4,7 @@ import { Copy, Pin, PinOff } from "lucide-react";
 import { useState } from "react";
 
 import { cn } from "@/lib/utils";
-import { Snippet } from "@/content/learning/snippets/types";
+import { Snippet } from "@/content/snippets/types";
 
 interface Props {
   snippet: Snippet;

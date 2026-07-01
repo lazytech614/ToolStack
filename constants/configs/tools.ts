@@ -23,32 +23,26 @@ import {
   Minimize2,
   Eye,
   Columns,
-} from "lucide-react"
-import { LucideIcon } from "lucide-react"
+} from "lucide-react";
+import { LucideIcon } from "lucide-react";
 
 export type ToolCategory =
-  | "Encoding"
-  | "Formatting"
-  | "Comparison"
-  | "Generator"
-  | "Converter"
-  | "Preview"
-  | "Utilities"
+  "Encoding" | "Formatting" | "Comparison" | "Generator" | "Converter" | "Preview" | "Utilities";
 
 export interface Tool {
-  id: string
-  name: string
-  description: string
-  icon: LucideIcon
-  category: ToolCategory
-  href: string
-  isNew?: boolean
-  status?: "COMING_SOON" | "DEPRECATED" | "MAINTENANCE" | "BETA" | "ACTIVE"
+  id: string;
+  name: string;
+  description: string;
+  icon: LucideIcon;
+  category: ToolCategory;
+  href: string;
+  isNew?: boolean;
+  status?: "COMING_SOON" | "DEPRECATED" | "MAINTENANCE" | "BETA" | "ACTIVE";
   seo: {
-    title: string
-    description: string
-    keywords: string[]
-  }
+    title: string;
+    description: string;
+    keywords: string[];
+  };
 }
 
 export const ALL_TOOLS: Tool[] = [
@@ -86,13 +80,7 @@ export const ALL_TOOLS: Tool[] = [
       title: "Online Diff Checker – Compare Text & Code ",
       description:
         "Compare two text blocks side by side and highlight additions, deletions, and unchanged lines. Supports split and inline diff views.",
-      keywords: [
-        "diff checker",
-        "text diff",
-        "code diff",
-        "compare text online",
-        "diff tool",
-      ],
+      keywords: ["diff checker", "text diff", "code diff", "compare text online", "diff tool"],
     },
   },
   {
@@ -120,8 +108,7 @@ export const ALL_TOOLS: Tool[] = [
   {
     id: "html-preview",
     name: "HTML Preview",
-    description:
-      "Write and preview raw HTML in real-time with a live sandboxed renderer.",
+    description: "Write and preview raw HTML in real-time with a live sandboxed renderer.",
     icon: Code2,
     category: "Preview",
     href: "/tools/html-preview",
@@ -205,8 +192,7 @@ export const ALL_TOOLS: Tool[] = [
   {
     id: "json-to-schema",
     name: "JSON → Schema",
-    description:
-      "Automatically infer a JSON Schema from any JSON document you paste in.",
+    description: "Automatically infer a JSON Schema from any JSON document you paste in.",
     icon: FileJson,
     category: "Generator",
     href: "/tools/json-to-schema",
@@ -227,8 +213,7 @@ export const ALL_TOOLS: Tool[] = [
   {
     id: "markdown-preview",
     name: "Markdown Preview",
-    description:
-      "Write Markdown and see the rendered output side-by-side with GFM support.",
+    description: "Write Markdown and see the rendered output side-by-side with GFM support.",
     icon: Eye,
     category: "Preview",
     href: "/tools/markdown-preview",
@@ -269,8 +254,7 @@ export const ALL_TOOLS: Tool[] = [
   {
     id: "hash-generator",
     name: "Hash Generator",
-    description:
-      "Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from text or files instantly.",
+    description: "Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from text or files instantly.",
     icon: Hash,
     category: "Generator",
     href: "/tools/hash-generator",
@@ -290,8 +274,7 @@ export const ALL_TOOLS: Tool[] = [
   {
     id: "color-converter",
     name: "Color Converter",
-    description:
-      "Convert between HEX, RGB, HSL, and HSV color formats with a visual picker.",
+    description: "Convert between HEX, RGB, HSL, and HSV color formats with a visual picker.",
     icon: Palette,
     category: "Converter",
     href: "/tools/color-converter",
@@ -311,8 +294,7 @@ export const ALL_TOOLS: Tool[] = [
   {
     id: "unix-timestamp",
     name: "Unix Timestamp",
-    description:
-      "Convert Unix timestamps to human-readable dates and back, with timezone support.",
+    description: "Convert Unix timestamps to human-readable dates and back, with timezone support.",
     icon: Clock,
     category: "Converter",
     href: "/tools/unix-timestamp",
@@ -353,8 +335,7 @@ export const ALL_TOOLS: Tool[] = [
   {
     id: "number-base-converter",
     name: "Number Base Converter",
-    description:
-      "Convert numbers between binary, octal, decimal, and hexadecimal bases.",
+    description: "Convert numbers between binary, octal, decimal, and hexadecimal bases.",
     icon: Calculator,
     category: "Converter",
     href: "/tools/number-base-converter",
@@ -374,8 +355,7 @@ export const ALL_TOOLS: Tool[] = [
   {
     id: "image-converter",
     name: "Image Converter",
-    description:
-      "Convert images between PNG, JPEG, WebP, and SVG formats directly in the browser.",
+    description: "Convert images between PNG, JPEG, WebP, and SVG formats directly in the browser.",
     icon: Image,
     category: "Converter",
     href: "/tools/image-converter",
@@ -396,8 +376,7 @@ export const ALL_TOOLS: Tool[] = [
   {
     id: "lorem-ipsum",
     name: "Lorem Ipsum",
-    description:
-      "Generate placeholder text in paragraphs, sentences, or words with custom length.",
+    description: "Generate placeholder text in paragraphs, sentences, or words with custom length.",
     icon: Type,
     category: "Generator",
     href: "/tools/lorem-ipsum",
@@ -427,13 +406,7 @@ export const ALL_TOOLS: Tool[] = [
       title: "JWT Debugger – Decode & Verify JSON Web Tokens ",
       description:
         "Decode and inspect JWT headers, payloads, and signatures. Fully offline signature validation — your tokens never leave the browser.",
-      keywords: [
-        "jwt debugger",
-        "jwt decoder",
-        "json web token",
-        "jwt validator",
-        "jwt inspector",
-      ],
+      keywords: ["jwt debugger", "jwt decoder", "json web token", "jwt validator", "jwt inspector"],
     },
   },
   {
@@ -459,8 +432,7 @@ export const ALL_TOOLS: Tool[] = [
   {
     id: "csv-viewer",
     name: "CSV Viewer",
-    description:
-      "Paste or upload a CSV file and browse it as a sortable, filterable table.",
+    description: "Paste or upload a CSV file and browse it as a sortable, filterable table.",
     icon: FileText,
     category: "Preview",
     href: "/tools/csv-viewer",
@@ -480,8 +452,7 @@ export const ALL_TOOLS: Tool[] = [
   {
     id: "binary-converter",
     name: "Binary Converter",
-    description:
-      "Encode text to binary and decode binary strings back to plain text.",
+    description: "Encode text to binary and decode binary strings back to plain text.",
     icon: Binary,
     category: "Encoding",
     href: "/tools/binary-converter",
@@ -523,8 +494,7 @@ export const ALL_TOOLS: Tool[] = [
   {
     id: "ip-lookup",
     name: "IP Lookup",
-    description:
-      "Look up geolocation, ISP, and network info for any IPv4 or IPv6 address.",
+    description: "Look up geolocation, ISP, and network info for any IPv4 or IPv6 address.",
     icon: Network,
     category: "Utilities",
     href: "/tools/ip-lookup",
@@ -544,8 +514,7 @@ export const ALL_TOOLS: Tool[] = [
   {
     id: "minifier",
     name: "Code Minifier",
-    description:
-      "Minify HTML, CSS, and JavaScript to reduce file size for production.",
+    description: "Minify HTML, CSS, and JavaScript to reduce file size for production.",
     icon: Minimize2,
     category: "Utilities",
     href: "/tools/minifier",
@@ -565,8 +534,7 @@ export const ALL_TOOLS: Tool[] = [
   {
     id: "side-by-side",
     name: "Side-by-Side View",
-    description:
-      "Open two tools simultaneously in a resizable split-pane layout.",
+    description: "Open two tools simultaneously in a resizable split-pane layout.",
     icon: Columns,
     category: "Utilities",
     href: "/tools/side-by-side",
@@ -609,7 +577,7 @@ export const ALL_TOOLS: Tool[] = [
       ],
     },
   },
-]
+];
 
 export const CATEGORIES: ToolCategory[] = [
   "Encoding",
@@ -619,4 +587,4 @@ export const CATEGORIES: ToolCategory[] = [
   "Converter",
   "Preview",
   "Utilities",
-]
+];

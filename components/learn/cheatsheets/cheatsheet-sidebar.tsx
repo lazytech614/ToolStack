@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { CheatsheetSection } from "@/content/learning/cheatsheets";
+import { CheatsheetSection } from "@/content/cheatsheets";
 
 export function CheatsheetSidebar({ sections }: { sections: CheatsheetSection[] }) {
   const [activeId, setActiveId] = useState<string>("");

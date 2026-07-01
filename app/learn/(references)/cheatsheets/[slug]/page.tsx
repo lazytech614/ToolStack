@@ -5,8 +5,8 @@ import { StatusBar } from "@/components/shared/satus-bar";
 import { CheatsheetSidebar } from "@/components/learn/cheatsheets/cheatsheet-sidebar";
 import { SectionBlock } from "@/components/learn/cheatsheets/section-block";
 import { Metadata } from "next";
-import { cheatsheets } from "@/content/learning/cheatsheets";
-import { getCheatsheet } from "@/content/learning/cheatsheets/helpers";
+import { cheatsheets } from "@/content/cheatsheets";
+import { getCheatsheet } from "@/content/cheatsheets/helpers";
 
 // ─── Static Params ────────────────────────────────────────────────────────────
 

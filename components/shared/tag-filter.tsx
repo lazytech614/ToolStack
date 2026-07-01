@@ -14,7 +14,7 @@ export function TagFilter<T extends string>({ tags, active, onChange }: Props<T>
           key={tag}
           onClick={() => onChange(tag)}
           className={cn(
-            "rounded-full border px-3.5 py-1.5 text-xs font-medium transition-all duration-150",
+            "rounded-full border px-3.5 py-1.5 text-xs font-medium capitalize transition-all duration-150",
             active === tag
               ? "border-transparent bg-linear-to-r from-purple-600 to-violet-600 text-white shadow-sm"
               : "border-zinc-200 bg-transparent text-zinc-600 hover:border-purple-300 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:border-purple-500/40 dark:hover:text-white",

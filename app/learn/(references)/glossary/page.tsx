@@ -7,8 +7,8 @@ import {
   glossaryCategories,
   type GlossaryCategoryFilter,
   type GlossaryTerm,
-} from "@/content/learning/glossary";
-import { getGlossaryTerm } from "@/content/learning/glossary/helpers";
+} from "@/content/glossary";
+import { getGlossaryTerm } from "@/content/glossary/helpers";
 
 import { Container } from "@/components/shared/container";
 import { PageHeading } from "@/components/shared/page-heading";
@@ -186,7 +186,7 @@ export default function GlossaryPage() {
             value={search}
             onChange={setSearch}
             placeholder="Search glossary..."
-            className="w-full"
+            className="w-full lg:max-w-md"
           />
 
           <CategoryFilter

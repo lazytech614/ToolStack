@@ -9,7 +9,7 @@ import { ContentCard } from "@/components/shared/content-card";
 import { ContentGrid } from "@/components/shared/content-grid";
 import { TagFilter } from "@/components/shared/tag-filter";
 
-import { cheatsheets, cheatsheetTags, type Cheatsheet } from "@/content/learning/cheatsheets";
+import { cheatsheets, cheatsheetTags, type Cheatsheet } from "@/content/cheatsheets";
 
 import { cheatsheetToContentCard } from "@/lib/content-mappers/cheatsheet-to-content";
 import { useContentFilter } from "@/hooks/useContentFilters";
@@ -74,7 +74,7 @@ export default function CheatsheetsPage() {
             value={search}
             onChange={setSearch}
             placeholder="Search cheatsheets..."
-            className="w-full lg:max-w-xs"
+            className="w-full lg:max-w-md"
           />
 
           <TagFilter active={activeTag} onChange={setActiveTag} tags={cheatsheetTags} />
