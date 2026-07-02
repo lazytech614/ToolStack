@@ -1,8 +1,9 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { search } from "@/lib/search-engine";
+
 import type { SearchItem } from "@/types/search-types";
+import { search } from "@/lib/search-engine";
 
 interface GlobalSearchContextValue {
   open: boolean;
@@ -22,7 +23,6 @@ const GlobalSearchContext = createContext<GlobalSearchContextValue | null>(null)
 
 export function GlobalSearchProvider({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
-
   const [query, setQuery] = useState("");
 
   const results = useMemo(() => search(query), [query]);
