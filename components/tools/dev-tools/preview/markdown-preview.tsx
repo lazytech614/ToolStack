@@ -54,10 +54,7 @@ export function MarkdownPreview() {
     if (!nodes.length) return;
     (async () => {
       try {
-        // @ts-expect-error - Mermaid attaches to the window object at runtime
-        const mermaid = (
-          await import("https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs")
-        ).default;
+        const mermaid = (await import("mermaid")).default;
         mermaid.initialize({
           startOnLoad: false,
           theme: isDark ? "dark" : "default",

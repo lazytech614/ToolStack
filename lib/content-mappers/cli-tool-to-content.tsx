@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import type { CardModel } from "@/types/content-card.types";
-import type { CLITool } from "@/constants/resources/cli-tools";
+import type { CLITool } from "@/content/cli-tools";
 
 export function cliToolToContentCard(tool: CLITool): CardModel {
   const installCommand =

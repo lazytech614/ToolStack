@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import { Template } from "@/constants/resources/templates";
-import { CardModel } from "@/types/content-card.types";
+import type { CardModel } from "@/types/content-card.types";
+import type { Template } from "@/content/templates";
 
 export function templateToContentCard(template: Template): CardModel {
   return {

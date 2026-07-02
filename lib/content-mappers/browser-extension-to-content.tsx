@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { BrowserExtension } from "@/constants/resources/browser-extensions";
+import type { BrowserExtension } from "@/content/browser-extensions";
 import { CardModel } from "@/types/content-card.types";
 
 export function browserExtensionToContentCard(extension: BrowserExtension): CardModel {

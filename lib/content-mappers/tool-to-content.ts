@@ -1,4 +1,4 @@
-import { Tool, ToolCategory } from "@/constants/configs/tools";
+import type { Tool, ToolCategory } from "@/content/tools";
 import { CardColor, CardModel } from "@/types/content-card.types";
 
 const TOOL_CATEGORY_COLORS: Record<ToolCategory, CardColor> = {

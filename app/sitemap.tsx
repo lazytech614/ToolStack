@@ -1,5 +1,5 @@
+import { ALL_TOOLS } from "@/content/tools";
 import { MetadataRoute } from "next";
-import { ALL_TOOLS } from "@/constants/configs/tools";
 
 const BASE_URL = "https://tool-stack-kappa.vercel.app";
 

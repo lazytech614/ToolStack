@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import { StarterKit } from "@/constants/resources/starter-kits";
-import { CardModel } from "@/types/content-card.types";
+import type { CardModel } from "@/types/content-card.types";
+import type { StarterKit } from "@/content/starter-kits";
 
 export function starterKitToContentCard(kit: StarterKit): CardModel {
   const enabledFeatures = [

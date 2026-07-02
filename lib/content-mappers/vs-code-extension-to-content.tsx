@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import { CardModel } from "@/types/content-card.types";
-import { VSCodeExtension } from "@/constants/resources/vs-code-extensions";
+import type { CardModel } from "@/types/content-card.types";
+import type { VSCodeExtension } from "@/content/vscode-extensions";
 
 export function vscodeExtensionToContentCard(extension: VSCodeExtension): CardModel {
   return {
