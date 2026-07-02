@@ -71,7 +71,7 @@ export default function ToolsPage() {
             value={search}
             onChange={setSearch}
             placeholder="Search tools..."
-            className="w-full lg:max-w-md"
+            className="w-full lg:max-w-xs"
           />
 
           <CategoryFilter categories={TOOL_CATEGORIES} selected={category} onChange={setCategory} />

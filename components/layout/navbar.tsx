@@ -11,7 +11,7 @@ import { ModeToggle } from "../providers/mode-toggle";
 import { MobileSidebar } from "./mobile-sidebar";
 import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/constants/configs/configs";
-import { MegaMenu } from "../shared/mega-menu/mega-menu";
+import { MegaMenu } from "../shared/mega-menu";
 import { learningSections } from "@/constants/navigation/learning-menu";
 import { resourceSections } from "@/constants/navigation/resource-menu";
 

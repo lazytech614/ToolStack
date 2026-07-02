@@ -74,7 +74,7 @@ export default function CheatsheetsPage() {
             value={search}
             onChange={setSearch}
             placeholder="Search cheatsheets..."
-            className="w-full lg:max-w-md"
+            className="w-full lg:max-w-xs"
           />
 
           <TagFilter active={activeTag} onChange={setActiveTag} tags={cheatsheetTags} />

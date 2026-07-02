@@ -91,7 +91,7 @@ export default function SnippetsPage() {
             value={search}
             onChange={setSearch}
             placeholder="Search snippets..."
-            className="w-full lg:max-w-md"
+            className="w-full lg:max-w-xs"
           />
 
           <CategoryFilter

@@ -186,7 +186,7 @@ export default function GlossaryPage() {
             value={search}
             onChange={setSearch}
             placeholder="Search glossary..."
-            className="w-full lg:max-w-md"
+            className="w-full lg:max-w-xs"
           />
 
           <CategoryFilter
