@@ -19,7 +19,7 @@ export const THEME_COLORS = {
       secondary: "border-zinc-300",
     },
   },
-  
+
   dark: {
     bg: {
       primary: "bg-black",
@@ -107,40 +107,40 @@ export const THEME_COLORS = {
 
 /**
  * THEME IMPLEMENTATION PATTERNS
- * 
+ *
  * Pattern 1: Simple Light/Dark Split
  * className="text-zinc-900 dark:text-white"
- * 
+ *
  * Pattern 2: Gradient Backgrounds
  * className="bg-gradient-to-r from-purple-600 dark:from-purple-400 to-violet-600"
- * 
+ *
  * Pattern 3: Nested Light/Dark
  * className="bg-white dark:bg-zinc-900/50 border-zinc-200 dark:border-zinc-800"
- * 
+ *
  * Pattern 4: Hover States with Theme
  * className="hover:border-purple-300 dark:hover:border-purple-500/30"
- * 
+ *
  * Pattern 5: Opacity Variations
  * className="bg-purple-500/10 dark:bg-purple-500/20"
  */
 
 /**
  * QUICK REFERENCE: When to use each color
- * 
+ *
  * Backgrounds:
  * - Primary container: bg-white dark:bg-black
  * - Secondary container: bg-zinc-50 dark:bg-zinc-900
  * - Icon backgrounds: [color]-100 dark:[color]-500/10
- * 
+ *
  * Text:
  * - Headings: text-zinc-900 dark:text-white
  * - Body: text-zinc-600 dark:text-zinc-400
  * - Small text: text-zinc-500 dark:text-zinc-500
- * 
+ *
  * Borders:
  * - Primary: border-zinc-200 dark:border-zinc-800
  * - Secondary: border-zinc-300 dark:border-zinc-700
- * 
+ *
  * Accents:
  * - Use purple-600 (light) and purple-400 (dark) for consistency
  */

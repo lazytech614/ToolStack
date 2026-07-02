@@ -9,9 +9,8 @@ import { SecondaryHeading } from "@/components/shared/secondary-heading";
 import { ContentGrid } from "@/components/shared/content-grid";
 import { ContentCard } from "@/components/shared/content-card";
 
-import { StarterKit, starterKits } from "@/constants/resources/starter-kits";
+import { type StarterKit, starterKits } from "@/content/starter-kits";
 import { starterKitToContentCard } from "@/lib/content-mappers/starter-kit-to-content";
-
 import { useContentFilter } from "@/hooks/useContentFilters";
 
 export default function StarterKitsPage() {
@@ -62,11 +61,7 @@ export default function StarterKitsPage() {
           />
 
           <div className="text-left md:shrink-0 md:text-right">
-            <StatusBar
-              items={starterKits}
-              getName={(kit) => kit.name}
-              itemLabel="starter kit"
-            />
+            <StatusBar items={starterKits} getName={(kit) => kit.name} itemLabel="starter kit" />
           </div>
         </div>
 
@@ -80,9 +75,7 @@ export default function StarterKitsPage() {
           />
 
           <CategoryFilter
-            categories={[
-              ...new Set(starterKits.map((kit) => kit.framework)),
-            ]}
+            categories={[...new Set(starterKits.map((kit) => kit.framework))]}
             selected={category}
             onChange={setCategory}
           />
@@ -94,11 +87,7 @@ export default function StarterKitsPage() {
             <SecondaryHeading
               title="Results"
               count={filtered.length}
-              description={
-                filtered.length === 0
-                  ? "No starter kits match your search."
-                  : undefined
-              }
+              description={filtered.length === 0 ? "No starter kits match your search." : undefined}
             />
 
             <div className="mt-5">
@@ -133,11 +122,7 @@ export default function StarterKitsPage() {
             {/* Remaining */}
             <section className={pinned.length ? "mt-12" : "mt-10"}>
               <SecondaryHeading
-                title={
-                  pinned.length
-                    ? "All Other Starter Kits"
-                    : "All Starter Kits"
-                }
+                title={pinned.length ? "All Other Starter Kits" : "All Starter Kits"}
                 description={
                   pinned.length
                     ? "Browse the remaining starter kits below."

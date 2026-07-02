@@ -1,29 +1,29 @@
-import { 
+import {
   Blocks,
-  BookMarked, 
-  BookOpen, 
-  Bot, 
-  Box, 
-  Brush, 
-  Code2, 
-  DatabaseZap, 
-  FileCode2, 
-  FileText, 
-  FolderGit2, 
-  GraduationCap, 
-  Image, 
-  Laptop, 
-  Layers, 
-  MonitorSmartphone, 
-  Package, 
-  Palette, 
-  Search, 
+  BookMarked,
+  BookOpen,
+  Bot,
+  Box,
+  Brush,
+  Code2,
+  DatabaseZap,
+  FileCode2,
+  FileText,
+  FolderGit2,
+  GraduationCap,
+  Image,
+  Laptop,
+  Layers,
+  MonitorSmartphone,
+  Package,
+  Palette,
+  Search,
   Sparkles,
   Terminal,
-  Wrench
+  Wrench,
 } from "lucide-react";
 
-export const navLinks = [
+export const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Tools", href: "/tools" },
 ];
@@ -88,7 +88,7 @@ export const LEARNING_CATEGORIES = [
     key: "guides",
     title: "Guides",
     icon: GraduationCap,
-  }
+  },
 ] as const;
 
 export const RESOURCES = [

@@ -1,18 +1,13 @@
-import {
-  FileCode,
-  BookOpen,
-  Table2,
-  DatabaseZapIcon,
-} from "lucide-react";
+import { FileCode, BookOpen, Table2, DatabaseZapIcon } from "lucide-react";
 
 import { ToolCard } from "./tool-card";
 
 export function ToolShowcase() {
   return (
     <div className="relative lg:w-1/2">
-      <div className="absolute inset-0 rounded-3xl bg-linear-to-br from-purple-500/20 to-violet-500/20 dark:from-purple-500/10 dark:to-violet-500/10 blur-3xl" />
+      <div className="absolute inset-0 rounded-3xl bg-linear-to-br from-purple-500/20 to-violet-500/20 blur-3xl dark:from-purple-500/10 dark:to-violet-500/10" />
 
-      <div className="relative rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/80 dark:bg-zinc-950/80 p-6 backdrop-blur-xl shadow-xl dark:shadow-none">
+      <div className="relative rounded-3xl border border-zinc-200 bg-zinc-50/80 p-6 shadow-xl backdrop-blur-xl dark:border-zinc-800 dark:bg-zinc-950/80 dark:shadow-none">
         {/* Window chrome */}
         <div className="mb-6 flex items-center gap-2">
           <div className="h-3 w-3 rounded-full bg-red-500" />

@@ -9,9 +9,10 @@ import { SecondaryHeading } from "@/components/shared/secondary-heading";
 import { ContentGrid } from "@/components/shared/content-grid";
 import { ContentCard } from "@/components/shared/content-card";
 
-import { cliTools, CLITool } from "@/constants/resources/cli-tools";
+import { CLITool, cliTools } from "@/content/cli-tools";
 import { cliToolToContentCard } from "@/lib/content-mappers/cli-tool-to-content";
 import { useContentFilter } from "@/hooks/useContentFilters";
+import { allCliToolsCategories } from "@/content/cli-tools/categories";
 
 export default function CLIToolsPage() {
   const {
@@ -33,18 +34,10 @@ export default function CLIToolsPage() {
     matchesSearch: (tool, q) =>
       tool.name.toLowerCase().includes(q) ||
       tool.description.toLowerCase().includes(q) ||
-      tool.category.some((category) =>
-        category.toLowerCase().includes(q)
-      ) ||
-      tool.tags.some((tag) =>
-        tag.toLowerCase().includes(q)
-      ) ||
-      tool.shells.some((shell) =>
-        shell.toLowerCase().includes(q)
-      ) ||
-      tool.os.some((os) =>
-        os.toLowerCase().includes(q)
-      ) ||
+      tool.category.some((category) => category.toLowerCase().includes(q)) ||
+      tool.tags.some((tag) => tag.toLowerCase().includes(q)) ||
+      tool.shells.some((shell) => shell.toLowerCase().includes(q)) ||
+      tool.os.some((os) => os.toLowerCase().includes(q)) ||
       tool.version.toLowerCase().includes(q),
   });
 
@@ -61,21 +54,17 @@ export default function CLIToolsPage() {
   );
 
   return (
-    <main className="min-h-screen bg-white dark:bg-black py-10">
+    <main className="min-h-screen bg-white py-10 dark:bg-black">
       <Container>
         {/* Header */}
-        <div className="flex flex-col gap-4 md:flex-row items-start md:justify-between">
+        <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between">
           <PageHeading
             title="CLI Tools"
             description="Powerful command-line utilities used by modern developers."
           />
 
-          <div className="text-left md:text-right md:shrink-0">
-            <StatusBar
-              items={cliTools}
-              getName={(tool) => tool.name}
-              itemLabel="CLI tool"
-            />
+          <div className="text-left md:shrink-0 md:text-right">
+            <StatusBar items={cliTools} getName={(tool) => tool.name} itemLabel="CLI tool" />
           </div>
         </div>
 
@@ -89,9 +78,7 @@ export default function CLIToolsPage() {
           />
 
           <CategoryFilter
-            categories={[
-              ...new Set(cliTools.flatMap((tool) => tool.category)),
-            ]}
+            categories={allCliToolsCategories}
             selected={category}
             onChange={setCategory}
           />
@@ -102,11 +89,7 @@ export default function CLIToolsPage() {
             <SecondaryHeading
               title="Results"
               count={filtered.length}
-              description={
-                filtered.length === 0
-                  ? "No CLI tools match your search."
-                  : undefined
-              }
+              description={filtered.length === 0 ? "No CLI tools match your search." : undefined}
             />
 
             <div className="mt-5">
@@ -139,11 +122,7 @@ export default function CLIToolsPage() {
 
             <section className={pinned.length > 0 ? "mt-12" : "mt-10"}>
               <SecondaryHeading
-                title={
-                  pinned.length
-                    ? "All Other CLI Tools"
-                    : "All CLI Tools"
-                }
+                title={pinned.length ? "All Other CLI Tools" : "All CLI Tools"}
                 description={
                   pinned.length
                     ? "Browse the remaining command-line utilities below."

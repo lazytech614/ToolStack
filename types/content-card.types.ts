@@ -1,14 +1,7 @@
 import { LucideIcon } from "lucide-react";
 import { ReactNode } from "react";
 
-export type CardColor =
-  | "blue"
-  | "green"
-  | "purple"
-  | "orange"
-  | "yellow"
-  | "cyan"
-  | "gray";
+export type CardColor = "blue" | "green" | "purple" | "orange" | "yellow" | "cyan" | "gray";
 
 export interface CardBadge {
   label: string;

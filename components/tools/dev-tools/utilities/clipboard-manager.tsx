@@ -44,16 +44,7 @@ const Icon: FC<IconProps> = ({ d, size = 16, className = "" }) => (
   </svg>
 );
 
-type IconKey =
-  | "pin"
-  | "copy"
-  | "edit"
-  | "trash"
-  | "check"
-  | "search"
-  | "plus"
-  | "x"
-  | "clipboard";
+type IconKey = "pin" | "copy" | "edit" | "trash" | "check" | "search" | "plus" | "x" | "clipboard";
 
 const ICONS: Record<IconKey, string> = {
   pin: "M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z",
@@ -77,19 +68,14 @@ interface ActionBtnProps {
   children: ReactNode;
 }
 
-const ActionBtn: FC<ActionBtnProps> = ({
-  title,
-  onClick,
-  danger = false,
-  children,
-}) => (
+const ActionBtn: FC<ActionBtnProps> = ({ title, onClick, danger = false, children }) => (
   <button
     title={title}
     onClick={onClick}
-    className={`p-1.5 rounded-lg transition-colors ${
+    className={`rounded-lg p-1.5 transition-colors ${
       danger
-        ? "text-zinc-400 dark:text-zinc-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10"
-        : "text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800"
+        ? "text-zinc-400 hover:bg-red-50 hover:text-red-600 dark:text-zinc-500 dark:hover:bg-red-500/10 dark:hover:text-red-400"
+        : "text-zinc-400 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-white"
     }`}
   >
     {children}
@@ -105,20 +91,11 @@ interface SnippetFormProps {
   onCancel: () => void;
 }
 
-const SnippetForm: FC<SnippetFormProps> = ({
-  initial,
-  categories,
-  onSave,
-  onCancel,
-}) => {
+const SnippetForm: FC<SnippetFormProps> = ({ initial, categories, onSave, onCancel }) => {
   const [title, setTitle] = useState<string>(initial?.title ?? "");
   const [content, setContent] = useState<string>(initial?.content ?? "");
-  const [category, setCategory] = useState<Category>(
-    initial?.category ?? categories[0] ?? "Other"
-  );
-  const [tagsRaw, setTagsRaw] = useState<string>(
-    initial?.tags?.join(" ") ?? ""
-  );
+  const [category, setCategory] = useState<Category>(initial?.category ?? categories[0] ?? "Other");
+  const [tagsRaw, setTagsRaw] = useState<string>(initial?.tags?.join(" ") ?? "");
   const [customCat, setCustomCat] = useState<string>("");
   const [showCustom, setShowCustom] = useState<boolean>(false);
   const titleRef = useRef<HTMLInputElement>(null);
@@ -127,12 +104,9 @@ const SnippetForm: FC<SnippetFormProps> = ({
     titleRef.current?.focus();
   }, []);
 
-  const resolvedCategory: Category = showCustom
-    ? customCat.trim() || "Other"
-    : category;
+  const resolvedCategory: Category = showCustom ? customCat.trim() || "Other" : category;
 
-  const valid: boolean =
-    title.trim().length > 0 && content.trim().length > 0;
+  const valid: boolean = title.trim().length > 0 && content.trim().length > 0;
 
   function handleSave(): void {
     if (!valid) return;
@@ -148,8 +122,8 @@ const SnippetForm: FC<SnippetFormProps> = ({
     "w-full rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3 py-2 text-sm font-mono text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-purple-500/40 transition-colors";
 
   return (
-    <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-5 space-y-4">
-      <h3 className="font-semibold text-sm uppercase tracking-widest text-zinc-900 dark:text-zinc-500">
+    <div className="space-y-4 rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-950">
+      <h3 className="text-sm font-semibold tracking-widest text-zinc-900 uppercase dark:text-zinc-500">
         {initial ? "Edit snippet" : "New snippet"}
       </h3>
 
@@ -157,7 +131,7 @@ const SnippetForm: FC<SnippetFormProps> = ({
         {/* Title — non-mono */}
         <input
           ref={titleRef}
-          className="w-full rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-purple-500/40 transition-colors"
+          className="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm text-zinc-900 transition-colors placeholder:text-zinc-400 focus:ring-2 focus:ring-purple-500/40 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-600"
           placeholder="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -195,10 +169,10 @@ const SnippetForm: FC<SnippetFormProps> = ({
           )}
           <button
             onClick={() => setShowCustom((v) => !v)}
-            className={`shrink-0 px-3 py-2 rounded-lg border text-xs font-medium transition-colors ${
+            className={`shrink-0 rounded-lg border px-3 py-2 text-xs font-medium transition-colors ${
               showCustom
-                ? "border-purple-400 dark:border-purple-500 text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-500/10"
-                : "border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-purple-300 dark:hover:border-purple-500/40 hover:text-zinc-900 dark:hover:text-white"
+                ? "border-purple-400 bg-purple-50 text-purple-600 dark:border-purple-500 dark:bg-purple-500/10 dark:text-purple-400"
+                : "border-zinc-200 text-zinc-600 hover:border-purple-300 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:border-purple-500/40 dark:hover:text-white"
             }`}
           >
             {showCustom ? "Cancel" : "+ Custom"}
@@ -207,27 +181,27 @@ const SnippetForm: FC<SnippetFormProps> = ({
 
         {/* Tags */}
         <input
-          className="w-full rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-purple-500/40 transition-colors"
+          className="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm text-zinc-900 transition-colors placeholder:text-zinc-400 focus:ring-2 focus:ring-purple-500/40 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-600"
           placeholder="Tags (space or comma separated)"
           value={tagsRaw}
           onChange={(e) => setTagsRaw(e.target.value)}
         />
       </div>
 
-      <div className="flex gap-2 justify-end pt-1">
+      <div className="flex justify-end gap-2 pt-1">
         <button
           onClick={onCancel}
-          className="px-4 py-2 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+          className="rounded-lg px-4 py-2 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"
         >
           Cancel
         </button>
         <button
           onClick={handleSave}
           disabled={!valid}
-          className={`px-4 py-2 rounded-full text-xs font-medium border transition-all ${
+          className={`rounded-full border px-4 py-2 text-xs font-medium transition-all ${
             valid
-              ? "bg-linear-to-r from-purple-600 to-violet-600 text-white border-transparent hover:opacity-90"
-              : "border-zinc-200 dark:border-zinc-800 text-zinc-400 dark:text-zinc-600 cursor-not-allowed"
+              ? "border-transparent bg-linear-to-r from-purple-600 to-violet-600 text-white hover:opacity-90"
+              : "cursor-not-allowed border-zinc-200 text-zinc-400 dark:border-zinc-800 dark:text-zinc-600"
           }`}
         >
           Save snippet
@@ -250,26 +224,22 @@ const DeleteDialog: FC<DeleteDialogProps> = ({ snippet, onConfirm, onCancel }) =
     className="fixed inset-0 z-50 flex items-center justify-center p-4"
     style={{ background: "rgba(0,0,0,0.5)" }}
   >
-    <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-6 w-full max-w-sm shadow-2xl">
-      <h3 className="font-semibold text-sm text-zinc-900 dark:text-white mb-1">
-        Delete snippet?
-      </h3>
-      <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-5">
-        <span className="font-medium text-zinc-900 dark:text-zinc-200">
-          {snippet.title}
-        </span>{" "}
-        will be permanently removed.
+    <div className="w-full max-w-sm rounded-xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-950">
+      <h3 className="mb-1 text-sm font-semibold text-zinc-900 dark:text-white">Delete snippet?</h3>
+      <p className="mb-5 text-sm text-zinc-500 dark:text-zinc-400">
+        <span className="font-medium text-zinc-900 dark:text-zinc-200">{snippet.title}</span> will
+        be permanently removed.
       </p>
-      <div className="flex gap-2 justify-end">
+      <div className="flex justify-end gap-2">
         <button
           onClick={onCancel}
-          className="px-4 py-2 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+          className="rounded-lg px-4 py-2 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"
         >
           Cancel
         </button>
         <button
           onClick={onConfirm}
-          className="px-4 py-2 rounded-full text-xs font-medium bg-red-500 hover:bg-red-600 text-white border-transparent transition-colors"
+          className="rounded-full border-transparent bg-red-500 px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-red-600"
         >
           Delete
         </button>
@@ -287,12 +257,7 @@ interface SnippetCardProps {
   onDelete: (snippet: Snippet) => void;
 }
 
-const SnippetCard: FC<SnippetCardProps> = ({
-  snippet,
-  onPin,
-  onEdit,
-  onDelete,
-}) => {
+const SnippetCard: FC<SnippetCardProps> = ({ snippet, onPin, onEdit, onDelete }) => {
   const { copied, copy } = useCopy(1500);
 
   useEffect(() => {
@@ -303,37 +268,32 @@ const SnippetCard: FC<SnippetCardProps> = ({
 
   return (
     <div
-      className={`group flex flex-col rounded-xl border bg-white dark:bg-zinc-950 p-4 transition-all ${
+      className={`group flex flex-col rounded-xl border bg-white p-4 transition-all dark:bg-zinc-950 ${
         snippet.pinned
           ? "border-purple-300 dark:border-purple-500/40"
-          : "border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700"
+          : "border-zinc-200 hover:border-zinc-300 dark:border-zinc-800 dark:hover:border-zinc-700"
       }`}
     >
       {/* Card header */}
-      <div className="flex items-start justify-between gap-3 mb-3">
-        <div className="flex items-center gap-2 min-w-0">
+      <div className="mb-3 flex items-start justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-2">
           {snippet.pinned && (
-            <span className="shrink-0 text-xs font-medium px-2 py-0.5 rounded-full bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-500/20">
+            <span className="shrink-0 rounded-full border border-purple-200 bg-purple-50 px-2 py-0.5 text-xs font-medium text-purple-700 dark:border-purple-500/20 dark:bg-purple-500/10 dark:text-purple-400">
               Pinned
             </span>
           )}
-          <h3 className="font-semibold text-sm truncate text-zinc-900 dark:text-white">
+          <h3 className="truncate text-sm font-semibold text-zinc-900 dark:text-white">
             {snippet.title}
           </h3>
         </div>
 
         {/* Hover actions */}
-        <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-          <ActionBtn
-            title={snippet.pinned ? "Unpin" : "Pin"}
-            onClick={() => onPin(snippet.id)}
-          >
+        <div className="flex shrink-0 items-center gap-0.5 opacity-0 transition-opacity group-hover:opacity-100">
+          <ActionBtn title={snippet.pinned ? "Unpin" : "Pin"} onClick={() => onPin(snippet.id)}>
             <Icon
               d={ICONS.pin}
               size={13}
-              className={
-                snippet.pinned ? "text-purple-500 dark:text-purple-400" : ""
-              }
+              className={snippet.pinned ? "text-purple-500 dark:text-purple-400" : ""}
             />
           </ActionBtn>
           <ActionBtn title="Edit" onClick={() => onEdit(snippet)}>
@@ -346,21 +306,21 @@ const SnippetCard: FC<SnippetCardProps> = ({
       </div>
 
       {/* Content preview */}
-      <pre className="flex-1 text-xs font-mono rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-3 mb-3 overflow-x-auto whitespace-pre-wrap break-all max-h-28 overflow-y-auto text-zinc-700 dark:text-zinc-300">
+      <pre className="mb-3 max-h-28 flex-1 overflow-x-auto overflow-y-auto rounded-lg border border-zinc-200 bg-zinc-50 p-3 font-mono text-xs break-all whitespace-pre-wrap text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300">
         {snippet.content}
       </pre>
 
       {/* Card footer */}
-      <div className="flex items-center justify-between gap-2 flex-wrap">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         {/* Category + tags */}
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-500/20">
+        <div className="flex flex-wrap items-center gap-1.5">
+          <span className="rounded-full border border-purple-200 bg-purple-50 px-2 py-0.5 text-xs font-medium text-purple-700 dark:border-purple-500/20 dark:bg-purple-500/10 dark:text-purple-400">
             {snippet.category}
           </span>
           {snippet.tags.slice(0, 2).map((t) => (
             <span
               key={t}
-              className="text-xs px-2 py-0.5 rounded-full border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400"
+              className="rounded-full border border-zinc-200 px-2 py-0.5 text-xs text-zinc-500 dark:border-zinc-800 dark:text-zinc-400"
             >
               {t}
             </span>
@@ -377,45 +337,43 @@ const SnippetCard: FC<SnippetCardProps> = ({
           onClick={() => copy(snippet.content)}
           className={`flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
             copied
-              ? "text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10"
-              : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400"
+              : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"
           }`}
         >
-          <Copy className="w-3 h-3" />
+          <Copy className="h-3 w-3" />
           {copied ? "Copied" : "Copy"}
         </button>
       </div>
     </div>
-  )
+  );
 };
 
 // ─── ClipboardManager ─────────────────────────────────────────────────────────
 
-const ClipboardManager: FC = () => {
+export const ClipboardManager: FC = () => {
   const [snippets, setSnippets] = useState<Snippet[]>(() => loadSnippets());
-  const [customCategories, setCustomCategories] = useState<string[]>(() =>
-    loadCustomCategories()
-  );
+  const [customCategories, setCustomCategories] = useState<string[]>(() => loadCustomCategories());
   const [query, setQuery] = useState<string>("");
   const [activeCategory, setActiveCategory] = useState<Category>("All");
   const [showForm, setShowForm] = useState<boolean>(false);
   const [editTarget, setEditTarget] = useState<Snippet | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Snippet | null>(null);
 
-  const allCategories: Category[] = [
-    "All",
-    ...DEFAULT_CATEGORIES,
-    ...customCategories,
-  ];
+  const allCategories: Category[] = ["All", ...DEFAULT_CATEGORIES, ...customCategories];
 
   // Persist
-  useEffect(() => { saveSnippets(snippets); }, [snippets]);
-  useEffect(() => { saveCustomCategories(customCategories); }, [customCategories]);
+  useEffect(() => {
+    saveSnippets(snippets);
+  }, [snippets]);
+  useEffect(() => {
+    saveCustomCategories(customCategories);
+  }, [customCategories]);
 
   const visible: Snippet[] = searchSnippets(
     snippets,
     query,
-    activeCategory === "All" ? null : activeCategory
+    activeCategory === "All" ? null : activeCategory,
   );
 
   // ── Handlers ────────────────────────────────────────────────────────────────
@@ -439,7 +397,7 @@ const ClipboardManager: FC = () => {
         tags: data.tags,
       };
       setSnippets((prev) =>
-        prev.map((s) => (s.id === editTarget.id ? updateSnippet(s, patch) : s))
+        prev.map((s) => (s.id === editTarget.id ? updateSnippet(s, patch) : s)),
       );
       setEditTarget(null);
     } else {
@@ -449,9 +407,7 @@ const ClipboardManager: FC = () => {
   }
 
   function handlePin(id: string): void {
-    setSnippets((prev) =>
-      prev.map((s) => (s.id === id ? { ...s, pinned: !s.pinned } : s))
-    );
+    setSnippets((prev) => prev.map((s) => (s.id === id ? { ...s, pinned: !s.pinned } : s)));
   }
 
   function handleDelete(): void {
@@ -465,18 +421,17 @@ const ClipboardManager: FC = () => {
 
   return (
     <div className="flex flex-col gap-6">
-
       {/* ── Top bar: search + new button ── */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row">
         {/* Search */}
         <div className="relative flex-1">
           <Icon
             d={ICONS.search}
             size={14}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-600 pointer-events-none"
+            className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-zinc-400 dark:text-zinc-600"
           />
           <input
-            className="w-full rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 pl-9 pr-9 py-2 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-purple-500/40 transition-colors"
+            className="w-full rounded-lg border border-zinc-200 bg-zinc-50 py-2 pr-9 pl-9 text-sm text-zinc-900 transition-colors placeholder:text-zinc-400 focus:ring-2 focus:ring-purple-500/40 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-600"
             placeholder="Search snippets…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -484,7 +439,7 @@ const ClipboardManager: FC = () => {
           {query && (
             <button
               onClick={() => setQuery("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-600 hover:text-zinc-900 dark:hover:text-white transition-colors"
+              className="absolute top-1/2 right-3 -translate-y-1/2 text-zinc-400 transition-colors hover:text-zinc-900 dark:text-zinc-600 dark:hover:text-white"
             >
               <Icon d={ICONS.x} size={13} />
             </button>
@@ -493,8 +448,11 @@ const ClipboardManager: FC = () => {
 
         {/* New snippet button */}
         <button
-          onClick={() => { setEditTarget(null); setShowForm(true); }}
-          className="flex items-center justify-center gap-1.5 rounded-full px-4 py-2 text-xs font-medium bg-linear-to-r from-purple-600 to-violet-600 text-white border-transparent hover:opacity-90 transition-opacity shrink-0"
+          onClick={() => {
+            setEditTarget(null);
+            setShowForm(true);
+          }}
+          className="flex shrink-0 items-center justify-center gap-1.5 rounded-full border-transparent bg-linear-to-r from-purple-600 to-violet-600 px-4 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90"
         >
           <Icon d={ICONS.plus} size={14} />
           New snippet
@@ -507,23 +465,19 @@ const ClipboardManager: FC = () => {
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}
-            className={`rounded-full px-3.5 py-1.5 text-xs font-medium border transition-all ${
+            className={`rounded-full border px-3.5 py-1.5 text-xs font-medium transition-all ${
               cat === activeCategory
-                ? "bg-linear-to-r from-purple-600 to-violet-600 text-white border-transparent"
-                : "border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-purple-300 dark:hover:border-purple-500/40 hover:text-zinc-900 dark:hover:text-white"
+                ? "border-transparent bg-linear-to-r from-purple-600 to-violet-600 text-white"
+                : "border-zinc-200 text-zinc-600 hover:border-purple-300 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:border-purple-500/40 dark:hover:text-white"
             }`}
           >
             {cat}
             <span
               className={`ml-1.5 text-xs ${
-                cat === activeCategory
-                  ? "opacity-70"
-                  : "text-zinc-400 dark:text-zinc-600"
+                cat === activeCategory ? "opacity-70" : "text-zinc-400 dark:text-zinc-600"
               }`}
             >
-              {cat === "All"
-                ? snippets.length
-                : snippets.filter((s) => s.category === cat).length}
+              {cat === "All" ? snippets.length : snippets.filter((s) => s.category === cat).length}
             </span>
           </button>
         ))}
@@ -535,25 +489,31 @@ const ClipboardManager: FC = () => {
           initial={editTarget}
           categories={[...DEFAULT_CATEGORIES, ...customCategories]}
           onSave={handleSave}
-          onCancel={() => { setShowForm(false); setEditTarget(null); }}
+          onCancel={() => {
+            setShowForm(false);
+            setEditTarget(null);
+          }}
         />
       )}
 
       {/* ── Snippet grid ── */}
       {visible.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {visible.map((s) => (
             <SnippetCard
               key={s.id}
               snippet={s}
               onPin={handlePin}
-              onEdit={(snippet) => { setShowForm(false); setEditTarget(snippet); }}
+              onEdit={(snippet) => {
+                setShowForm(false);
+                setEditTarget(snippet);
+              }}
               onDelete={setDeleteTarget}
             />
           ))}
         </div>
       ) : !isFormOpen ? (
-        <div className="flex flex-col items-center justify-center py-20 gap-3 text-zinc-400 dark:text-zinc-600">
+        <div className="flex flex-col items-center justify-center gap-3 py-20 text-zinc-400 dark:text-zinc-600">
           <Icon d={ICONS.clipboard} size={36} />
           <p className="text-sm font-medium">
             {query ? "No snippets match your search." : "No snippets yet."}
@@ -561,7 +521,7 @@ const ClipboardManager: FC = () => {
           {!query && (
             <button
               onClick={() => setShowForm(true)}
-              className="text-xs font-medium text-purple-600 dark:text-purple-400 hover:underline underline-offset-2 transition-colors"
+              className="text-xs font-medium text-purple-600 underline-offset-2 transition-colors hover:underline dark:text-purple-400"
             >
               Add your first snippet
             </button>
@@ -571,7 +531,7 @@ const ClipboardManager: FC = () => {
 
       {/* ── Stats bar (shown when snippets exist) ── */}
       {snippets.length > 0 && (
-        <p className="text-xs text-zinc-400 dark:text-zinc-600 text-center">
+        <p className="text-center text-xs text-zinc-400 dark:text-zinc-600">
           {snippets.length} snippet{snippets.length !== 1 ? "s" : ""}
           {pinnedCount > 0 && ` · ${pinnedCount} pinned`}
           {query && visible.length !== snippets.length && ` · ${visible.length} shown`}
@@ -589,5 +549,3 @@ const ClipboardManager: FC = () => {
     </div>
   );
 };
-
-export default ClipboardManager;

@@ -8,7 +8,8 @@ import { PageHeading } from "@/components/shared/page-heading";
 import { StatusBar } from "@/components/shared/satus-bar";
 import { SearchBar } from "@/components/shared/search-bar";
 import { SecondaryHeading } from "@/components/shared/secondary-heading";
-import { RESOURCES_TEMPLATES, Template } from "@/constants/resources/templates";
+
+import { allTemplates, type Template } from "@/content/templates";
 import { useContentFilter } from "@/hooks/useContentFilters";
 import { templateToContentCard } from "@/lib/content-mappers/template-to-content";
 
@@ -25,7 +26,7 @@ export default function TemplatesPage() {
     togglePin,
     isFiltering,
   } = useContentFilter({
-    items: RESOURCES_TEMPLATES,
+    items: allTemplates,
     storageKey: "toolstack:resources:templates:pinned",
     getId: (t) => t.id,
     getFilter: (t) => t.category,
@@ -49,17 +50,17 @@ export default function TemplatesPage() {
   );
 
   return (
-    <main className="min-h-screen bg-white dark:bg-black py-10">
+    <main className="min-h-screen bg-white py-10 dark:bg-black">
       <Container>
         {/* Top row: heading + status */}
-        <div className="flex flex-col gap-4 md:flex-row items-start md:justify-between">
+        <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between">
           <PageHeading
             title="Templates"
             description="Production-ready project templates for popular frameworks."
           />
-          <div className="text-left md:text-right md:shrink-0">
+          <div className="text-left md:shrink-0 md:text-right">
             <StatusBar
-              items={RESOURCES_TEMPLATES}
+              items={allTemplates}
               getName={(template) => template.name}
               itemLabel="template"
             />
@@ -75,7 +76,7 @@ export default function TemplatesPage() {
             className="w-full lg:max-w-xs"
           />
           <CategoryFilter
-            categories={[...new Set(RESOURCES_TEMPLATES.map((t) => t.category))]}
+            categories={[...new Set(allTemplates.map((t) => t.category))]}
             selected={category}
             onChange={setCategory}
           />
@@ -86,11 +87,7 @@ export default function TemplatesPage() {
           <section className="mt-10">
             <SecondaryHeading
               title="Results"
-              description={
-                filtered.length === 0
-                  ? "No templates match your search."
-                  : undefined
-              }
+              description={filtered.length === 0 ? "No templates match your search." : undefined}
               count={filtered.length}
             />
             <div className="mt-5">

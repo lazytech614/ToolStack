@@ -1,8 +1,8 @@
 import { FormatOptions } from "@/components/tools/dev-tools/formatting/sql-formatter";
-import { SQL_KEYWORDS } from "@/constants/configs/examples";
+import { EXAMPLE_SQL_KEYWORDS } from "@/constants/configs/examples";
 import { IdentifierCase, IndentStyle, KeywordCase } from "@/types/dev-tools/sql-formatter";
 
-const KEYWORD_SET = new Set(SQL_KEYWORDS.map((k) => k.toUpperCase()));
+const KEYWORD_SET = new Set(EXAMPLE_SQL_KEYWORDS.map((k) => k.toUpperCase()));
 
 // ---------------------------------------------------------------------------
 // Formatter engine (pure TS, no deps)

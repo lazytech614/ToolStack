@@ -1,57 +1,57 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { AlertCircle, Check, Copy, Loader2, RefreshCw } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { SAMPLE_DIFF } from "@/constants/configs/examples"
-import { toast } from "sonner"
-import { useCopy } from "@/hooks/useCopy"
+import { useState } from "react";
+import { AlertCircle, Check, Copy, Loader2, RefreshCw } from "lucide-react";
+
+import { EXAMPLE_DIFF } from "@/constants/configs/examples";
+import { cn } from "@/lib/utils";
+import { useCopy } from "@/hooks/useCopy";
 
 const STYLES = [
   { value: "conventional", label: "Conventional" },
-  { value: "simple",       label: "Simple" },
-  { value: "detailed",     label: "Detailed" },
-  { value: "enterprise",   label: "Enterprise" },
-  { value: "funny",        label: "Funny" },
-] as const
+  { value: "simple", label: "Simple" },
+  { value: "detailed", label: "Detailed" },
+  { value: "enterprise", label: "Enterprise" },
+  { value: "funny", label: "Funny" },
+] as const;
 
-type CommitStyle = (typeof STYLES)[number]["value"]
+type CommitStyle = (typeof STYLES)[number]["value"];
 
-const MAX_CHARS = 15_000
-const MIN_CHARS = 10
+const MAX_CHARS = 15_000;
+const MIN_CHARS = 10;
 
 export function CommitGenerator() {
-  const [diff, setDiff]           = useState(SAMPLE_DIFF)
-  const [style, setStyle]         = useState<CommitStyle>("conventional")
-  const [commit, setCommit]       = useState("")
-  const [loading, setLoading]     = useState(false)
-  const [remaining, setRemaining] = useState<number | null>(null)
-  const [error, setError]         = useState("")
+  const [diff, setDiff] = useState(EXAMPLE_DIFF);
+  const [style, setStyle] = useState<CommitStyle>("conventional");
+  const [commit, setCommit] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [remaining, setRemaining] = useState<number | null>(null);
+  const [error, setError] = useState("");
 
-  const charCount      = diff.length
-  const isOverLimit    = charCount > MAX_CHARS
-  const isUnderMinimum = charCount < MIN_CHARS
-  const isDisabled     = loading || isOverLimit || isUnderMinimum
+  const charCount = diff.length;
+  const isOverLimit = charCount > MAX_CHARS;
+  const isUnderMinimum = charCount < MIN_CHARS;
+  const isDisabled = loading || isOverLimit || isUnderMinimum;
 
   const { copied, copy } = useCopy();
 
   async function handleGenerate() {
     try {
-      setLoading(true)
-      setError("")
+      setLoading(true);
+      setError("");
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ diff, style }),
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || "Something went wrong")
-      setCommit(data.commit)
-      setRemaining(data.remaining)
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Something went wrong");
+      setCommit(data.commit);
+      setRemaining(data.remaining);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unexpected error")
+      setError(err instanceof Error ? err.message : "Unexpected error");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -59,7 +59,7 @@ export function CommitGenerator() {
     <div className="flex flex-col gap-8">
       {/* Style selector */}
       <div className="flex flex-col gap-2">
-        <label className="text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-500">
+        <label className="text-xs font-semibold tracking-widest text-zinc-900 uppercase dark:text-zinc-500">
           Commit Style
         </label>
         <div className="flex flex-wrap gap-2">
@@ -68,10 +68,10 @@ export function CommitGenerator() {
               key={value}
               onClick={() => setStyle(value)}
               className={cn(
-                "rounded-full px-3.5 py-1.5 text-xs font-medium border transition-all",
+                "rounded-full border px-3.5 py-1.5 text-xs font-medium transition-all",
                 style === value
-                  ? "bg-linear-to-r from-purple-600 to-violet-600 text-white border-transparent"
-                  : "border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-purple-300 dark:hover:border-purple-500/40 hover:text-zinc-900 dark:hover:text-white"
+                  ? "border-transparent bg-linear-to-r from-purple-600 to-violet-600 text-white"
+                  : "border-zinc-200 text-zinc-600 hover:border-purple-300 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:border-purple-500/40 dark:hover:text-white",
               )}
             >
               {label}
@@ -83,16 +83,16 @@ export function CommitGenerator() {
       {/* Diff input */}
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <label className="text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-500">
+          <label className="text-xs font-semibold tracking-widest text-zinc-900 uppercase dark:text-zinc-500">
             Git Diff
           </label>
-          <div className="flex gap-2 items-center">
+          <div className="flex items-center gap-2">
             {diff && (
               <button
-                onClick={() => setDiff(SAMPLE_DIFF)}
-                className="text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1 cursor-pointer"
+                onClick={() => setDiff(EXAMPLE_DIFF)}
+                className="flex cursor-pointer items-center gap-1 text-xs font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
               >
-                <RefreshCw className="w-3 h-3" />
+                <RefreshCw className="h-3 w-3" />
                 Reset
               </button>
             )}
@@ -103,15 +103,15 @@ export function CommitGenerator() {
           onChange={(e) => setDiff(e.target.value)}
           placeholder="Paste your git diff here (e.g., output from `git diff`)"
           rows={14}
-          className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-4 font-mono text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-purple-400 dark:focus:border-purple-500/60 resize-y transition-colors"
+          className="w-full resize-y rounded-xl border border-zinc-200 bg-zinc-50 p-4 font-mono text-xs text-zinc-900 transition-colors placeholder:text-zinc-400 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-600 dark:focus:border-purple-500/60"
         />
         <div className="flex items-center justify-between">
           <span
             className={cn(
               "text-xs tabular-nums transition-colors",
               isOverLimit
-                ? "text-red-500 dark:text-red-400 font-medium"
-                : "text-zinc-400 dark:text-zinc-600"
+                ? "font-medium text-red-500 dark:text-red-400"
+                : "text-zinc-400 dark:text-zinc-600",
             )}
           >
             {charCount.toLocaleString()} / {MAX_CHARS.toLocaleString()} chars
@@ -124,12 +124,10 @@ export function CommitGenerator() {
 
       {/* Error */}
       {(isOverLimit || error) && (
-        <div className="flex items-start gap-2.5 rounded-xl border border-red-200 dark:border-red-500/20 bg-red-50 dark:bg-red-500/10 px-4 py-3">
-          <AlertCircle className="h-4 w-4 text-red-500 dark:text-red-400 mt-0.5 shrink-0" />
+        <div className="flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 dark:border-red-500/20 dark:bg-red-500/10">
+          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-500 dark:text-red-400" />
           <p className="text-xs text-red-600 dark:text-red-400">
-            {isOverLimit
-              ? `Diff exceeds ${MAX_CHARS.toLocaleString()} character limit.`
-              : error}
+            {isOverLimit ? `Diff exceeds ${MAX_CHARS.toLocaleString()} character limit.` : error}
           </p>
         </div>
       )}
@@ -140,9 +138,9 @@ export function CommitGenerator() {
         disabled={isDisabled}
         className={cn(
           "w-full rounded-xl py-3 text-sm font-semibold transition-all",
-          "bg-linear-to-r from-purple-600 to-violet-600 cursor-pointer text-white",
-          "disabled:opacity-40 disabled:cursor-not-allowed",
-          "focus:outline-none focus:ring-2 focus:ring-purple-500/40"
+          "cursor-pointer bg-linear-to-r from-purple-600 to-violet-600 text-white",
+          "disabled:cursor-not-allowed disabled:opacity-40",
+          "focus:ring-2 focus:ring-purple-500/40 focus:outline-none",
         )}
       >
         {loading ? (
@@ -159,7 +157,7 @@ export function CommitGenerator() {
       {commit && (
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <label className="text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-500">
+            <label className="text-xs font-semibold tracking-widest text-zinc-500 uppercase dark:text-zinc-500">
               Generated Commit
             </label>
             <button
@@ -167,19 +165,23 @@ export function CommitGenerator() {
               className={cn(
                 "flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors",
                 copied
-                  ? "text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10"
-                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400"
+                  : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white",
               )}
             >
               {copied ? (
-                <><Check className="h-3.5 w-3.5" /> Copied</>
+                <>
+                  <Check className="h-3.5 w-3.5" /> Copied
+                </>
               ) : (
-                <><Copy className="h-3.5 w-3.5" /> Copy</>
+                <>
+                  <Copy className="h-3.5 w-3.5" /> Copy
+                </>
               )}
             </button>
           </div>
 
-          <pre className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-4 font-mono text-sm text-zinc-900 dark:text-zinc-100 whitespace-pre-wrap break-all overflow-x-auto">
+          <pre className="overflow-x-auto rounded-xl border border-zinc-200 bg-zinc-50 p-4 font-mono text-sm break-all whitespace-pre-wrap text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100">
             {commit}
           </pre>
 
@@ -198,5 +200,5 @@ export function CommitGenerator() {
         </div>
       )}
     </div>
-  )
+  );
 }

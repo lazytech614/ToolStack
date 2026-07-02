@@ -2,7 +2,7 @@ import { TableState } from "@/components/tools/dev-tools/generator/markdown-tabl
 import { RegexTemplate } from "@/components/tools/dev-tools/utilities/regex-tester";
 import { Dialect } from "@/types/dev-tools/sql-formatter";
 
-export const SAMPLE_DIFF = `
+export const EXAMPLE_DIFF = `
 diff --git a/src/auth.ts b/src/auth.ts
 
 + import { ClerkProvider } from "@clerk/nextjs";
@@ -31,10 +31,10 @@ console.log(greet("John"));
 console.log("Welcome to GitHub Helper");
 `;
 
-export const SAMPLE_JWT =
+export const EXAMPLE_JWT =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjk5OTk5OTk5OTl9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
 
-export const REGEX_TEMPLATES: RegexTemplate[] = [
+export const EXAMPLE_REGEX_TEMPLATES: RegexTemplate[] = [
   {
     id: "email",
     name: "Email Address",
@@ -218,19 +218,7 @@ export const REGEX_TEMPLATES: RegexTemplate[] = [
   },
 ];
 
-export const SAMPLE_JSON = `{
-  "tool": "JSON Formatter",
-  "version": "1.0.0",
-  "features": ["format", "minify", "validate", "tree view"],
-  "author": {
-    "name": "GithubHelper",
-    "url": "https://githubhelper.dev"
-  },
-  "active": true,
-  "count": 42
-}`;
-
-export const SAMPLE_MARKDOWN = `# GitHub Helper Docs
+export const EXAMPLE_MARKDOWN = `# GitHub Helper Docs
 
 Welcome to **GithubHelper** — AI-powered tools for your GitHub workflow.
 
@@ -288,13 +276,13 @@ const message = await generateCommit({
 Made with ❤️ by [GithubHelper](https://githubhelper.dev)
 `;
 
-export const SAMPLE_TEXT = "Hello World!";
+export const EXAMPLE_TEXT = "Hello World!";
 
-export const SAMPLE_BINARY = "01001000 01100101 01101100 01101100 01101111";
+export const EXAMPLE_BINARY = "01001000 01100101 01101100 01101100 01101111";
 
 export const EXAMPLE_SQL = `select u.id,u.name,u.email,o.total,o.created_at from users u inner join orders o on u.id=o.user_id where u.active=true and o.total>100 order by o.created_at desc limit 50;`;
 
-export const DIALECTS: { value: Dialect; label: string }[] = [
+export const EXAMPLE_DIALECTS: { value: Dialect; label: string }[] = [
   { value: "sql", label: "ANSI SQL" },
   { value: "postgresql", label: "PostgreSQL" },
   { value: "mysql", label: "MySQL" },
@@ -304,7 +292,7 @@ export const DIALECTS: { value: Dialect; label: string }[] = [
   { value: "mariadb", label: "MariaDB" },
 ];
 
-export const SQL_KEYWORDS = [
+export const EXAMPLE_SQL_KEYWORDS = [
   "SELECT",
   "FROM",
   "WHERE",
@@ -404,7 +392,7 @@ export const SQL_KEYWORDS = [
   "MODIFY",
 ];
 
-export const SAMPLE_MARKDOWN_TABLE: TableState = {
+export const EXAMPLE_MARKDOWN_TABLE: TableState = {
   headers: ["Name", "Role"],
   alignments: ["left", "center"],
   rows: [

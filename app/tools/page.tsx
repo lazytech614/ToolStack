@@ -11,7 +11,7 @@ import { StatusBar } from "@/components/shared/satus-bar";
 import { ContentCard } from "@/components/shared/content-card";
 import { ContentGrid } from "@/components/shared/content-grid";
 
-import { ALL_TOOLS, CATEGORIES } from "@/constants/configs/tools";
+import { ALL_TOOLS, TOOL_CATEGORIES } from "@/content/tools";
 import { toolToContentCard } from "@/lib/content-mappers/tool-to-content";
 import { useContentFilter } from "@/hooks/useContentFilters";
 
@@ -74,7 +74,7 @@ export default function ToolsPage() {
             className="w-full lg:max-w-md"
           />
 
-          <CategoryFilter categories={CATEGORIES} selected={category} onChange={setCategory} />
+          <CategoryFilter categories={TOOL_CATEGORIES} selected={category} onChange={setCategory} />
         </div>
 
         {isFiltering ? (

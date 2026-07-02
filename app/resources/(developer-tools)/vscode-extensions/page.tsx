@@ -9,9 +9,9 @@ import { SecondaryHeading } from "@/components/shared/secondary-heading";
 import { ContentGrid } from "@/components/shared/content-grid";
 import { ContentCard } from "@/components/shared/content-card";
 
-import { vscodeExtensions, VSCodeExtension } from "@/constants/resources/vs-code-extensions";
-import { useContentFilter } from "@/hooks/useContentFilters";
+import { type VSCodeExtension, vscodeExtensions } from "@/content/vscode-extensions";
 import { vscodeExtensionToContentCard } from "@/lib/content-mappers/vs-code-extension-to-content";
+import { useContentFilter } from "@/hooks/useContentFilters";
 
 export default function VSCodeExtensionsPage() {
   const {
@@ -34,12 +34,8 @@ export default function VSCodeExtensionsPage() {
       extension.name.toLowerCase().includes(q) ||
       extension.description.toLowerCase().includes(q) ||
       extension.publisher.toLowerCase().includes(q) ||
-      extension.category.some((category) =>
-        category.toLowerCase().includes(q)
-      ) ||
-      extension.tags.some((tag) =>
-        tag.toLowerCase().includes(q)
-      ),
+      extension.category.some((category) => category.toLowerCase().includes(q)) ||
+      extension.tags.some((tag) => tag.toLowerCase().includes(q)),
   });
 
   const renderExtension = (extension: VSCodeExtension) => (
@@ -55,16 +51,16 @@ export default function VSCodeExtensionsPage() {
   );
 
   return (
-    <main className="min-h-screen bg-white dark:bg-black py-10">
+    <main className="min-h-screen bg-white py-10 dark:bg-black">
       <Container>
         {/* Header */}
-        <div className="flex flex-col gap-4 md:flex-row items-start md:justify-between">
+        <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between">
           <PageHeading
             title="VS Code Extensions"
             description="Essential extensions to boost your development workflow."
           />
 
-          <div className="text-left md:text-right md:shrink-0">
+          <div className="text-left md:shrink-0 md:text-right">
             <StatusBar
               items={vscodeExtensions}
               getName={(extension) => extension.name}
@@ -83,13 +79,7 @@ export default function VSCodeExtensionsPage() {
           />
 
           <CategoryFilter
-            categories={[
-              ...new Set(
-                vscodeExtensions.flatMap(
-                  (extension) => extension.category
-                )
-              ),
-            ]}
+            categories={[...new Set(vscodeExtensions.flatMap((extension) => extension.category))]}
             selected={category}
             onChange={setCategory}
           />
@@ -101,9 +91,7 @@ export default function VSCodeExtensionsPage() {
               title="Results"
               count={filtered.length}
               description={
-                filtered.length === 0
-                  ? "No VS Code extensions match your search."
-                  : undefined
+                filtered.length === 0 ? "No VS Code extensions match your search." : undefined
               }
             />
 
@@ -137,11 +125,7 @@ export default function VSCodeExtensionsPage() {
 
             <section className={pinned.length > 0 ? "mt-12" : "mt-10"}>
               <SecondaryHeading
-                title={
-                  pinned.length
-                    ? "All Other Extensions"
-                    : "All Extensions"
-                }
+                title={pinned.length ? "All Other Extensions" : "All Extensions"}
                 description={
                   pinned.length
                     ? "Browse the remaining VS Code extensions below."

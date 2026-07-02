@@ -23,14 +23,12 @@ export const metadata: Metadata = {
   ],
 
   alternates: {
-    canonical:
-      "https://tool-stack-kappa.vercel.app/resources",
+    canonical: "https://tool-stack-kappa.vercel.app/resources",
   },
 
   openGraph: {
     title: "Developer Tools | Tool Stack",
-    description:
-      "Curated developer tools, extensions, CLI utilities and productivity resources.",
+    description: "Curated developer tools, extensions, CLI utilities and productivity resources.",
     url: "https://tool-stack-kappa.vercel.app/resources",
     siteName: "Tool Stack",
     type: "website",
@@ -39,15 +37,10 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Developer Tools | Tool Stack",
-    description:
-      "Discover the best tools to improve your development workflow.",
+    description: "Discover the best tools to improve your development workflow.",
   },
 };
 
-export default function DeveloperToolsLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DeveloperToolsLayout({ children }: { children: React.ReactNode }) {
   return children;
 }

@@ -1,24 +1,30 @@
-"use client"
+"use client";
 
-import { useState, useMemo, useCallback, useRef } from "react"
-import { cn } from "@/lib/utils"
-import { Copy, Check, Download, RefreshCw, Upload, ChevronDown } from "lucide-react"
-import { toast } from "sonner"
-import { EXAMPLE_JSON } from "@/constants/configs/examples"
-import { SchemaDraft } from "@/types/dev-tools/json-to-schema"
-import { collectStats, highlightJSON, inferSchema, validateJSON, wrapWithDraft } from "@/lib/dev-utils/json-to-schema"
-import { useCopy } from "@/hooks/useCopy"
+import { useState, useMemo, useCallback, useRef } from "react";
+import { Copy, Check, Download, RefreshCw, Upload, ChevronDown } from "lucide-react";
+
+import { EXAMPLE_JSON } from "@/constants/configs/examples";
+import { SchemaDraft } from "@/types/dev-tools/json-to-schema";
+import { cn } from "@/lib/utils";
+import {
+  collectStats,
+  highlightJSON,
+  inferSchema,
+  validateJSON,
+  wrapWithDraft,
+} from "@/lib/dev-utils/json-to-schema";
+import { useCopy } from "@/hooks/useCopy";
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
 export interface InferOptions {
-  required: boolean
-  inferFormats: boolean
-  inferEnums: boolean
-  nullable: boolean
-  draft: SchemaDraft
+  required: boolean;
+  inferFormats: boolean;
+  inferEnums: boolean;
+  nullable: boolean;
+  draft: SchemaDraft;
 }
 
 // ---------------------------------------------------------------------------
@@ -27,100 +33,99 @@ export interface InferOptions {
 function StatItem({ label, value }: { label: string; value: string | number }) {
   return (
     <div className="flex flex-col gap-0.5">
-      <span className="text-[10px] uppercase tracking-widest font-semibold text-zinc-400 dark:text-zinc-600">
+      <span className="text-[10px] font-semibold tracking-widest text-zinc-400 uppercase dark:text-zinc-600">
         {label}
       </span>
-      <span className="text-sm font-semibold tabular-nums text-zinc-800 dark:text-zinc-200">
+      <span className="text-sm font-semibold text-zinc-800 tabular-nums dark:text-zinc-200">
         {value}
       </span>
     </div>
-  )
+  );
 }
 
 // ---------------------------------------------------------------------------
 // Main component
 // ---------------------------------------------------------------------------
 export function JsonToSchema() {
-  const [input, setInput] = useState("")
+  const [input, setInput] = useState("");
   const [opts, setOpts] = useState<InferOptions>({
     required: true,
     inferFormats: true,
     inferEnums: false,
     nullable: true,
     draft: "draft-07",
-  })
-  const [minify, setMinify] = useState(false)
-  const fileRef = useRef<HTMLInputElement>(null)
-  const [dragOver, setDragOver] = useState(false)
+  });
+  const [minify, setMinify] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [dragOver, setDragOver] = useState(false);
 
   const { copied, copy } = useCopy();
 
   const set = <K extends keyof InferOptions>(k: K, v: InferOptions[K]) =>
-    setOpts((prev) => ({ ...prev, [k]: v }))
+    setOpts((prev) => ({ ...prev, [k]: v }));
 
   // Validate + parse
   const validation = useMemo(() => {
-    if (!input.trim()) return null
-    return validateJSON(input)
-  }, [input])
+    if (!input.trim()) return null;
+    return validateJSON(input);
+  }, [input]);
 
   // Infer schema
   const schema = useMemo(() => {
-    if (!input.trim() || !validation?.valid) return null
+    if (!input.trim() || !validation?.valid) return null;
     try {
-      const parsed = JSON.parse(input)
-      const raw = inferSchema(parsed, opts)
-      return wrapWithDraft(raw, opts.draft)
+      const parsed = JSON.parse(input);
+      const raw = inferSchema(parsed, opts);
+      return wrapWithDraft(raw, opts.draft);
     } catch {
-      return null
+      return null;
     }
-  }, [input, opts, validation])
+  }, [input, opts, validation]);
 
   const schemaString = useMemo(() => {
-    if (!schema) return ""
-    return minify ? JSON.stringify(schema) : JSON.stringify(schema, null, 2)
-  }, [schema, minify])
+    if (!schema) return "";
+    return minify ? JSON.stringify(schema) : JSON.stringify(schema, null, 2);
+  }, [schema, minify]);
 
   const stats = useMemo(() => {
-    if (!schema) return null
-    return collectStats(schema, opts.draft)
-  }, [schema, opts.draft])
+    if (!schema) return null;
+    return collectStats(schema, opts.draft);
+  }, [schema, opts.draft]);
 
   const handleDownload = useCallback(() => {
-    if (!schemaString) return
-    const blob = new Blob([schemaString], { type: "application/json" })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = "schema.json"
-    a.click()
-    URL.revokeObjectURL(url)
-  }, [schemaString])
+    if (!schemaString) return;
+    const blob = new Blob([schemaString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "schema.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [schemaString]);
 
   const handleFile = (file: File) => {
-    const reader = new FileReader()
-    reader.onload = (e) => setInput(e.target?.result as string)
-    reader.readAsText(file)
-  }
+    const reader = new FileReader();
+    reader.onload = (e) => setInput(e.target?.result as string);
+    reader.readAsText(file);
+  };
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    setDragOver(false)
-    const file = e.dataTransfer.files[0]
-    if (file) handleFile(file)
-  }
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  };
 
   const errorLines = useMemo(() => {
-    if (!validation || validation.valid || !validation.line) return new Set<number>()
-    return new Set([validation.line])
-  }, [validation])
+    if (!validation || validation.valid || !validation.line) return new Set<number>();
+    return new Set([validation.line]);
+  }, [validation]);
 
   // Render input with line numbers + error highlight
-  const inputLines = input.split("\n")
+  const inputLines = input.split("\n");
 
   return (
     <div className="flex flex-col gap-6">
-
       {/* ── Options bar ── */}
       <div className="flex flex-wrap items-center gap-4">
         {/* Draft */}
@@ -128,30 +133,32 @@ export function JsonToSchema() {
           <select
             value={opts.draft}
             onChange={(e) => set("draft", e.target.value as SchemaDraft)}
-            className="appearance-none rounded-md border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3 py-1.5 pr-8 text-xs font-medium text-zinc-700 dark:text-zinc-300 focus:outline-none focus:ring-2 focus:ring-purple-500/40 cursor-pointer"
+            className="cursor-pointer appearance-none rounded-md border border-zinc-200 bg-zinc-50 px-3 py-1.5 pr-8 text-xs font-medium text-zinc-700 focus:ring-2 focus:ring-purple-500/40 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
           >
             <option value="draft-07">Draft-07</option>
             <option value="draft-2019-09">Draft 2019-09</option>
             <option value="draft-2020-12">Draft 2020-12</option>
           </select>
-          <ChevronDown className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-400" />
+          <ChevronDown className="pointer-events-none absolute top-1/2 right-2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
         </div>
 
         <div className="h-4 w-px bg-zinc-200 dark:bg-zinc-800" />
 
         {/* Toggles */}
-        {([
-          ["required",     "Required fields"],
-          ["inferFormats", "Infer formats"],
-          ["inferEnums",   "Infer enums"],
-          ["nullable",     "Nullable"],
-        ] as [keyof InferOptions, string][]).map(([key, label]) => (
-          <label key={key} className="flex items-center gap-1.5 cursor-pointer select-none">
+        {(
+          [
+            ["required", "Required fields"],
+            ["inferFormats", "Infer formats"],
+            ["inferEnums", "Infer enums"],
+            ["nullable", "Nullable"],
+          ] as [keyof InferOptions, string][]
+        ).map(([key, label]) => (
+          <label key={key} className="flex cursor-pointer items-center gap-1.5 select-none">
             <input
               type="checkbox"
               checked={opts[key] as boolean}
               onChange={(e) => set(key, e.target.checked)}
-              className="accent-purple-600 w-3.5 h-3.5"
+              className="h-3.5 w-3.5 accent-purple-600"
             />
             <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">{label}</span>
           </label>
@@ -160,7 +167,7 @@ export function JsonToSchema() {
         <div className="h-4 w-px bg-zinc-200 dark:bg-zinc-800" />
 
         {/* Output mode */}
-        <div className="flex gap-1 rounded-lg border border-zinc-200 dark:border-zinc-800 p-1">
+        <div className="flex gap-1 rounded-lg border border-zinc-200 p-1 dark:border-zinc-800">
           {(["pretty", "minify"] as const).map((v) => (
             <button
               key={v}
@@ -169,7 +176,7 @@ export function JsonToSchema() {
                 "rounded-md px-3 py-1.5 text-xs font-medium capitalize transition-colors",
                 (v === "minify") === minify
                   ? "bg-purple-600 text-white"
-                  : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
+                  : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white",
               )}
             >
               {v}
@@ -179,49 +186,56 @@ export function JsonToSchema() {
       </div>
 
       {/* ── Action bar ── */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 gap-y-4 flex-wrap">
-        <div className="flex gap-2 items-center">
-            <button
+      <div className="flex flex-col flex-wrap items-start gap-2 gap-y-4 sm:flex-row sm:items-center">
+        <div className="flex items-center gap-2">
+          <button
             onClick={() => setInput(EXAMPLE_JSON)}
-            className="text-xs font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors"
-            >
+            className="text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+          >
             Try example
-            </button>
-            <button
+          </button>
+          <button
             onClick={() => setInput("")}
-            className="flex items-center gap-1 text-xs font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors"
-            >
-            <RefreshCw className="w-3 h-3" /> Clear
-            </button>
-            <button
+            className="flex items-center gap-1 text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+          >
+            <RefreshCw className="h-3 w-3" /> Clear
+          </button>
+          <button
             onClick={() => fileRef.current?.click()}
-            className="flex items-center gap-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors"
-            >
-            <Upload className="w-3 h-3" /> Import file
-            </button>
-            <input
+            className="flex items-center gap-1.5 text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+          >
+            <Upload className="h-3 w-3" /> Import file
+          </button>
+          <input
             ref={fileRef}
             type="file"
             accept=".json,application/json"
             className="hidden"
-            onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f) }}
-            />
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) handleFile(f);
+            }}
+          />
         </div>
 
         {schemaString && (
-          <div className="sm:ml-auto flex items-center gap-2">
+          <div className="flex items-center gap-2 sm:ml-auto">
             <button
               onClick={() => copy(schemaString)}
-              className="flex items-center gap-1.5 rounded-md border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors"
+              className="flex items-center gap-1.5 rounded-md border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
             >
-              {copied ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
+              {copied ? (
+                <Check className="h-3 w-3 text-emerald-500" />
+              ) : (
+                <Copy className="h-3 w-3" />
+              )}
               {copied ? "Copied!" : "Copy"}
             </button>
             <button
               onClick={handleDownload}
-              className="flex items-center gap-1.5 rounded-md border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors"
+              className="flex items-center gap-1.5 rounded-md border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
             >
-              <Download className="w-3 h-3" /> Download
+              <Download className="h-3 w-3" /> Download
             </button>
           </div>
         )}
@@ -229,15 +243,14 @@ export function JsonToSchema() {
 
       {/* ── Panes ── */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-
         {/* Input pane */}
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <label className="text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-500">
+            <label className="text-xs font-semibold tracking-widest text-zinc-900 uppercase dark:text-zinc-500">
               JSON Input
             </label>
             {validation?.valid && (
-              <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+              <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
                 ✓ Valid JSON
               </span>
             )}
@@ -246,34 +259,37 @@ export function JsonToSchema() {
           {/* Line-numbered editor */}
           <div
             className={cn(
-              "relative rounded-lg border overflow-hidden",
+              "relative overflow-hidden rounded-lg border",
               dragOver
-                ? "border-purple-400 dark:border-purple-500 bg-purple-50 dark:bg-purple-900/10"
+                ? "border-purple-400 bg-purple-50 dark:border-purple-500 dark:bg-purple-900/10"
                 : validation && !validation.valid && input.trim()
-                ? "border-red-300 dark:border-red-800"
-                : "border-zinc-200 dark:border-zinc-800"
+                  ? "border-red-300 dark:border-red-800"
+                  : "border-zinc-200 dark:border-zinc-800",
             )}
-            onDragOver={(e) => { e.preventDefault(); setDragOver(true) }}
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDragOver(true);
+            }}
             onDragLeave={() => setDragOver(false)}
             onDrop={handleDrop}
           >
             {dragOver && (
-              <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+              <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
                 <span className="text-sm font-medium text-purple-600 dark:text-purple-400">
                   Drop JSON file here
                 </span>
               </div>
             )}
 
-            <div className="flex font-mono text-xs min-h-64 max-h-120">
+            <div className="flex max-h-120 min-h-64 font-mono text-xs">
               {/* Line numbers */}
-              <div className="select-none sticky left-0 bg-zinc-100 dark:bg-zinc-800/60 border-r border-zinc-200 dark:border-zinc-800 px-2 py-3 flex flex-col text-right text-zinc-400 dark:text-zinc-600 leading-5 min-w-10">
+              <div className="sticky left-0 flex min-w-10 flex-col border-r border-zinc-200 bg-zinc-100 px-2 py-3 text-right leading-5 text-zinc-400 select-none dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-600">
                 {(input || " ").split("\n").map((_, i) => (
                   <span
                     key={i}
                     className={cn(
                       "text-[11px] leading-5",
-                      errorLines.has(i + 1) && "text-red-500 font-bold"
+                      errorLines.has(i + 1) && "font-bold text-red-500",
                     )}
                   >
                     {i + 1}
@@ -286,7 +302,7 @@ export function JsonToSchema() {
                 {/* Highlight error line */}
                 {validation && !validation.valid && validation.line && input && (
                   <div
-                    className="absolute left-0 right-0 bg-red-50 dark:bg-red-900/20 pointer-events-none"
+                    className="pointer-events-none absolute right-0 left-0 bg-red-50 dark:bg-red-900/20"
                     style={{
                       top: `${(validation.line - 1) * 20 + 12}px`,
                       height: "20px",
@@ -298,7 +314,7 @@ export function JsonToSchema() {
                   onChange={(e) => setInput(e.target.value)}
                   placeholder={`Paste JSON here…\n\nOr drag and drop a .json file`}
                   spellCheck={false}
-                  className="w-full h-full absolute inset-0 bg-zinc-50 dark:bg-zinc-900 p-3 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-300 dark:placeholder:text-zinc-700 focus:outline-none focus:ring-0 resize-none leading-5 min-h-64"
+                  className="absolute inset-0 h-full min-h-64 w-full resize-none bg-zinc-50 p-3 leading-5 text-zinc-900 placeholder:text-zinc-300 focus:ring-0 focus:outline-none dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-700"
                   style={{ fontFamily: "ui-monospace, monospace", fontSize: "12px" }}
                 />
               </div>
@@ -306,8 +322,10 @@ export function JsonToSchema() {
 
             {/* Error message */}
             {validation && !validation.valid && input.trim() && (
-              <div className="border-t border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-900/20 px-3 py-2">
-                <p className="text-xs text-red-600 dark:text-red-400 font-mono">{validation.error}</p>
+              <div className="border-t border-red-200 bg-red-50 px-3 py-2 dark:border-red-900 dark:bg-red-900/20">
+                <p className="font-mono text-xs text-red-600 dark:text-red-400">
+                  {validation.error}
+                </p>
               </div>
             )}
           </div>
@@ -315,11 +333,11 @@ export function JsonToSchema() {
 
         {/* Output pane */}
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-500">
+          <label className="text-xs font-semibold tracking-widest text-zinc-900 uppercase dark:text-zinc-500">
             JSON Schema
           </label>
 
-          <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 min-h-64 max-h-120 overflow-auto">
+          <div className="max-h-120 min-h-64 overflow-auto rounded-lg border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900">
             {schemaString ? (
               <>
                 <style>{`
@@ -333,13 +351,13 @@ export function JsonToSchema() {
                   .dark .jn { color: #fbbf24; }
                 `}</style>
                 <pre
-                  className="p-3 font-mono text-xs text-zinc-700 dark:text-zinc-300 leading-5 whitespace-pre-wrap break-all"
+                  className="p-3 font-mono text-xs leading-5 break-all whitespace-pre-wrap text-zinc-700 dark:text-zinc-300"
                   dangerouslySetInnerHTML={{ __html: highlightJSON(schemaString) }}
                 />
               </>
             ) : (
-              <div className="flex items-center justify-center h-full min-h-64">
-                <p className="text-xs text-zinc-400 dark:text-zinc-600 text-center px-4">
+              <div className="flex h-full min-h-64 items-center justify-center">
+                <p className="px-4 text-center text-xs text-zinc-400 dark:text-zinc-600">
                   {input.trim()
                     ? validation && !validation.valid
                       ? "Fix the JSON error to generate a schema"
@@ -354,7 +372,7 @@ export function JsonToSchema() {
 
       {/* ── Stats ── */}
       {stats && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 px-5 py-4">
+        <div className="grid grid-cols-2 gap-4 rounded-lg border border-zinc-200 bg-zinc-50 px-5 py-4 sm:grid-cols-3 lg:grid-cols-6 dark:border-zinc-800 dark:bg-zinc-900/50">
           <StatItem label="Objects" value={stats.objects} />
           <StatItem label="Arrays" value={stats.arrays} />
           <StatItem label="Properties" value={stats.properties} />
@@ -364,5 +382,5 @@ export function JsonToSchema() {
         </div>
       )}
     </div>
-  )
+  );
 }

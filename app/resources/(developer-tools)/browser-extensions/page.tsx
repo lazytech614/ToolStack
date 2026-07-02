@@ -9,7 +9,7 @@ import { SecondaryHeading } from "@/components/shared/secondary-heading";
 import { ContentGrid } from "@/components/shared/content-grid";
 import { ContentCard } from "@/components/shared/content-card";
 
-import { browserExtensions, BrowserExtension } from "@/constants/resources/browser-extensions";
+import { BrowserExtension, browserExtensions } from "@/content/browser-extensions";
 import { browserExtensionToContentCard } from "@/lib/content-mappers/browser-extension-to-content";
 import { useContentFilter } from "@/hooks/useContentFilters";
 
@@ -34,15 +34,9 @@ export default function BrowserExtensionsPage() {
       extension.name.toLowerCase().includes(q) ||
       extension.description.toLowerCase().includes(q) ||
       extension.publisher.toLowerCase().includes(q) ||
-      extension.category.some((c) =>
-        c.toLowerCase().includes(q)
-      ) ||
-      extension.tags.some((tag) =>
-        tag.toLowerCase().includes(q)
-      ) ||
-      extension.browsers.some((browser) =>
-        browser.toLowerCase().includes(q)
-      ),
+      extension.category.some((c) => c.toLowerCase().includes(q)) ||
+      extension.tags.some((tag) => tag.toLowerCase().includes(q)) ||
+      extension.browsers.some((browser) => browser.toLowerCase().includes(q)),
   });
 
   const renderExtension = (extension: BrowserExtension) => (
@@ -58,16 +52,16 @@ export default function BrowserExtensionsPage() {
   );
 
   return (
-    <main className="min-h-screen bg-white dark:bg-black py-10">
+    <main className="min-h-screen bg-white py-10 dark:bg-black">
       <Container>
         {/* Header */}
-        <div className="flex flex-col gap-4 md:flex-row items-start md:justify-between">
+        <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between">
           <PageHeading
             title="Browser Extensions"
             description="Useful browser extensions for debugging and productivity."
           />
 
-          <div className="text-left md:text-right md:shrink-0">
+          <div className="text-left md:shrink-0 md:text-right">
             <StatusBar
               items={browserExtensions}
               getName={(extension) => extension.name}
@@ -86,11 +80,7 @@ export default function BrowserExtensionsPage() {
           />
 
           <CategoryFilter
-            categories={[
-              ...new Set(
-                browserExtensions.flatMap((extension) => extension.category)
-              ),
-            ]}
+            categories={[...new Set(browserExtensions.flatMap((extension) => extension.category))]}
             selected={category}
             onChange={setCategory}
           />
@@ -102,9 +92,7 @@ export default function BrowserExtensionsPage() {
               title="Results"
               count={filtered.length}
               description={
-                filtered.length === 0
-                  ? "No browser extensions match your search."
-                  : undefined
+                filtered.length === 0 ? "No browser extensions match your search." : undefined
               }
             />
 
@@ -138,11 +126,7 @@ export default function BrowserExtensionsPage() {
 
             <section className={pinned.length > 0 ? "mt-12" : "mt-10"}>
               <SecondaryHeading
-                title={
-                  pinned.length
-                    ? "All Other Extensions"
-                    : "All Extensions"
-                }
+                title={pinned.length ? "All Other Extensions" : "All Extensions"}
                 description={
                   pinned.length
                     ? "Browse the remaining browser extensions below."

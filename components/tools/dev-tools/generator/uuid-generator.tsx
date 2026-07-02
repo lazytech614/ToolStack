@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import { useState, useCallback } from "react"
-import { Copy, Check, RefreshCw, ClipboardList } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { toast } from "sonner"
-import { BulkCount, FormatOption, UuidVersion } from "@/types/dev-tools/uuid-generator"
-import { applyFormat, generateV1, generateV4, generateV5 } from "@/lib/dev-utils/uuid-generator"
-import { useCopy } from "@/hooks/useCopy"
+import { useState, useCallback } from "react";
+import { Copy, Check, RefreshCw } from "lucide-react";
+
+import { BulkCount, FormatOption, UuidVersion } from "@/types/dev-tools/uuid-generator";
+import { cn } from "@/lib/utils";
+import { applyFormat, generateV1, generateV4, generateV5 } from "@/lib/dev-utils/uuid-generator";
+import { useCopy } from "@/hooks/useCopy";
 
 // DNS namespace UUID (standard)
-export const DNS_NAMESPACE = "6ba7b810-9dad-11d1-80b4-00c04fd430c8"
+export const DNS_NAMESPACE = "6ba7b810-9dad-11d1-80b4-00c04fd430c8";
 
 // ── UuidRow ────────────────────────────────────────────────────────────────
 
@@ -17,118 +17,120 @@ function UuidRow({ value, index }: { value: string; index: number }) {
   const { copied, copy } = useCopy();
 
   return (
-    <div className="group flex items-center gap-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-4 py-2.5 transition-colors hover:border-zinc-300 dark:hover:border-zinc-700">
+    <div className="group flex items-center gap-3 rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-2.5 transition-colors hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700">
       <span className="w-6 shrink-0 text-right font-mono text-xs text-zinc-400 dark:text-zinc-600">
         {index + 1}
       </span>
-      <span className="flex-1 font-mono text-xs text-zinc-900 dark:text-zinc-100 break-all">
+      <span className="flex-1 font-mono text-xs break-all text-zinc-900 dark:text-zinc-100">
         {value}
       </span>
       <button
         onClick={() => copy(value)}
         className={cn(
-          "flex shrink-0 items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors cursor-pointer",
+          "flex shrink-0 cursor-pointer items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors",
           copied
-            ? "text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10"
-            : "text-zinc-400 dark:text-zinc-600 opacity-0 group-hover:opacity-100 hover:text-zinc-900 dark:hover:text-white"
+            ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400"
+            : "text-zinc-400 opacity-0 group-hover:opacity-100 hover:text-zinc-900 dark:text-zinc-600 dark:hover:text-white",
         )}
       >
         {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
       </button>
     </div>
-  )
+  );
 }
 
 // ── main component ─────────────────────────────────────────────────────────
 
 export function UuidGenerator() {
-  const [version, setVersion]   = useState<UuidVersion>("v4")
-  const [count, setCount]       = useState<BulkCount>(10)
-  const [formats, setFormats]   = useState<Set<FormatOption>>(new Set(["lowercase"]))
-  const [uuids, setUuids]       = useState<string[]>([])
-  const [v5Name, setV5Name]     = useState("")
-  const [generating, setGenerating] = useState(false)
+  const [version, setVersion] = useState<UuidVersion>("v4");
+  const [count, setCount] = useState<BulkCount>(10);
+  const [formats, setFormats] = useState<Set<FormatOption>>(new Set(["lowercase"]));
+  const [uuids, setUuids] = useState<string[]>([]);
+  const [v5Name, setV5Name] = useState("");
+  const [generating, setGenerating] = useState(false);
 
   const { copied, copy } = useCopy();
 
   const toggleFormat = (f: FormatOption) => {
-    setFormats(prev => {
-      const next = new Set(prev)
+    setFormats((prev) => {
+      const next = new Set(prev);
       if (f === "uppercase" && !prev.has("uppercase")) {
-        next.delete("lowercase")
-        next.add("uppercase")
+        next.delete("lowercase");
+        next.add("uppercase");
       } else if (f === "lowercase" && !prev.has("lowercase")) {
-        next.delete("uppercase")
-        next.add("lowercase")
+        next.delete("uppercase");
+        next.add("lowercase");
       } else {
-        next.has(f) ? next.delete(f) : next.add(f)
+        next.has(f) ? next.delete(f) : next.add(f);
       }
-      return next
-    })
-  }
+      return next;
+    });
+  };
 
   const generate = useCallback(async () => {
-    setGenerating(true)
-    const results: string[] = []
+    setGenerating(true);
+    const results: string[] = [];
 
     for (let i = 0; i < count; i++) {
-      let raw: string
+      let raw: string;
       if (version === "v1") {
-        raw = generateV1()
+        raw = generateV1();
       } else if (version === "v5") {
-        raw = await generateV5(DNS_NAMESPACE, v5Name || `name-${i}`)
+        raw = await generateV5(DNS_NAMESPACE, v5Name || `name-${i}`);
       } else {
-        raw = generateV4()
+        raw = generateV4();
       }
-      results.push(applyFormat(raw, formats))
+      results.push(applyFormat(raw, formats));
     }
 
-    setUuids(results)
-    setGenerating(false)
-  }, [version, count, formats, v5Name])
+    setUuids(results);
+    setGenerating(false);
+  }, [version, count, formats, v5Name]);
 
   const versions: { id: UuidVersion; label: string; description: string }[] = [
     { id: "v1", label: "v1", description: "Time-based" },
-    { id: "v4", label: "v4", description: "Random"     },
+    { id: "v4", label: "v4", description: "Random" },
     { id: "v5", label: "v5", description: "Name-based" },
-  ]
+  ];
 
-  const counts: BulkCount[] = [10, 100, 1000]
+  const counts: BulkCount[] = [10, 100, 1000];
 
   const formatOptions: { id: FormatOption; label: string }[] = [
-    { id: "lowercase",  label: "Lowercase"       },
-    { id: "uppercase",  label: "Uppercase"        },
-    { id: "no-hyphens", label: "Without hyphens"  },
-  ]
+    { id: "lowercase", label: "Lowercase" },
+    { id: "uppercase", label: "Uppercase" },
+    { id: "no-hyphens", label: "Without hyphens" },
+  ];
 
   return (
     <div className="flex flex-col gap-8">
-
       {/* ── Config ───────────────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-
         {/* Version */}
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-500">
+          <label className="text-xs font-semibold tracking-widest text-zinc-900 uppercase dark:text-zinc-500">
             Version
           </label>
           <div className="flex flex-col gap-1.5">
-            {versions.map(v => (
+            {versions.map((v) => (
               <button
                 key={v.id}
                 onClick={() => setVersion(v.id)}
                 className={cn(
-                  "flex items-center justify-between rounded-lg border px-3.5 py-2.5 text-left text-xs font-medium transition-colors cursor-pointer",
+                  "flex cursor-pointer items-center justify-between rounded-lg border px-3.5 py-2.5 text-left text-xs font-medium transition-colors",
                   version === v.id
-                    ? "border-purple-300 dark:border-purple-500/40 bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-300"
-                    : "border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-700 hover:text-zinc-900 dark:hover:text-white"
+                    ? "border-purple-300 bg-purple-50 text-purple-700 dark:border-purple-500/40 dark:bg-purple-500/10 dark:text-purple-300"
+                    : "border-zinc-200 bg-zinc-50 text-zinc-600 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:text-white",
                 )}
               >
                 <span className="font-mono font-semibold">UUID {v.label}</span>
-                <span className={cn(
-                  "text-[10px]",
-                  version === v.id ? "text-purple-500 dark:text-purple-400" : "text-zinc-400 dark:text-zinc-600"
-                )}>
+                <span
+                  className={cn(
+                    "text-[10px]",
+                    version === v.id
+                      ? "text-purple-500 dark:text-purple-400"
+                      : "text-zinc-400 dark:text-zinc-600",
+                  )}
+                >
                   {v.description}
                 </span>
               </button>
@@ -138,26 +140,30 @@ export function UuidGenerator() {
 
         {/* Count */}
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-500">
+          <label className="text-xs font-semibold tracking-widest text-zinc-900 uppercase dark:text-zinc-500">
             Bulk count
           </label>
           <div className="flex flex-col gap-1.5">
-            {counts.map(n => (
+            {counts.map((n) => (
               <button
                 key={n}
                 onClick={() => setCount(n)}
                 className={cn(
-                  "flex items-center justify-between rounded-lg border px-3.5 py-2.5 text-left text-xs font-medium transition-colors cursor-pointer",
+                  "flex cursor-pointer items-center justify-between rounded-lg border px-3.5 py-2.5 text-left text-xs font-medium transition-colors",
                   count === n
-                    ? "border-purple-300 dark:border-purple-500/40 bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-300"
-                    : "border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-700 hover:text-zinc-900 dark:hover:text-white"
+                    ? "border-purple-300 bg-purple-50 text-purple-700 dark:border-purple-500/40 dark:bg-purple-500/10 dark:text-purple-300"
+                    : "border-zinc-200 bg-zinc-50 text-zinc-600 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:text-white",
                 )}
               >
                 <span className="font-mono font-semibold">{n.toLocaleString()}</span>
-                <span className={cn(
-                  "text-[10px]",
-                  count === n ? "text-purple-500 dark:text-purple-400" : "text-zinc-400 dark:text-zinc-600"
-                )}>
+                <span
+                  className={cn(
+                    "text-[10px]",
+                    count === n
+                      ? "text-purple-500 dark:text-purple-400"
+                      : "text-zinc-400 dark:text-zinc-600",
+                  )}
+                >
                   UUIDs
                 </span>
               </button>
@@ -167,27 +173,29 @@ export function UuidGenerator() {
 
         {/* Format */}
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-500">
+          <label className="text-xs font-semibold tracking-widest text-zinc-900 uppercase dark:text-zinc-500">
             Format
           </label>
           <div className="flex flex-col gap-1.5">
-            {formatOptions.map(f => (
+            {formatOptions.map((f) => (
               <button
                 key={f.id}
                 onClick={() => toggleFormat(f.id)}
                 className={cn(
-                  "flex items-center gap-2.5 rounded-lg border px-3.5 py-2.5 text-left text-xs font-medium transition-colors cursor-pointer",
+                  "flex cursor-pointer items-center gap-2.5 rounded-lg border px-3.5 py-2.5 text-left text-xs font-medium transition-colors",
                   formats.has(f.id)
-                    ? "border-purple-300 dark:border-purple-500/40 bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-300"
-                    : "border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-700 hover:text-zinc-900 dark:hover:text-white"
+                    ? "border-purple-300 bg-purple-50 text-purple-700 dark:border-purple-500/40 dark:bg-purple-500/10 dark:text-purple-300"
+                    : "border-zinc-200 bg-zinc-50 text-zinc-600 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:text-white",
                 )}
               >
-                <span className={cn(
-                  "flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-sm border transition-colors",
-                  formats.has(f.id)
-                    ? "border-purple-400 dark:border-purple-500 bg-purple-500 dark:bg-purple-500"
-                    : "border-zinc-300 dark:border-zinc-700"
-                )}>
+                <span
+                  className={cn(
+                    "flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-sm border transition-colors",
+                    formats.has(f.id)
+                      ? "border-purple-400 bg-purple-500 dark:border-purple-500 dark:bg-purple-500"
+                      : "border-zinc-300 dark:border-zinc-700",
+                  )}
+                >
                   {formats.has(f.id) && <Check className="h-2.5 w-2.5 text-white" />}
                 </span>
                 {f.label}
@@ -200,15 +208,15 @@ export function UuidGenerator() {
       {/* ── v5 name input ─────────────────────────────────────────────────── */}
       {version === "v5" && (
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-500">
+          <label className="text-xs font-semibold tracking-widest text-zinc-900 uppercase dark:text-zinc-500">
             Name (v5)
           </label>
           <input
             type="text"
             value={v5Name}
-            onChange={e => setV5Name(e.target.value)}
+            onChange={(e) => setV5Name(e.target.value)}
             placeholder="e.g. example.com"
-            className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-4 py-3 font-mono text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-purple-400 dark:focus:border-purple-500/60 transition-colors"
+            className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3 font-mono text-xs text-zinc-900 transition-colors placeholder:text-zinc-400 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/40 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-600 dark:focus:border-purple-500/60"
           />
           <p className="text-xs text-zinc-400 dark:text-zinc-600">
             Deterministic — same name always produces the same UUID. Uses the DNS namespace.
@@ -221,7 +229,7 @@ export function UuidGenerator() {
         <button
           onClick={generate}
           disabled={generating}
-          className="flex items-center gap-2 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-60 px-5 py-2.5 text-sm font-semibold text-white transition-colors cursor-pointer disabled:cursor-default"
+          className="flex cursor-pointer items-center gap-2 rounded-xl bg-purple-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-purple-500 disabled:cursor-default disabled:opacity-60"
         >
           <RefreshCw className={cn("h-3.5 w-3.5", generating && "animate-spin")} />
           Generate {count.toLocaleString()} UUID{count > 1 ? "s" : ""}
@@ -230,7 +238,7 @@ export function UuidGenerator() {
         {uuids.length > 0 && (
           <button
             onClick={() => copy(uuids.join("\n"))}
-            className="flex items-center gap-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-5 py-2.5 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors cursor-pointer"
+            className="flex cursor-pointer items-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50 px-5 py-2.5 text-sm font-medium text-zinc-600 transition-colors hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:text-white"
           >
             {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
             {copied ? "Copied!" : "Copy all"}
@@ -242,14 +250,14 @@ export function UuidGenerator() {
       {uuids.length > 0 && (
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <label className="text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-500">
+            <label className="text-xs font-semibold tracking-widest text-zinc-900 uppercase dark:text-zinc-500">
               Results
             </label>
             <span className="text-xs text-zinc-400 dark:text-zinc-600">
               {uuids.length.toLocaleString()} generated
             </span>
           </div>
-          <div className="flex flex-col gap-1 max-h-120 overflow-y-auto rounded-xl border border-zinc-200 dark:border-zinc-800 p-2">
+          <div className="flex max-h-120 flex-col gap-1 overflow-y-auto rounded-xl border border-zinc-200 p-2 dark:border-zinc-800">
             {uuids.map((uuid, i) => (
               <UuidRow key={i} value={uuid} index={i} />
             ))}
@@ -257,5 +265,5 @@ export function UuidGenerator() {
         </div>
       )}
     </div>
-  )
+  );
 }
