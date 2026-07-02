@@ -1,4 +1,4 @@
-import { ALL_TOOLS } from "@/content/tools";
+import { tools } from "@/content/tools";
 import { MetadataRoute } from "next";
 
 const BASE_URL = "https://tool-stack-kappa.vercel.app";
@@ -17,7 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "daily",
       priority: 0.9,
     },
-    ...ALL_TOOLS.map((tool) => ({
+    ...tools.map((tool) => ({
       url: `${BASE_URL}${tool.href}`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,

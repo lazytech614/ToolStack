@@ -1,4 +1,4 @@
-import { ALL_TOOLS } from "@/content/tools";
+import { tools } from "@/content/tools";
 import { Wrench } from "lucide-react";
 
 interface PlaceholderToolProps {
@@ -6,7 +6,7 @@ interface PlaceholderToolProps {
 }
 
 export function PlaceholderTool({ toolId }: PlaceholderToolProps) {
-  const tool = ALL_TOOLS.find((t) => t.id === toolId);
+  const tool = tools.find((t) => t.id === toolId);
 
   return (
     <div className="flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed border-zinc-200 py-24 text-center dark:border-zinc-800">

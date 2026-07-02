@@ -8,7 +8,7 @@ import { generatorTools } from "./generator";
 import { previewTools } from "./preview";
 import { utilitiesTools } from "./utilities";
 
-export const ALL_TOOLS: Tool[] = [
+export const tools: Tool[] = [
   ...generatorTools,
   ...comparisonTools,
   ...encodingTools,

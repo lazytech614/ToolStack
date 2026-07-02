@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { ALL_TOOLS } from "@/content/tools";
+import { tools } from "@/content/tools";
 
 import { Container } from "@/components/shared/container";
 import { PageHeading } from "@/components/shared/page-heading";
@@ -14,7 +14,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { toolId } = await params;
 
-  const tool = ALL_TOOLS.find((t) => t.id === toolId);
+  const tool = tools.find((t) => t.id === toolId);
 
   if (!tool) {
     return {
@@ -65,7 +65,7 @@ interface ToolPageProps {
 export default async function ToolPage({ params }: ToolPageProps) {
   const { toolId } = await params;
 
-  const tool = ALL_TOOLS.find((t) => t.id === toolId);
+  const tool = tools.find((t) => t.id === toolId);
 
   if (!tool) {
     notFound();

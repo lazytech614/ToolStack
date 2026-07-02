@@ -7,6 +7,8 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Toaster } from "@/components/ui/sonner";
+import { GlobalSearchProvider } from "@/components/providers/global-search-provider";
+import { GlobalSearch } from "@/components/search/global-search";
 
 const inter = Inter({
   variable: "--font-body",
@@ -126,12 +128,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={`${inter.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-white text-zinc-900 dark:bg-black dark:text-white">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <Navbar />
+          <GlobalSearchProvider>
+            <GlobalSearch />
 
-          <main className="flex-1">{children}</main>
-
-          <Footer />
-
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </GlobalSearchProvider>
           <Toaster />
         </ThemeProvider>
       </body>

@@ -14,6 +14,7 @@ import { NAV_LINKS } from "@/constants/configs/configs";
 import { MegaMenu } from "../shared/mega-menu";
 import { learningSections } from "@/constants/navigation/learning-menu";
 import { resourceSections } from "@/constants/navigation/resource-menu";
+import { SearchTrigger } from "../search/search-trigger";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -69,6 +70,8 @@ export function Navbar() {
               {/* Resources Mega Menu */}
               <MegaMenu label="Resources" sections={resourceSections} align="left" />
             </nav>
+
+            <SearchTrigger className="hidden lg:flex" />
           </div>
 
           {/* Right Side */}

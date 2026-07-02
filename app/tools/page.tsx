@@ -11,7 +11,7 @@ import { StatusBar } from "@/components/shared/satus-bar";
 import { ContentCard } from "@/components/shared/content-card";
 import { ContentGrid } from "@/components/shared/content-grid";
 
-import { ALL_TOOLS, TOOL_CATEGORIES } from "@/content/tools";
+import { tools, TOOL_CATEGORIES } from "@/content/tools";
 import { toolToContentCard } from "@/lib/content-mappers/tool-to-content";
 import { useContentFilter } from "@/hooks/useContentFilters";
 
@@ -28,7 +28,7 @@ export default function ToolsPage() {
     togglePin,
     isFiltering,
   } = useContentFilter({
-    items: ALL_TOOLS,
+    items: tools,
     storageKey: "toolstack:dev-tools:pinned",
     getId: (tool) => tool.id,
     getFilter: (tool) => tool.category,
@@ -39,7 +39,7 @@ export default function ToolsPage() {
   });
 
   const renderTool = useCallback(
-    (tool: (typeof ALL_TOOLS)[number]) => (
+    (tool: (typeof tools)[number]) => (
       <ContentCard
         key={tool.id}
         item={toolToContentCard(tool)}
@@ -62,7 +62,7 @@ export default function ToolsPage() {
           />
 
           <div className="text-left md:shrink-0 md:text-right">
-            <StatusBar items={ALL_TOOLS} getName={(tool) => tool.name} itemLabel="tool" />
+            <StatusBar items={tools} getName={(tool) => tool.name} itemLabel="tool" />
           </div>
         </div>
 

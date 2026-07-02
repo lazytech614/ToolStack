@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Container } from "../shared/container";
 import { ToolShowcase } from "./tool-showcase";
 import Link from "next/link";
+import { TechStrip } from "./tech-strip";
 
 export function Hero() {
   return (
@@ -52,6 +53,8 @@ export function Hero() {
               </Button>
             </div>
 
+            {/* <TechStrip /> */}
+
             <div className="mb-8 flex gap-8 lg:mb-0">
               <div>
                 <p className="text-2xl font-bold text-purple-600">25+</p>
@@ -72,7 +75,9 @@ export function Hero() {
 
           <ToolShowcase />
         </div>
+        <TechStrip />
       </Container>
+      {/* <TechStrip /> */}
     </section>
   );
 }
