@@ -121,9 +121,6 @@ export function JsonToSchema() {
     return new Set([validation.line]);
   }, [validation]);
 
-  // Render input with line numbers + error highlight
-  const inputLines = input.split("\n");
-
   return (
     <div className="flex flex-col gap-6">
       {/* ── Options bar ── */}

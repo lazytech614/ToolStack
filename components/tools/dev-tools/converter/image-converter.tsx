@@ -204,7 +204,7 @@ export function ImageConverter() {
       const res = await convertImage(originalSrc, outFormat, quality, w, h, effectiveBg);
       setResult(res);
     } catch (err) {
-      setError("Conversion failed. The format may not be supported in your browser.");
+      setError(err instanceof Error ? err.message : "Unexpected error");
     } finally {
       setConverting(false);
     }
@@ -220,6 +220,7 @@ export function ImageConverter() {
       setCopiedUrl(true);
       setTimeout(() => setCopiedUrl(false), 2000);
     } catch (err) {
+      console.error(err);
       setCopiedUrl(true);
       setTimeout(() => setCopiedUrl(false), 2000);
     }
