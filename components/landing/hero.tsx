@@ -26,9 +26,8 @@ export function Hero() {
             </h1>
 
             <p className="max-w-xl text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-              Save time with a curated collection of essential developer utilities. Format code,
-              convert data, generate content, validate inputs, and streamline your workflow without
-              leaving your browser.
+              Discover powerful developer tools, snippets, cheatsheets, and curated resources to
+              learn faster, build smarter, and ship with confidence.
             </p>
 
             <div className="flex flex-wrap gap-4">
@@ -37,7 +36,7 @@ export function Hero() {
                   size="lg"
                   className="group cursor-pointer bg-linear-to-r from-purple-600 to-violet-600 text-white"
                 >
-                  Explore Tools
+                  Get Started
                   <MdKeyboardDoubleArrowRight className="ml-2 h-6 w-6 transition-transform duration-300 ease-in-out group-hover:translate-x-1.5" />
                 </Button>
               </Link>
@@ -60,8 +59,8 @@ export function Hero() {
               </div>
 
               <div>
-                <p className="text-2xl font-bold text-purple-600">15+</p>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400">Categories</p>
+                <p className="text-2xl font-bold text-purple-600">500+</p>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">Code Resources</p>
               </div>
 
               <div>
