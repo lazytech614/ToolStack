@@ -18,6 +18,7 @@ import {
   RESOURCES,
   RESOURCE_CATEGORIES,
 } from "@/constants/configs/configs";
+import { SearchTrigger } from "../search/search-trigger";
 
 export function MobileSidebar() {
   const [learningOpen, setLearningOpen] = useState(false);
@@ -64,6 +65,11 @@ export function MobileSidebar() {
                 </h2>
               </div>
             </div>
+          </div>
+
+          {/* Search */}
+          <div className="px-6 pb-3">
+            <SearchTrigger variant="full" className="w-full" />
           </div>
 
           {/* Navigation */}

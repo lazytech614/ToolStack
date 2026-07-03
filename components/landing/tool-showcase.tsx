@@ -1,4 +1,4 @@
-import { FileCode, BookOpen, Table2, DatabaseZapIcon } from "lucide-react";
+import { FileCode, Table2, FileText, LayoutTemplate } from "lucide-react";
 
 import { ToolCard } from "./tool-card";
 
@@ -16,41 +16,69 @@ export function ToolShowcase() {
         </div>
 
         <div className="flex flex-col gap-y-4">
-          <ToolCard
-            title="Commit Generator"
-            description="Generate conventional commit messages from your git diff."
-            href="/tools/commit-generator"
-            badge="Popular"
-            badgeColor="green"
-            icon={<FileCode size={20} />}
-          />
+          <div className="flex flex-col gap-y-2">
+            <div className="flex items-center gap-2">
+              <p className="text-xs text-nowrap text-zinc-600 dark:text-zinc-400">
+                Developer Tools
+              </p>
+              <div className="h-px w-full rounded-full bg-zinc-200 dark:bg-zinc-700" />
+            </div>
+            <ToolCard
+              title="Commit Generator"
+              description="Generate conventional commit messages from your git diff."
+              href="/tools/commit-generator"
+              badge="Popular"
+              badgeColor="green"
+              icon={<FileCode size={20} />}
+            />
+          </div>
 
-          <ToolCard
-            title="Markdown Table Generator"
-            description="Build Markdown tables visually with a spreadsheet-like editor and copy the result."
-            href="/tools/markdown-table"
-            badge="New"
-            badgeColor="blue"
-            icon={<Table2 size={20} />}
-          />
+          <div className="flex flex-col gap-y-2">
+            <div className="flex items-center gap-2">
+              <p className="text-xs text-nowrap text-zinc-600 dark:text-zinc-400">Code Snippets</p>
+              <div className="h-px w-full rounded-full bg-zinc-200 dark:bg-zinc-700" />
+            </div>
+            <ToolCard
+              title="React Snippets"
+              description="Browse a collection of reusable React components, hooks, patterns, and utility snippets."
+              href="/snippets"
+              badge="New"
+              badgeColor="blue"
+              icon={<Table2 size={20} />}
+            />
+          </div>
 
-          <ToolCard
-            title="SQL Formatter"
-            description="Format and beautify SQL queries with keyword highlighting and indentation control."
-            href="/tools/sql-formatter"
-            badge="New"
-            badgeColor="orange"
-            icon={<DatabaseZapIcon size={20} />}
-          />
+          <div className="flex flex-col gap-y-2">
+            <div className="flex items-center gap-2">
+              <p className="text-xs text-nowrap text-zinc-600 dark:text-zinc-400">Cheatsheets</p>
+              <div className="h-px w-full rounded-full bg-zinc-200 dark:bg-zinc-700" />
+            </div>
 
-          <ToolCard
-            title="README Generator"
-            description="Generate professional README files for your projects."
-            href="/tools/readme-generator"
-            badge="Coming Soon"
-            badgeColor="purple"
-            icon={<BookOpen size={20} />}
-          />
+            <ToolCard
+              title="Developer Cheatsheets"
+              description="Quick reference guides for Git, Docker, React, Next.js, CSS, Linux commands, and more."
+              href="/cheatsheets"
+              badge="Popular"
+              badgeColor="orange"
+              icon={<FileText size={20} />}
+            />
+          </div>
+
+          <div className="flex flex-col gap-y-2">
+            <div className="flex items-center gap-2">
+              <p className="text-xs text-nowrap text-zinc-600 dark:text-zinc-400">Templates</p>
+              <div className="h-px w-full rounded-full bg-zinc-200 dark:bg-zinc-700" />
+            </div>
+
+            <ToolCard
+              title="Project Templates"
+              description="Kickstart your next project with production-ready React, Next.js, Node.js, and Tailwind templates."
+              href="/templates"
+              badge="New"
+              badgeColor="purple"
+              icon={<LayoutTemplate size={20} />}
+            />
+          </div>
         </div>
       </div>
     </div>

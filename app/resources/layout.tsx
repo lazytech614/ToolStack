@@ -45,6 +45,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ResourcesLayout({ children }: { children: React.ReactNode }) {
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export default async function ResourcesLayout({ children }: { children: React.ReactNode }) {
+  await delay(4000);
+
   return <>{children}</>;
 }

@@ -71,7 +71,11 @@ export function Navbar() {
               <MegaMenu label="Resources" sections={resourceSections} align="left" />
             </nav>
 
-            <SearchTrigger className="hidden lg:flex" />
+            {/* Icon-only search: visible from md up to lg */}
+            <SearchTrigger variant="icon" className="hidden md:flex lg:hidden" />
+
+            {/* Full search bar: visible at lg and above */}
+            <SearchTrigger variant="full" className="hidden lg:flex" />
           </div>
 
           {/* Right Side */}

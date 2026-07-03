@@ -19,7 +19,7 @@ const items = [...whatWeOffer, ...whatWeOffer];
 
 export function TechStrip() {
   return (
-    <div className="relative mt-14 hidden overflow-hidden border-y border-zinc-200/60 py-4 sm:block dark:border-zinc-800/60">
+    <div className="relative mt-14 overflow-hidden border-y border-zinc-200/60 py-4 dark:border-zinc-800/60">
       {/* Fade edges */}
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-28 bg-linear-to-r from-white via-white to-transparent dark:from-black dark:via-black" />
       <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-28 bg-linear-to-l from-white via-white to-transparent dark:from-black dark:via-black" />

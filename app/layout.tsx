@@ -109,9 +109,9 @@ export const metadata: Metadata = {
   category: "technology",
 
   icons: {
-    icon: "/icon.svg",
-    shortcut: "/icon.svg",
-    apple: "/icon.svg",
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/apple-icon.png",
   },
 
   other: {
