@@ -1,6 +1,6 @@
 "use client";
 
-import { Copy, Pin, PinOff } from "lucide-react";
+import { CheckCheck, Copy, Pin, PinOff } from "lucide-react";
 import { useState } from "react";
 
 import { cn } from "@/lib/utils";
@@ -50,9 +50,11 @@ export function SnippetToolbar({ snippet, pinned, onTogglePin }: Props) {
           onClick={copyCode}
           className="flex items-center gap-2 rounded-lg border border-zinc-200 px-3 py-2 text-sm font-medium transition hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
         >
-          <Copy className="h-4 w-4" />
-
-          {copied ? "Copied!" : "Copy"}
+          {copied ? (
+            <CheckCheck className="h-4 w-4 text-emerald-400" />
+          ) : (
+            <Copy className="h-4 w-4" />
+          )}
         </button>
       </div>
     </div>

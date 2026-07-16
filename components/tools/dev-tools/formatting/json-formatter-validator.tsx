@@ -331,7 +331,6 @@ export function JsonFormatterValidator() {
                   ) : (
                     <Copy className="h-3.5 w-3.5" />
                   )}
-                  {copied ? "Copied" : "Copy"}
                 </button>
 
                 <button
